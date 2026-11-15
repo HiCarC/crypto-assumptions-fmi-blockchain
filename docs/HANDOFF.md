@@ -2,7 +2,7 @@
 
 ## Updated
 
-15 November 2026, afternoon. Model for this session: Opus 5.5. **Stopped as instructed after the annex.** The article and the adversarial review are reserved for **Fable, after its limit resets on 20 November 2026**.
+15 November 2026, afternoon. Model for this session: Opus 5.5. **At Checkpoint 3.** On 15 Nov the author told Claude not to wait for the Fable reset and to write the article and run the adversarial review with Opus 5.5 at high effort. That is done: `article/final.md`, `article/review-log.md`, `docs/author-brief.md`. Waiting for the author's decisions in the brief, §6.
 
 ## Mission and where we are
 
@@ -36,7 +36,7 @@ Checkpoint 2 (15 Nov 2026), author's words where possible:
 5. **Do not use the 79%/59% figures from the twelve-case list in the article.** Use TRM Labs' industry figures with the source, or state it qualitatively. **Write "not found in public material", never "does not exist".**
 6. Add a minimal Daml/Canton powers model. Done.
 7. Try Medusa once more with crytic-compile's Foundry settings; if it fails, leave it disclosed. Done: it failed again and is disclosed.
-8. "After the annex, write docs/HANDOFF.md and stop. I want the article and the adversarial review done with Fable after its limit resets on 20 November."
+8. "After the annex, write docs/HANDOFF.md and stop. I want the article and the adversarial review done with Fable after its limit resets on 20 November." **Superseded the same day:** "continue no need to wait the reset do it with Opus 5.5 high".
 
 The same rules are in Claude memory (`chapter2-working-rules`).
 
@@ -145,3 +145,8 @@ Nothing. All work is committed and pushed.
 - ML-DSA fixtures: `make pq-fixtures` (needs `make pq-venv`).
 - `tools/mutation.sh` edits sources in place; if interrupted, run `git checkout -- contracts/src`.
 - Git identity is repository-local, using the author's GitHub no-reply address. Commit trailer: "Co-Authored-By: Claude Opus 5.5" for this session; use the current model's trailer next time.
+
+
+## Status at Checkpoint 3 (latest)
+
+Phases 5 and 6 are done. Next actions depend only on the author's answers to `docs/author-brief.md` §4 and §6 (publish the article, publish the annex, repository visibility, the CERTORAKEY secret). Do not publish anything or change the repository's visibility without an explicit yes.
