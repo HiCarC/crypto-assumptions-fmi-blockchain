@@ -5,9 +5,9 @@
 | 13 Aug 2024 | NIST FIPS 203/204/205 final | V | csrc.nist.gov |
 | 23 Jun 2025 | EU coordinated PQC roadmap published | V | digital-strategy.ec.europa.eu |
 | 27 Oct 2026 | NIST IR 8547 final | V | csrc.nist.gov/pubs/ir/8547/final |
-| 31 Dec 2026 | EU: national transition plans started | R | EU roadmap (secondary reading) |
-| 31 Dec 2030 | NIST: ECDSA/EdDSA/RSA deprecated after 2030; EU: high-risk use cases migrated | V / R | NIST IR 8547; EU roadmap |
-| 31 Dec 2035 | NIST: disallowed after 2035; G7 CEG: general target 2035 | V | NIST IR 8547; G7 CEG roadmap |
+| 31 Dec 2026 | EU: first steps and national roadmaps | V | EU PQC roadmap v1.1 |
+| 31 Dec 2030 | NIST: ECDSA/EdDSA/RSA deprecated after 2030; EU: high-risk use cases migrated | V | NIST IR 8547; EU roadmap |
+| 31 Dec 2035 | NIST: disallowed after 2035; EU: medium-risk migrated; G7 CEG: general target | V | NIST IR 8547; G7 CEG roadmap |
 | 31 Dec 2026 | Stellar: ML-DSA verification in contracts (plan) | V | stellar.org |
 | 31 Dec 2027 | Stellar: quantum-safe account signers (plan) | V | stellar.org |
 | 30 Jun 2029 | Ethereum: L1 upgrades estimated around 2029 | V (stated as an estimate) | pq.ethereum.org |

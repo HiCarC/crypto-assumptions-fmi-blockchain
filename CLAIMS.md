@@ -18,7 +18,7 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | A3 | Anthropic's paper claims a deterministic subexponential algorithm for 3-SAT and #3-SAT, in one version dated 27 October 2026 | V | Paper page |
 | A4 | Independent experts are examining the result; neither confirmation nor refutation has been published | R | Scientific American, 27 October 2026 |
 | A5 | No deployed blockchain signature scheme, hash function or proof system has a security argument that rests on ETH or SETH | I | `research/02-findings-rq1-rq6.md` §RQ1; to be written out with citations in annex §2 |
-| A6 | Some published hardness lower bounds for lattice problems are conditional on ETH-type hypotheses, so that supporting argument weakens if ETH is false; this yields no attack | I | To be cited in annex §2 (specific papers not yet read: **not for the article until they are**) |
+| A6 | Published fine-grained lower bounds for lattice problems (Bennett–Golovnev–Stephens-Davidowitz 2017; Aggarwal–Stephens-Davidowitz 2018) are conditional on SETH or Gap-ETH; they do not cover CVP in the Euclidean norm, and ML-DSA's parameters come from concrete Core-SVP cost models, not from these bounds. If ETH is false these supporting arguments lose their premise; no attack follows | V (papers' abstracts, Dilithium specification) / I (the consequence) | `research/primary/technical.md` §1 |
 | A7 | No production blockchain or financial system was found that relies on fine-grained (ETH/SETH-based) cryptography | R/U | Search on 15 November 2026; absence of evidence |
 
 ## B. Incidents
@@ -43,6 +43,17 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | B16 | Ronin, Wormhole, Nomad, Poly Network, Kelp DAO, Drift: amounts and root causes as in `data/incidents.csv` | R | Operators' post-mortems not retrievable; secondary analyses |
 | B17 | In the twelve-case list, no loss came from a broken cryptographic primitive; operational compromise of keys or signing accounts for about 79% of listed losses | V (of the list) | `scripts/incidents_chart.py` → `results/incidents_summary.md`. The list is a selection, not a census |
 
+## E. Technical facts read in primary sources (round 2)
+
+| ID | Claim | Label | Evidence |
+|---|---|---|---|
+| E1 | Of 141 SNARK vulnerabilities studied (2018–2024), 99 were in circuits and 95 of those were under-constrained | V | Chaliasos et al., USENIX Security 2024 (arXiv v1) |
+| E2 | Trail of Bits' Frozen Heart (April 2022): insecure Fiat–Shamir implementations allowed forged proofs in implementations of Girault's proof, Bulletproofs and PlonK | V | Trail of Bits blog, 13 April 2022 |
+| E3 | EIP-7702 has been active on Ethereum mainnet since 7 May 2025 (Pectra); the designated code persists until replaced | V | eips.ethereum.org, ethereum.org history |
+| E4 | In Daml, signatories create and archive contracts and archiving needs every signatory's authority | V | docs.canton.network |
+| E5 | A new Daml package version must pass compatibility checks at build and at each participant's upload; there is no separate authorisation ceremony | V | docs.canton.network |
+| E6 | Ronin and Nomad root causes and amounts | R | Primaries returned 404/403 |
+
 ## C. Measurements made in this repository (all V, reproducible)
 
 | ID | Claim | Evidence |
@@ -61,6 +72,7 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | C12 | Mutation testing: 83 of 89 compilable mutants killed (93.3%); after triage every non-equivalent mutant is killed | `audit/reports/mutation.txt` |
 | C13 | On a plain encoding, three current SAT solvers found SHA-256 preimages with a free message up to 18 rounds of 64 and none at 19; at full rounds they were slower than trying every value of the unknown bits, and failed beyond 16 unknown bits within 120 s | `results/sat_scaling.csv`, `results/fig_sat_scaling.png`, `sat/`. No extrapolation |
 | C14 | Under the stated planning assumptions, a migration started in January 2027 disallows classical-only keys in January 2031 | `scripts/migration_timeline.py`. An illustration of sequencing, not a forecast |
+| C16 | Daml model: neither issuer nor owner can archive a jointly signed holding alone; the issuer can freeze or claw back only because the holding's text grants it | `daml/` (6 tests) |
 | C15 | For the institutional and central-bank platforms examined, 47 of 56 cells on who can freeze, upgrade, set signer policy, and on post-quantum plans were not found in the public material retrieved | `cbom/build.py` → `results/cbom_summary.json`. Time-boxed search; see LIMITATIONS |
 
 ## D. Standards, policy and plans
@@ -71,7 +83,7 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | D2 | FIPS 203, 204 and 205 were published on 13 August 2024 | V | csrc.nist.gov |
 | D3 | FIPS 206 (FN-DSA) is not final | R | No official page found |
 | D4 | The EU coordinated roadmap was published on 23 June 2025 | V | European Commission page |
-| D5 | EU milestones: national plans by end 2026, high-risk use cases by end 2030, as much as feasible by end 2035 | R | Secondary readings of the roadmap; the document itself not yet read |
+| D5 | EU roadmap v1.1: first steps and national roadmaps by end 2026; high-risk use cases by end 2030; medium-risk by end 2035, low-risk as far as feasible; a recommendation to Member States | V | EU PQC roadmap PDF, 11 June 2025 |
 | D6 | The G7 Cyber Expert Group roadmap is non-binding, with 2035 as a general target and 2030–32 for critical systems | V | US Treasury copy of the roadmap |
 | D7 | OCC final rule implementing the GENIUS Act: issued 21 October 2026, effective 18 January 2027 | V | OCC NR 2026-92 |
 | D8 | Basel Committee: an update on its cryptoasset-standard review is expected later in 2026 | V | BIS press release, 20 May 2026 |
@@ -87,7 +99,10 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | D18 | Glassnode (20 May 2026): about 6.04 million BTC, 30.2% of supply, held under exposed public keys | V | Glassnode page. A later press figure (7.12 million, November) is R only |
 | D19 | Anthropic's SCONE-bench: agents exploited 207 of 405 historically exploited contracts in simulation, and found two previously unknown flaws in 2,849 recent contracts at an API cost of about US$3,476 | V | red.anthropic.com post |
 | D20 | EVMbench best exploit-mode score of 72.2%; studies showing weaker results on real incidents | R | Secondary coverage; primaries not read |
-| D21 | PFMI principles, DORA articles, MiCA and DLT Pilot Regime status, CNSA 2.0 dates, BIS Project Leap measurements | U/R | Not yet read from primary sources: **not for the article until they are** |
+| D21 | PFMI Principles 2, 8, 15, 17 and the 2016 cyber-resilience guidance do not mention cryptography or key management (encryption appears once as an example) | V | `research/primary/regulation.md` |
+| D22 | DORA applies from 17 Jan 2025; Art. 9(4)(d) key protection; RTS 2024/1774 Art. 6 requires updating cryptography on developments in cryptanalysis, Art. 7 a key life cycle; quantum is not named | V | same |
+| D23 | BIS Project Leap 2: PQ signatures (Dilithium round 3) on T2 liquidity transfers in a test environment worked; verification at least an order of magnitude slower; hybrid not carried out | V | same |
+| D24 | NSA CNSA 2.0 dates; MiCA and DLT Pilot Regime status | R/U | Not read at source: not used |
 
 ## Corrections made during the work
 

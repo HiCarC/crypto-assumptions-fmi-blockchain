@@ -78,6 +78,10 @@ Which MCP servers and skills were actually used, and for what. Updated as the wo
 | 2026-11-15 | Foundry, Slither, Aderyn, Semgrep (Decurity rules), Echidna, Halmos, Certora, Gambit | Component C; results in audit/reports/ |
 | 2026-11-15 | ZKNoxHQ/ETHDILITHIUM @ f9f4fe1 (submodule) + its Python reference signer in tools/.venv-pq | ML-DSA-44 verification and test fixtures |
 | 2026-11-15 | Kissat, CaDiCaL, CryptoMiniSat, python-sat | Component E |
+| 2026-11-15 | 2 reading sub-agents (round 2) | research/primary/regulation.md, technical.md |
+| 2026-11-15 | Daml SDK 3.7.1 via dpm | daml/ powers model (6 tests) |
+| 2026-11-15 | pandoc 3.1.3 + Tectonic 0.17.0 | report/annex.pdf |
+| 2026-11-15 | GitHub Actions (private repo) | CI: contracts, soroban, analysis (container) passed; certora job skips until the CERTORAKEY secret exists |
 | 2026-11-15 | Not used: context7, Slither MCP, Trail of Bits skills invoked as skills | Library APIs were read directly from the pinned sources; Trail of Bits checklists were applied manually in the audit report |
 
 ## Python environment for the ML-DSA signer

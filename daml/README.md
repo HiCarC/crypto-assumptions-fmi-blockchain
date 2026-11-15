@@ -14,6 +14,6 @@ Purpose: show who holds which power over a tokenised deposit and a DvP when the 
 
 Contrast with the EVM model: there, freeze, claw-back and upgrade sit in roles held by addresses that the holder never signed anything for; the holder relies on the token's code and its governance. Here every such power is visible in the contract text the holder signed, and nothing outside that text can bind them. The cryptography protecting the signatures is a different layer: on Canton it is the participant's and synchroniser's keys (Ed25519 or ECDSA in the published scheme list), and changing that layer is a network-governance matter, as on any ledger.
 
-**Package upgrades.** The SDK ships `dpm upgrade-check`, which checks that a new package version is a compatible upgrade of an old one. Who authorises a new version to be used for existing contracts (package vetting by each participant, per Daml's smart-contract-upgrade model) is described in the annex from Canton/Daml documentation, labelled by evidence.
+**Package upgrades.** Per the Canton documentation (read 15 Nov 2026, `research/primary/technical.md` item 2), a new package version must pass upgrade-compatibility checks at build time (`upgrades:` in `daml.yaml`) and again when each participant uploads it; there is no separate authorisation ceremony. The upgrade power therefore sits with each participant node's operator. The SDK's `dpm upgrade-check` runs the same check offline.
 
 Run: `dpm build && dpm test` (Daml SDK 3.7.1 via `dpm`). Six tests. Reference code; not for production use.

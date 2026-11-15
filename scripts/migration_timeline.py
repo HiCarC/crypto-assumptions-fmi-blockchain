@@ -25,9 +25,9 @@ POLICY = [
     (date(2024, 8, 13), "NIST FIPS 203/204/205 final", "V", "csrc.nist.gov"),
     (date(2025, 6, 23), "EU coordinated PQC roadmap published", "V", "digital-strategy.ec.europa.eu"),
     (date(2026, 10, 27), "NIST IR 8547 final", "V", "csrc.nist.gov/pubs/ir/8547/final"),
-    (date(2026, 12, 31), "EU: national transition plans started", "R", "EU roadmap (secondary reading)"),
-    (date(2030, 12, 31), "NIST: ECDSA/EdDSA/RSA deprecated after 2030\nEU: high-risk use cases migrated", "V / R", "NIST IR 8547; EU roadmap"),
-    (date(2035, 12, 31), "NIST: disallowed after 2035\nG7 CEG: general target 2035", "V", "NIST IR 8547; G7 CEG roadmap"),
+    (date(2026, 12, 31), "EU: first steps and national roadmaps", "V", "EU PQC roadmap v1.1"),
+    (date(2030, 12, 31), "NIST: ECDSA/EdDSA/RSA deprecated after 2030\nEU: high-risk use cases migrated", "V", "NIST IR 8547; EU roadmap"),
+    (date(2035, 12, 31), "NIST: disallowed after 2035\nEU: medium-risk migrated; G7 CEG: general target", "V", "NIST IR 8547; G7 CEG roadmap"),
 ]
 PLANS = [
     (date(2026, 12, 31), "Stellar: ML-DSA verification in contracts (plan)", "V", "stellar.org"),
