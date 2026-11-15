@@ -24,7 +24,7 @@ That sounds abstract. It is not. Digital security is built on hardness. Banks, p
 
 In [Part 1](https://thekarlc.substack.com/p/ai-3sat-eth-refutation-banking-cryptography) I asked that question of banks. The answer was: nothing yet. Now I am asking it of blockchains, the technology central banks and major banks are exploring for settling money and securities.
 
-I did not want to guess, so I built a test bench: a reference settlement system, mathematical proofs of its safety, and SAT experiments against SHA-256, one of the most widely used hash functions on ledgers. **The code, the tests and the results are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain)**, so anyone can check every number below.
+I did not want to guess, so I built a test bench on three platforms, an Ethereum-style (EVM) ledger, Stellar and Canton: a reference settlement system, mathematical proofs of its safety, and SAT experiments against SHA-256, one of the most widely used hash functions on ledgers. **The code, the tests and the results are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain)**, so anyone can check every number below.
 
 A blockchain has four layers that rely on hard mathematics. I tested each one. Here is what happened.
 
@@ -84,11 +84,23 @@ A genuinely faster solver would make proofs like these cheaper. Good news for de
 
 No. Three layers held, one with an asterisk, and the fourth showed a twist rather than a break.
 
+![Scorecard of four ledger layers tested against the October 3-SAT results. Hash functions: holds. Signatures: holds. Zero-knowledge proofs: holds, with an asterisk for research-only constructions. Smart contracts: twist, because the tools that prove contracts safe run on SAT-type solvers.](../results/fig_scorecard.png)
+
+*Figure: The four layers at a glance. Tested on an Ethereum-style (EVM) ledger, Stellar and Canton.*
+
 But my tests exposed a problem blockchains have that banks do not. If a mathematical assumption ever does weaken, the damage is public and permanent, and the fix is a governance decision. Changing a ledger's cryptography needs an upgrade agreed by whoever controls the rules. In my test system, users who did not migrate kept their money but could no longer move it. Only an administrator could rescue them.
 
 Who holds those powers? For 14 institutional and central-bank platforms, I could not find public answers to 47 of 56 basic questions: who can change the rules, who can freeze assets, who decides which keys count, and whether there is a quantum plan.
 
+![Heat map of 27 ledger platforms against four questions: who can freeze, who can upgrade, who sets signer policy, and whether there is a post-quantum roadmap. Most cells for bank-led and central-bank platforms are grey, meaning not found in public material; Canton and Stellar have the most cells stated in official sources.](../results/fig_powers_heatmap.png)
+
+*Figure: Who holds the powers, by platform. Green: stated in an official source I read. Amber: reported in a secondary source. Grey: not found in public material, which is not evidence of weakness. Colour shows evidence, not quality.*
+
 Recent losses show where the real risk sits. In October, an attack affected about US$6.3 billion of assets at Binance. According to Binance's own report, no private key leaked: the attacker misused an internal signing service. The mathematics was fine. The operations around it were not.
+
+![Bar chart of twelve major thefts from 2021 to 2026 by reported loss, coloured by root cause. Binance 2026 is the largest at about US$6.3 billion, followed by Bybit 2025 at US$1.5 billion. Root causes are operational compromise of keys or signing, bridge or message-verification flaws, errors in cryptographic code or key generation, a smart-contract logic flaw and social engineering. Zero cases came from a broken cryptographic primitive.](../results/fig_incidents.png)
+
+*Figure: Twelve major thefts, 2021–2026, by root cause as reported. A selection of large cases, not a census. Not one came from broken cryptographic mathematics.*
 
 ## Five questions every authority should ask
 

@@ -18,7 +18,7 @@
 
 ---
 
-The code, tests and results behind this piece are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain): the SAT experiments, a reference settlement system with its formal proofs, and a 21-page technical annex. Every number below can be checked there.
+The code, tests and results behind this piece are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain): the SAT experiments, a reference settlement system with its formal proofs, and a 21-page technical annex, tested on an Ethereum-style (EVM) ledger, Stellar and Canton. Every number below can be checked there.
 
 I wanted to see what today's tools can do before asking what a better algorithm might do. So I took SHA-256, the hash function behind Bitcoin, and gave three of the best SAT solvers available, programs that search for values satisfying a set of logical constraints, almost all of an input. I hid only a dozen bits and asked them to recover those bits from the output.
 
@@ -103,7 +103,15 @@ The remedy is harder because replacing a primitive is a governance decision. It 
 
 So three powers matter alongside the mathematics: who can change the rules, who can freeze an asset, and who decides which keys count. For 14 institutional and central-bank platforms I examined, I recorded 47 of 56 answers on those powers and on post-quantum plans as not found in public material.
 
+![Heat map of 27 ledger platforms against four questions: who can freeze, who can upgrade, who sets signer policy, and whether there is a post-quantum roadmap. Most cells for bank-led and central-bank platforms are grey, meaning not found in public material.](../results/fig_powers_heatmap.png)
+
+*Figure: Who holds the powers, by platform. Green: stated in an official source I read. Amber: reported in a secondary source. Grey: not found in public material, which is not evidence of weakness.*
+
 Losses so far confirm where the risk sits. According to Binance's own report, the attack that affected about US$6.3 billion of its assets in October went through unauthorised use of an internal signing service, and Binance said it found no evidence that any wallet's private key had leaked. The signatures were valid; the operations around them failed.
+
+![Bar chart of twelve major thefts from 2021 to 2026 by reported loss, coloured by root cause; zero cases came from a broken cryptographic primitive.](../results/fig_incidents.png)
+
+*Figure: Twelve major thefts, 2021–2026, by root cause as reported. A selection of large cases, not a census.*
 
 ## What authorities should ask
 
