@@ -1,0 +1,18 @@
+'forge clean' running (wd: /home/carl/work/crypto-assumptions-fmi-blockchain/contracts)
+'forge config --json' running
+'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: /home/carl/work/crypto-assumptions-fmi-blockchain/contracts)
+INFO:Detectors:
+Detector: unused-return
+ECDSAVerifier.verify(bytes,bytes32,bytes) (src/verifiers/ECDSAVerifier.sol#13-18) ignores return value by (recovered,err,None) = ECDSA.tryRecoverCalldata(hash,signature) (src/verifiers/ECDSAVerifier.sol#15)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+INFO:Detectors:
+Detector: timestamp
+DvP.settle(DvP.Order,bytes,bytes) (src/DvP.sol#63-76) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > o.deadline (src/DvP.sol#64)
+SettlementToken.transferWithAuthorization(address,address,uint256,uint256,uint256,bytes32,bytes) (src/SettlementToken.sol#145-163) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp <= validAfter (src/SettlementToken.sol#155)
+	- block.timestamp >= validBefore (src/SettlementToken.sol#156)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Slither:. analyzed (57 contracts with 76 detectors), 3 result(s) found

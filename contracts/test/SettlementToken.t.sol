@@ -137,6 +137,19 @@ contract SettlementTokenTest is Fixture {
         cash.mint(outsider, 1);
     }
 
+    function test_delistedSenderCannotMoveButIssuerCanRedeem() public {
+        assertEq(address(cash.registry()), address(registry));
+        vm.prank(compliance);
+        cash.setAllowed(alice, false);
+        assertFalse(cash.isAllowed(alice));
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(SettlementToken.NotAllowed.selector, alice));
+        cash.transfer(bob, 1);
+        vm.prank(issuer);
+        cash.burn(alice, 1_000e18);
+        assertEq(cash.totalSupply(), 0);
+    }
+
     function test_pauseStopsEveryMovement() public {
         vm.prank(pauser);
         cash.pause();

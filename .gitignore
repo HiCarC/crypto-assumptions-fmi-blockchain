@@ -11,3 +11,5 @@ contracts/.certora_internal/
 target/
 .DS_Store
 sat/work/
+contracts/out-halmos/
+contracts/lcov.info

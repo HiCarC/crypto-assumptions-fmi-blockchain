@@ -1,0 +1,7 @@
+Solc 0.8.38 finished in 6.80s
+Compiler run successful!
+    ‡
+ERROR    Build output parsing failed: FileNotFoundError: The build output       
+         directory                                                              
+         `/home/carl/work/crypto-assumptions-fmi-blockchain/contracts/out-halmos
+         ` does not exist                                                       

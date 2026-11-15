@@ -1,0 +1,82 @@
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 5 files tracked by git with 57 Code rules:
+  Scanning 5 files with 57 solidity rules.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 6 (6 blocking)
+ • Rules run: 57
+ • Targets scanned: 5
+ • Parsed lines: ~100.0%
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 57 rules on 5 files: 6 findings.
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+               
+    src/DvP.sol
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-                   
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.non-payable-constructor
+          ❰❰ Blocking ❱❱
+          Consider making costructor payable to save gas.
+                                                         
+           41┆ constructor(KeyRegistry registry_) EIP712("DvP", "1") {
+           42┆     REGISTRY = registry_;
+           43┆ }
+                       
+    src/KeyRegistry.sol
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-                   
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.non-payable-constructor
+          ❰❰ Blocking ❱❱
+          Consider making costructor payable to save gas.
+                                                         
+           49┆ constructor(address authority_) AccessManaged(authority_) EIP712("KeyRegistry", "1") {}
+   
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-                            
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.use-prefix-increment-not-postfix
+          ❰❰ Blocking ❱❱
+          Consider using the prefix increment expression whenever the return value is not needed. The prefix
+          increment expression is cheaper in terms of gas.                                                  
+                                                                                                            
+           75┆ rotationNonce[account]++;
+   
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-         
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.use-nested-if
+          ❰❰ Blocking ❱❱
+          Using nested is cheaper than using && multiple check combinations.  There are more advantages, such
+          as easier to read code and better coverage reports.                                                
+                                                                                                             
+          101┆ if (status != VerifierStatus.Approved && status != VerifierStatus.Deprecated) return false;
+                           
+    src/SettlementToken.sol
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-                   
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.non-payable-constructor
+          ❰❰ Blocking ❱❱
+          Consider making costructor payable to save gas.
+                                                         
+           58┆ constructor() {
+           59┆     _disableInitializers();
+           60┆ }
+                                    
+    src/verifiers/HybridVerifier.sol
+     ❱ tmp.claude-1000.-home-carl-work-crypto-assumptions-fmi-blockchain.6ed8f9ae-                   
+       fd03-4367-ba94-2a768417c969.scratchpad.semgrep-sc.solidity.performance.non-payable-constructor
+          ❰❰ Blocking ❱❱
+          Consider making costructor payable to save gas.
+                                                         
+           19┆ constructor(IERC7913SignatureVerifier classical, IERC7913SignatureVerifier postQuantum) {
+           20┆     if (address(classical) == address(postQuantum)) revert SameVerifier();
+           21┆     CLASSICAL = classical;
+           22┆     POST_QUANTUM = postQuantum;
+           23┆ }
+
