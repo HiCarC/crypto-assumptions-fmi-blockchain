@@ -8,9 +8,9 @@
 
 ## Subtitle options
 
-1. Layer by layer (consensus, signatures, zero-knowledge proofs, smart contracts), the October results leave the mathematics standing. The twist is in verification. Next: post-quantum migration of payment systems.
-2. I set today's best SAT solvers on the hash behind Bitcoin, then asked the same question of every layer of a ledger. Next chapter: post-quantum migration in payments.
-3. Why the AI-generated 3-SAT results leave blockchain cryptography standing, why contract-verification tools are the exception, and what authorities should ask. Next: post-quantum payments.
+1. Layer by layer (consensus, signatures, zero-knowledge proofs, smart contracts), the October results leave the mathematics standing. The twist is in verification.
+2. I set today's best SAT solvers on the hash behind Bitcoin, then asked the same question of every layer of a ledger.
+3. Why the AI-generated 3-SAT results leave blockchain cryptography standing, why contract-verification tools are the exception, and what authorities should ask.
 
 ---
 
@@ -44,15 +44,14 @@ For each layer I ask what it relies on, whether that rests on the hardness the h
 
 ## Consensus
 
-Consensus is how a ledger's participants agree on one history. Bitcoin uses proof of work: miners hash candidate blocks with SHA-256, applied twice, until one meets a target. Ethereum's proof of stake and the permissioned ledgers used in finance rely instead on validators' signatures: BLS signatures on the BLS12-381 curve in Ethereum's case, Ed25519 in several permissioned ledgers.
+Consensus is how a ledger's participants agree on one history. The ledgers that matter for finance use proof of stake, proof of authority or Byzantine-fault-tolerant protocols: validators sign each block, and a block is final once enough of them have signed. Those signatures are BLS signatures on the BLS12-381 curve in Ethereum's case, and often Ed25519 in permissioned ledgers. Every one of these ledgers also links its records with hash functions such as SHA-256.
 
 Neither rests on the hardness the October results address. As I read the published analyses, a hash function's security is a judgement about the best known attacks on that specific function, and signatures rest on problems in elliptic-curve mathematics.
 
-My tests at the start of this piece show where generic SAT solving stands against the full hash. The best published attack on reduced SHA-256 that I could read in full, by Khovratovich, Rechberger and Savelieva, finds inputs for 45 of its 64 steps, and still costs almost as much as trying every input. A 2026 paper claims 47 steps; I could not read it.
+My tests at the start of this piece show where generic SAT solving stands against the full hash. The best published attack on reduced SHA-256 that I could read in full, by [Khovratovich, Rechberger and Savelieva](https://eprint.iacr.org/2011/286), finds inputs for 45 of its 64 steps, and still costs almost as much as trying every input.
 
-The residual is narrow. A practical method for finding hash inputs faster than plain search would matter for proof of work. Neither paper offers one.
+The residual is narrow. A practical method for reversing a hash faster than plain search would matter for every ledger. Neither paper offers one.
 
-One family of proposals sits closer to the October results. Because the strong form of the hypothesis implies the ordinary one, refuting the ordinary form refutes both. Constructions whose security is proved from either, including some proposals for "useful" proof of work, lose their proofs. I found none in production use.
 
 ## Digital signatures
 
@@ -60,7 +59,7 @@ Every transfer on a ledger is authorised by a digital signature, almost always b
 
 That problem is not believed to be among the hardest problems that 3-SAT stands for, and its security estimates do not come from the hypothesis. In principle it can be rewritten as a SAT formula, but the formula would be far larger than my SHA-256 one. As far as I can see, the claimed speed-up leaves that route far slower than the attacks already known.
 
-The real long-term threat to these signatures is a large quantum computer, which is a different question with a different timetable. It is the subject of Chapter 3.
+The real long-term threat to these signatures is a large quantum computer, which is a different question with a different timetable.
 
 ## Zero-knowledge proofs
 
@@ -70,7 +69,7 @@ Their soundness rests on other assumptions: discrete-logarithm and related curve
 
 There is one genuine nuance. OpenAI's paper also gives a faster way to invert functions in which each output bit depends on only a few input bits. It notes that this applies to such versions of Oded Goldreich's candidate one-way functions, and adds that it does not rule out their being hard for efficient attackers.
 
-Generators of that local kind are one of the assumptions behind a 2020 research construction of program obfuscation, by Jain, Lin and Sahai. Whether the October result matters there depends on how much hardness the construction assumes, and I found no published analysis. I found none of these constructions in production use.
+Generators of that local kind are one of the assumptions behind a 2020 research construction of program obfuscation, by [Jain, Lin and Sahai](https://eprint.iacr.org/2020/1003). Whether the October result matters there depends on how much hardness the construction assumes, and I found no published analysis. I found none of these constructions in production use.
 
 The zero-knowledge failures that have actually occurred were implementation bugs: circuits that failed to constrain what they should, and flawed implementations of the step that turns an interactive proof into a single message.
 
@@ -117,7 +116,7 @@ Losses so far confirm where the risk sits. According to Binance's own report, th
 
 Chapter 1 asked for the newly feasible attack before discussing a change in risk. For a ledger, first ask which assumption each layer rests on and who could replace it in time; only then discuss the mathematics.
 
-*Next, Chapter 3: the threat that does reach these signatures. Post-quantum migration of payment systems, what it costs on a ledger, and what central banks' own tests found.*
+*If this was useful, subscribe: the series on AI, cryptography and financial stability continues.*
 
 ---
 
