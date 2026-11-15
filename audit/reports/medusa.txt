@@ -1,1 +1,4 @@
-Medusa 1.5.1 could not be run: "FuzzHarness was specified in the target contracts but was not found in the compilation artifacts" (crytic-compile export produced no artifacts for the Foundry 1.9 project, two configurations tried, 15 Nov 2026). No Medusa result exists. Echidna 2.4.0 ran the same harness successfully; see echidna.txt.
+Medusa 1.5.1 could not be run.
+- 15 Nov 2026, attempts 1-2: "FuzzHarness was specified in the target contracts but was not found in the compilation artifacts" (crytic-compile with --foundry-compile-all, with and without --foundry-out-directory).
+- 15 Nov 2026, attempt 3 (crytic-compile Foundry settings: --compile-force-framework foundry --foundry-ignore-compile on a fresh forge build --build-info): same error. Run directly, crytic-compile does export FuzzHarness (122 contracts), so the failure is in Medusa's artefact loading, not in the build. Not investigated further, as agreed.
+No Medusa result exists. Echidna 2.4.0 ran the same harness successfully: see echidna.txt.

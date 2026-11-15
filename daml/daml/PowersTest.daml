@@ -1,0 +1,73 @@
+module PowersTest where
+
+import Daml.Script
+import Powers
+
+data World = World with bank : Party; csd : Party; alice : Party; bob : Party; eve : Party
+
+-- Holdings need both signatures, so tests create them with both parties' authority,
+-- as an issuer would on onboarding (in production: an issuance offer the owner accepts).
+issue : Party -> Party -> Decimal -> Script (ContractId Holding)
+issue i o amt = submit (actAs i <> actAs o) do createCmd Holding with issuer = i; owner = o; amount = amt; frozen = False
+
+world : Script World
+world = do
+  [bank, csd, alice, bob, eve] <- mapA (allocatePartyByHint . PartyIdHint) ["Bank", "CSD", "Alice", "Bob", "Eve"]
+  pure World with ..
+
+test_dvp_settles_both_legs : Script ()
+test_dvp_settles_both_legs = script do
+  World{..} <- world
+  bond <- issue csd alice 10.0
+  cash <- issue bank bob 1000.0
+  prop <- submit alice do createCmd DvP with seller = alice; buyer = bob; asset = bond; cashIssuer = bank; cashAmount = 1000.0
+  (newBond, newCash) <- submit (actAs bob <> readAs alice) do exerciseCmd prop Settle with cash
+  Some b <- queryContractId bob newBond
+  Some c <- queryContractId alice newCash
+  assert (b.owner == bob && c.owner == alice)
+
+test_frozen_cash_blocks_whole_settlement : Script ()
+test_frozen_cash_blocks_whole_settlement = script do
+  World{..} <- world
+  bond <- issue csd alice 10.0
+  cash <- issue bank bob 1000.0
+  frozenCash <- submit bank do exerciseCmd cash SetFrozen with flag = True
+  prop <- submit alice do createCmd DvP with seller = alice; buyer = bob; asset = bond; cashIssuer = bank; cashAmount = 1000.0
+  submitMustFail (actAs bob <> readAs alice) do exerciseCmd prop Settle with cash = frozenCash
+  -- the asset leg did not move
+  Some b <- queryContractId alice bond
+  assert (b.owner == alice)
+
+test_only_issuer_freezes_and_claws_back : Script ()
+test_only_issuer_freezes_and_claws_back = script do
+  World{..} <- world
+  h <- issue bank alice 100.0
+  submitMustFail alice do exerciseCmd h SetFrozen with flag = True   -- owner cannot freeze
+  submitMustFail eve   do exerciseCmd h ClawBack                      -- outsider cannot claw back
+  submit bank do exerciseCmd h ClawBack                               -- issuer can, alone
+  gone <- queryContractId alice h
+  assert (gone == None)
+
+test_neither_party_archives_alone : Script ()
+test_neither_party_archives_alone = script do
+  World{..} <- world
+  h <- issue bank alice 100.0
+  submitMustFail alice do archiveCmd h
+  submitMustFail bank  do archiveCmd h
+  submit (actAs bank <> actAs alice) do archiveCmd h
+
+test_issuer_cannot_move_funds : Script ()
+test_issuer_cannot_move_funds = script do
+  World{..} <- world
+  h <- issue bank alice 100.0
+  submitMustFail bank do exerciseCmd h Transfer with newOwner = eve   -- only the owner transfers
+
+test_receiver_must_accept : Script ()
+test_receiver_must_accept = script do
+  World{..} <- world
+  h <- issue bank alice 100.0
+  offer <- submit alice do exerciseCmd h Transfer with newOwner = bob
+  submitMustFail eve do exerciseCmd offer Accept
+  new <- submit bob do exerciseCmd offer Accept
+  Some n <- queryContractId bob new
+  assert (n.owner == bob && n.issuer == bank)

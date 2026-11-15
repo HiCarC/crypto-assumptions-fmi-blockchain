@@ -1,0 +1,99 @@
+-- SPDX-License-Identifier: Apache-2.0
+-- Minimal Daml model of WHO HOLDS WHICH POWER over a tokenised deposit and a DvP.
+-- Reference code for research. Not for production use.
+--
+-- The point of contrast with the EVM model (contracts/src): in Daml every power is written
+-- into the contract that the affected parties signed. There is no separate role registry and
+-- no "admin" outside the contract. A party cannot be bound by a contract it did not sign,
+-- and a contract cannot be archived without the authority its signatories gave.
+module Powers where
+
+-- | A deposit held by `owner` at `issuer`.
+--   Signatories: issuer AND owner. Neither can create, change or destroy it alone:
+--   the built-in Archive choice needs both.
+template Holding
+  with
+    issuer : Party
+    owner  : Party
+    amount : Decimal
+    frozen : Bool
+  where
+    signatory issuer, owner
+    ensure amount > 0.0
+
+    -- OWNER's power: move the holding. Blocked while frozen.
+    -- The new holding is signed by issuer and new owner: the issuer's authority comes from
+    -- its signature on this contract; the new owner's comes from accepting the offer.
+    choice Transfer : ContractId TransferOffer
+      with newOwner : Party
+      controller owner
+      do
+        assertMsg "holding is frozen" (not frozen)
+        create TransferOffer with issuer; from = owner; to = newOwner; amount
+
+    -- ISSUER's power: freeze and unfreeze. The owner consented to this power by signing.
+    choice SetFrozen : ContractId Holding
+      with flag : Bool
+      controller issuer
+      do create this with frozen = flag
+
+    -- ISSUER's power: claw back (redeem) without the owner's further consent.
+    -- Present only because the owner signed a contract that contains it.
+    nonconsuming choice ClawBack : ()
+      controller issuer
+      do archive self
+
+    -- Split, so that part of a holding can be delivered. Owner only, not while frozen.
+    choice Split : (ContractId Holding, ContractId Holding)
+      with part : Decimal
+      controller owner
+      do
+        assertMsg "holding is frozen" (not frozen)
+        a <- create this with amount = part
+        b <- create this with amount = amount - part
+        pure (a, b)
+
+-- | Pending transfer: the receiver must accept, because the new holding binds them.
+template TransferOffer
+  with
+    issuer : Party
+    from   : Party
+    to     : Party
+    amount : Decimal
+  where
+    signatory issuer, from
+    observer to
+
+    choice Accept : ContractId Holding
+      controller to
+      do create Holding with issuer; owner = to; amount; frozen = False
+
+-- | Delivery versus payment. The seller proposes and pre-authorises delivery of `asset`;
+--   the buyer accepts by committing `cash`. Both legs happen in one transaction or not at all.
+template DvP
+  with
+    seller      : Party
+    buyer       : Party
+    asset       : ContractId Holding
+    cashIssuer  : Party
+    cashAmount  : Decimal
+  where
+    signatory seller
+    observer buyer
+
+    choice Settle : (ContractId Holding, ContractId Holding)
+      with cash : ContractId Holding
+      controller buyer
+      do
+        c <- fetch cash
+        assertMsg "wrong cash issuer" (c.issuer == cashIssuer)
+        assertMsg "wrong cash amount" (c.amount == cashAmount)
+        a <- fetch asset
+        -- Each leg moves under the authority of its current owner (seller as signatory of
+        -- this proposal, buyer as controller of this choice) and of each issuer, who signed
+        -- the holdings.
+        assetOffer <- exercise asset Transfer with newOwner = buyer
+        cashOffer  <- exercise cash  Transfer with newOwner = seller
+        newAsset <- exercise assetOffer Accept
+        newCash  <- exercise cashOffer Accept
+        pure (newAsset, newCash)
