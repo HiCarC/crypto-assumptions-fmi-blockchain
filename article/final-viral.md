@@ -24,7 +24,7 @@ That sounds abstract. It is not. Digital security is built on hardness. Banks, p
 
 In [Part 1](https://thekarlc.substack.com/p/ai-3sat-eth-refutation-banking-cryptography) I asked that question of banks. The answer was: nothing yet. Now I am asking it of blockchains, the technology central banks and major banks are exploring for settling money and securities.
 
-I did not want to guess, so I built a test bench on three platforms, an Ethereum-style (EVM) ledger, Stellar and Canton: a reference settlement system, mathematical proofs of its safety, and SAT experiments against SHA-256, one of the most widely used hash functions on ledgers. **The code, the tests and the results are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain)**, so anyone can check every number below.
+I did not want to guess, so I built a test bench on three platforms, an Ethereum-style (EVM) ledger, Stellar and Canton: a reference settlement system, mathematical proofs of its safety, and SAT experiments against SHA-256, one of the most widely used hash functions on ledgers. **The code, the tests and the results are public on [GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain)**, so anyone can check every number below. You can also [try the contracts in your browser](https://ledger-lab-gamma.vercel.app).
 
 A blockchain has four layers that rely on hard mathematics. I tested each one. Here is what happened.
 
@@ -116,7 +116,7 @@ For a ledger, the test is simple: first ask which assumption each layer rests on
 
 ---
 
-**Everything behind this article:** [code, tests and data on GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain) · [technical annex, PDF](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain/releases/download/chapter-2-v1.0/chapter-2-technical-annex.pdf) · [analytical edition of this article](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain/blob/main/article/final.md)
+**Everything behind this article:** [code, tests and data on GitHub](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain) · [technical annex, PDF](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain/releases/download/chapter-2-v1.0/chapter-2-technical-annex.pdf) · [analytical edition of this article](https://github.com/HiCarC/crypto-assumptions-fmi-blockchain/blob/main/article/final.md) · [try the contracts in your browser](https://ledger-lab-gamma.vercel.app)
 
 **Primary sources**
 

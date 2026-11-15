@@ -1,5 +1,7 @@
 # Ledger Lab
 
+**Live:** https://ledger-lab-gamma.vercel.app
+
 A single, self-contained HTML page for testing the rules and failure modes of this repository in a browser. Download `index.html` and open it: no install, no network needed.
 
 - **Real:** ECDSA P-256 signatures and SHA-256 hashes (the browser's WebCrypto), the hash-lab plain search, the signature-malleability twin and the weak-key seed search.
