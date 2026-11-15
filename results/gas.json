@@ -1,0 +1,52 @@
+{
+  "ecdsa-secp256k1": {
+    "keyBytes": 20,
+    "sigBytes": 65,
+    "transferCalldataBytes": 356,
+    "transferCalldataZeroBytes": 204,
+    "transferExecutionGas": 122018,
+    "verifyGas": 7955
+  },
+  "hybrid-ecdsa+mldsa44": {
+    "keyBytes": 1332,
+    "sigBytes": 2656,
+    "transferCalldataBytes": 2916,
+    "transferCalldataZeroBytes": 356,
+    "transferExecutionGas": 8278845,
+    "verifyGas": 8160630
+  },
+  "hybrid-ecdsa+p256": {
+    "keyBytes": 84,
+    "sigBytes": 288,
+    "transferCalldataBytes": 0,
+    "transferCalldataZeroBytes": 0,
+    "transferExecutionGas": 0,
+    "verifyGas": 26322
+  },
+  "mldsa44": {
+    "keyBytes": 1312,
+    "sigBytes": 2420,
+    "transferCalldataBytes": 2692,
+    "transferCalldataZeroBytes": 201,
+    "transferExecutionGas": 8192358,
+    "verifyGas": 8146057
+  },
+  "mldsa44ExpandedKeyBytes": 22400,
+  "mldsa44KeyRegistrationGas": 5263193,
+  "p256-precompile": {
+    "keyBytes": 64,
+    "sigBytes": 64,
+    "transferCalldataBytes": 0,
+    "transferCalldataZeroBytes": 0,
+    "transferExecutionGas": 0,
+    "verifyGas": 12712
+  },
+  "p256-solidity": {
+    "keyBytes": 64,
+    "sigBytes": 64,
+    "transferCalldataBytes": 0,
+    "transferCalldataZeroBytes": 0,
+    "transferExecutionGas": 0,
+    "verifyGas": 237278
+  }
+}

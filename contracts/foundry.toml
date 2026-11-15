@@ -1,0 +1,37 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.38"
+evm_version = "osaka"
+optimizer = true
+optimizer_runs = 10000
+ffi = false
+fs_permissions = [
+  { access = "read", path = "test/fixtures" },
+  { access = "read-write", path = "../results" },
+]
+remappings = [
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+  "forge-std/=lib/forge-std/src/",
+  "ETHDILITHIUM/=lib/ETHDILITHIUM/src/",
+  "sstore2/=lib/ETHDILITHIUM/lib/sstore2/contracts/",
+  "InterfaceVerifier/=lib/ETHDILITHIUM/lib/InterfaceVerifier/src/",
+]
+
+[fuzz]
+runs = 512
+seed = "0x2026"
+
+[invariant]
+runs = 128
+depth = 64
+fail_on_revert = false
+
+[profile.ci.fuzz]
+runs = 128
+
+[profile.ci.invariant]
+runs = 32
+depth = 32

@@ -1,0 +1,13 @@
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+tools/.venv-pq/
+__pycache__/
+*.pyc
+contracts/crytic-export/
+contracts/gambit_out/
+.certora_internal/
+contracts/.certora_internal/
+target/
+.DS_Store
+sat/work/
