@@ -14,3 +14,6 @@ sat/work/
 contracts/out-halmos/
 contracts/lcov.info
 .serena/
+soroban/target/
+soroban/test_snapshots/
+results/sat_run.log

@@ -1,0 +1,38 @@
+{
+ "ecdsa-secp256k1": {
+  "label": "ECDSA secp256k1 (today's default)",
+  "verifyGas": 7955,
+  "ratio": 1.0,
+  "transferGas": 146191
+ },
+ "p256-precompile": {
+  "label": "ECDSA P-256, native precompile",
+  "verifyGas": 12712,
+  "ratio": 1.5979886863607793,
+  "transferGas": null
+ },
+ "p256-solidity": {
+  "label": "ECDSA P-256, contract code only",
+  "verifyGas": 237278,
+  "ratio": 29.827529855436833,
+  "transferGas": null
+ },
+ "hybrid-ecdsa+p256": {
+  "label": "Hybrid: secp256k1 + P-256",
+  "verifyGas": 26322,
+  "ratio": 3.3088623507228156,
+  "transferGas": null
+ },
+ "mldsa44": {
+  "label": "ML-DSA-44 (post-quantum), contract code",
+  "verifyGas": 8146057,
+  "ratio": 1024.0172218730359,
+  "transferGas": 8253943
+ },
+ "hybrid-ecdsa+mldsa44": {
+  "label": "Hybrid: secp256k1 + ML-DSA-44",
+  "verifyGas": 8160630,
+  "ratio": 1025.8491514770585,
+  "transferGas": 8342154
+ }
+}

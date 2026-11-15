@@ -1,0 +1,59 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    env:
+      FOUNDRY_PROFILE: ci
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.9.0
+      - name: Unit, fuzz, invariant tests and demonstrations
+        working-directory: contracts
+        run: forge test
+      - name: Coverage (core contracts)
+        working-directory: contracts
+        run: forge coverage --ir-minimum --no-match-coverage "(test|script|lib|src/demos)" --report summary
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Static analysis and symbolic checks
+        working-directory: contracts
+        run: |
+          pip install slither-analyzer==0.11.6 halmos==0.3.3
+          slither . --filter-paths "lib/|test/|src/demos/" --exclude-informational --exclude-optimization --fail-high
+          FOUNDRY_DYNAMIC_TEST_LINKING=false halmos --contract HalmosChecks
+      - name: Echidna (short budget)
+        uses: crytic/echidna-action@v2
+        with:
+          files: contracts
+          contract: FuzzHarness
+          config: audit/echidna.yaml
+          test-limit: 5000
+          crytic-args: --foundry-compile-all
+  soroban:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32v1-none
+      - run: cargo test
+        working-directory: soroban
+  analysis:
+    runs-on: ubuntu-24.04
+    container: python:3.12-slim   # the container check that could not be run locally (no Docker in WSL)
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install python-sat==1.9.dev22 pandas==3.1.1 matplotlib==3.11.2
+      - run: python sat/sha256_cnf.py
+      - run: cd cbom && python build.py
+      - run: python scripts/gas_table.py && python scripts/migration_timeline.py && python scripts/incidents_chart.py

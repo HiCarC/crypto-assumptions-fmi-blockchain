@@ -1,0 +1,18 @@
+# Failure-mode demonstrations
+
+Code: `contracts/src/demos/Vulnerable.sol` (deliberately vulnerable, written for this repository) and `contracts/test/Demos.t.sol`. Run with `cd contracts && forge test --match-path test/Demos.t.sol -vv`. Everything runs on Foundry's local test chain; no live network or third-party contract is touched.
+
+| # | Pattern (real-world case it mirrors) | What broke | Was mathematics involved? | Control that prevents it | Question that would have caught it |
+|---|---|---|---|---|---|
+| 1 | Signature replay | A signed payment order carried no nonce, chain or contract identifier, so one approval paid out ten times and on a second deployment | No | Bind every signed instruction to chain, contract and a single-use nonce (as `SettlementToken.transferWithAuthorization` does) | What makes each signed instruction unique, and where is that enforced? |
+| 2 | Signature malleability; `ecrecover` returning the zero address | The same order had two valid encodings and replay was tracked by signature bytes; separately, an unset signer matched the zero address returned for garbage input | A documented property of ECDSA, not a break | A maintained signature library; replay keyed on the message | Is signature checking done by an audited library, and what is the replay key? |
+| 3a | Compromised signing interface (Bybit, February 2025) | Signers saw a routine transfer and signed a call that replaced the wallet's code. Every signature was genuine | No | Independent display of what is signed; on-chain guard refusing delegate-calls to unapproved targets | Can signers see, on a device the web interface does not control, exactly what they authorise? |
+| 3b | Signing service with no policy on message type (Binance, October 2026) | An attacker inside the network asked the signing service to sign 32 bytes. They were an EIP-7702 authorisation, which made the hot wallet run attacker code. The key never left the service | No | Typed signing requests only; no raw-digest endpoint; allow-lists and limits; policy reviewed at every protocol upgrade | List every message type your signer will sign. Who updated that list after the last protocol upgrade? |
+| 4 | Bridge accepting unproven messages (Nomad and Wormhole, 2022) | An upgrade made the "no proof" value count as proven; in the second variant the caller supplied its own verifier | No | Negative tests after every upgrade; verifier identity fixed in code | Which test shows that a message with no valid attestation is rejected, and when was it last run? |
+| 5 | Weak key generation (Profanity pattern, 2022) | The key came from a seed space small enough to enumerate (16 bits here, deliberately tiny), so the public address alone revealed it | The curve was not attacked; the search space was small | Keys generated in certified hardware or audited libraries from proper entropy | Where was each signing key generated, by what software, from what entropy? |
+
+Notes on fidelity:
+
+- Demo 3b performs a real EIP-7702 delegation on the local chain: the test builds the authorisation digest as specified by the EIP, has the modelled signing service sign it, attaches it to a transaction and observes the account's code change to the delegation designator. The signing services themselves are small models, written to show the difference between "authenticate the caller" and "understand the request". They do not reproduce any real firm's systems, about which only what the firm has published is known.
+- Demo 3a uses a minimal multisig written for the purpose, not the wallet software involved in the real case.
+- Demo 5 reduces the seed space to 16 bits so the search takes seconds. It shows the mechanism, not the cost of the real attack.

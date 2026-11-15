@@ -1,4 +1,4 @@
-# Claims ledger (Phase 1 state)
+# Claims ledger (Phase 1 snapshot, superseded by CLAIMS.md at the repository root)
 
 Labels: **V** verified (primary read), **R** reported (secondary; primary to be read), **I** inferred, **U** unknown. All sources accessed 15 November 2026. This file becomes `CLAIMS.md` at the repository root once the article and annex exist; no R-labelled claim may be stated as plain fact in the article.
 

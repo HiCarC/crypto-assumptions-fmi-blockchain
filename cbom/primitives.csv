@@ -1,0 +1,10 @@
+primitive,type,classical_security,under_large_quantum_computer,public_key_bytes,signature_bytes,standard
+ECDSA secp256k1,signature,about 128,broken by Shor's algorithm,33,64,SEC 2
+ECDSA P-256,signature,about 128,broken by Shor's algorithm,33,64,FIPS 186-5
+Ed25519,signature,about 128,broken by Shor's algorithm,32,64,FIPS 186-5 / RFC 8032
+BLS12-381,signature / pairing,about 120,broken by Shor's algorithm,48,96,IETF draft
+ML-DSA-44,signature,NIST category 2,designed to resist,1312,2420,FIPS 204
+ML-DSA-65,signature,NIST category 3,designed to resist,1952,3309,FIPS 204
+SLH-DSA-SHA2-128s,signature,NIST category 1,designed to resist,32,7856,FIPS 205
+SHA-256,hash,256 preimage / 128 collision,generic search speed-up only (Grover),,,FIPS 180-4
+Keccak-256,hash,256 preimage / 128 collision,generic search speed-up only (Grover),,,Keccak (pre-FIPS 202 padding)

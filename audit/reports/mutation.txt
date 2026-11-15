@@ -1,0 +1,19 @@
+mutants generated: 282   compile errors (excluded): 193
+killed: 83   survived: 6   mutation score: 93.3% of 89
+SURVIVED src/KeyRegistry.sol line 72 DeleteExpressionMutation mutant 22
+SURVIVED src/KeyRegistry.sol line 96 IfStatementMutation mutant 26
+SURVIVED src/SettlementToken.sol line 63 DeleteExpressionMutation mutant 2
+SURVIVED src/SettlementToken.sol line 64 DeleteExpressionMutation mutant 3
+SURVIVED src/SettlementToken.sol line 117 AssignmentMutation mutant 24
+SURVIVED src/verifiers/ECDSAVerifier.sol line 11 IfStatementMutation mutant 2
+
+Triage of survivors (15 November 2026), by applying each mutant by hand:
+  KeyRegistry  rotationNonce++ deleted            REAL GAP  -> test_rotationNonceBlocksReplayAfterKeyReturns  -> now KILLED
+  KeyRegistry  `if (verifier == address(0))`->false EQUIVALENT: an unset verifier has status Unknown and is rejected by the next line
+  SettlementToken  __ERC20_init deleted          REAL GAP  -> test_metadataAndSigningDomain                  -> now KILLED
+  SettlementToken  __ERC20Pausable_init deleted  EQUIVALENT: the initialiser is empty in OpenZeppelin 5.7.0
+  SettlementToken  frozen[account] = true        REAL GAP  -> test_unfreezeRestoresTransfers                 -> now KILLED
+  ECDSAVerifier  length check -> false           REAL GAP  -> test_ecdsaVerifierRejectsOverlongKey           -> now KILLED
+After the fixes: 87 of 89 compilable mutants killed; the 2 survivors are equivalent mutants, so every non-equivalent mutant is killed.
+193 generated mutants did not compile (mostly type-invalid substitutions such as assigning 0 to a bool) and are excluded, as is standard.
+The full campaign was not rerun after the four tests were added; the four mutants were re-checked individually.

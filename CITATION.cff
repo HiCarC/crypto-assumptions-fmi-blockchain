@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Cryptographic assumptions and blockchain-based financial market infrastructure: reference contracts, tests and evidence"
+type: software
+authors:
+  - family-names: Cerqueda
+    given-names: Carles
+date-released: 2026-11-15
+license: Apache-2.0
+abstract: "Companion repository to Chapter 2 of a series on cryptography and financial stability. Reference settlement contracts with replaceable signature schemes, failure-mode demonstrations, a comparative cryptographic bill of materials and a reduced-round SHA-256 SAT experiment."

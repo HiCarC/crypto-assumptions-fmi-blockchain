@@ -127,6 +127,28 @@ contract SettlementTokenTest is Fixture {
         assertEq(cash.balanceOf(alice), 0);
     }
 
+    /// Added after mutation testing: a freeze must be reversible by the same role.
+    function test_unfreezeRestoresTransfers() public {
+        vm.startPrank(compliance);
+        cash.setFrozen(alice, true);
+        cash.setFrozen(alice, false);
+        vm.stopPrank();
+        assertFalse(cash.isFrozen(alice));
+        vm.prank(alice);
+        cash.transfer(bob, 1);
+        assertEq(cash.balanceOf(bob), 1);
+    }
+
+    /// Added after mutation testing: metadata is part of the EIP-712 domain participants sign.
+    function test_metadataAndSigningDomain() public view {
+        assertEq(cash.name(), "Tokenised Deposit EUR");
+        assertEq(cash.symbol(), "tdEUR");
+        (, string memory domainName,, uint256 chainId, address verifying,,) = cash.eip712Domain();
+        assertEq(domainName, "Tokenised Deposit EUR");
+        assertEq(chainId, block.chainid);
+        assertEq(verifying, address(cash));
+    }
+
     function test_onlyAllowListedPartiesCanHold() public {
         address outsider = makeAddr("outsider");
         vm.prank(alice);

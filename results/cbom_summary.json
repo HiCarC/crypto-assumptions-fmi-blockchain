@@ -1,0 +1,14 @@
+{
+ "platforms": 27,
+ "cells_all": {
+  "V": 13,
+  "R": 20,
+  "U": 75
+ },
+ "institutional_and_central_bank_platforms": 14,
+ "cells_institutional": {
+  "V": 4,
+  "R": 5,
+  "U": 47
+ }
+}

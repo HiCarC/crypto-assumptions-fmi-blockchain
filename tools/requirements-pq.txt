@@ -1,0 +1,25 @@
+annotated-types==0.8.0
+bitarray==3.12.3
+ckzg==2.1.8
+cytoolz==1.2.0
+eth-abi==6.0.0
+eth-account==0.14.0
+eth-hash==0.8.0
+eth-keyfile==0.10.0
+eth-keys==0.8.0
+eth-rlp==3.0.0
+eth-typing==6.0.0
+eth-utils==6.0.0
+hexbytes==2.0.0
+numpy==2.5.4
+parsimonious==0.10.0
+polyntt @ git+https://github.com/ZKNoxHQ/NTT.git@3ac5f5dc0b204e91df4f68e347ade2bd4a82bb37#subdirectory=assets/pythonref/
+py-ecc==8.0.0
+pycryptodome==3.23.0
+pydantic==2.14.3
+pydantic-core==2.50.4
+regex==2026.11.9
+rlp==5.0.0
+toolz==1.2.0
+typing-extensions==4.16.0
+typing-inspection==0.4.5

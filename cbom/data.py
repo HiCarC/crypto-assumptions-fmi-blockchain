@@ -1,0 +1,120 @@
+"""Cryptographic bill of materials: source data.
+
+Curated on 15 November 2026 from research/primary/ledgers.md (which records URL, date and
+label for every statement). Evidence labels per cell:
+  V = official source read in full        R = reported (official excerpt or secondary only)
+  U = not found in the public material retrieved (this is NOT a claim that it is unpublished)
+A value of "" with label U means nothing was found. Nothing here is inferred from how a
+platform "probably" works.
+"""
+
+# (value, label)
+U = ("", "U")
+
+PLATFORMS = [
+    # name, category, status, ledger technology, signatures, hash, consensus / trust assumption,
+    # freeze holder, upgrade holder, signer-policy holder, post-quantum roadmap
+    dict(name="Ethereum L1", category="public", status=("live", "R"),
+         ledger=("Ethereum (account model, EVM)", "R"),
+         signatures=("ECDSA secp256k1 (accounts); BLS12-381 (consensus)", "R"), hash=("Keccak-256; SHA-256", "R"),
+         consensus=("proof of stake", "R"),
+         freeze=("none at protocol level found", "U"), upgrade=("hard fork adopted by client teams and node operators", "R"),
+         policy=("each key holder", "R"),
+         pq=("yes: hash-based consensus signatures in development; ML-DSA and Falcon precompiles proposed (EIP-8051, EIP-8052); no committed date", "R")),
+    dict(name="Base", category="public L2", status=("live", "R"), ledger=("optimistic rollup on Ethereum (OP Stack)", "R"),
+         signatures=("as Ethereum accounts", "R"), hash=U, consensus=U, freeze=U,
+         upgrade=("Coordinator multisig plus Security Council; no delay", "R"), policy=U, pq=U),
+    dict(name="Arbitrum One", category="public L2", status=("live", "R"), ledger=("optimistic rollup on Ethereum", "R"),
+         signatures=("as Ethereum accounts", "R"), hash=U, consensus=U, freeze=U,
+         upgrade=("DAO path with about 17-day delay; Security Council 9 of 12 with no delay", "R"), policy=U, pq=U),
+    dict(name="Linea", category="public L2", status=("live", "R"), ledger=("zero-knowledge rollup on Ethereum", "R"),
+         signatures=("as Ethereum accounts", "R"), hash=U, consensus=U, freeze=U,
+         upgrade=("Linea Security Council; no delay", "R"), policy=U, pq=U),
+    dict(name="ZKsync Era", category="public L2", status=("live", "R"), ledger=("zero-knowledge rollup on Ethereum", "R"),
+         signatures=("as Ethereum accounts", "R"), hash=U, consensus=U, freeze=U,
+         upgrade=("standard path with a delay of several days; emergency board with no delay", "R"), policy=U, pq=U),
+    dict(name="ZKsync Prividium", category="permissioned L2 framework", status=("product; deployments not verified", "U"),
+         ledger=("permissioned validium settling to Ethereum; data held by the operator", "R"),
+         signatures=U, hash=U, consensus=("single operator runs sequencer and prover", "V"),
+         freeze=U, upgrade=U, policy=("chain operator and its permissioning administrators", "V"), pq=U),
+    dict(name="Bitcoin", category="public", status=("live", "R"), ledger=("Bitcoin (UTXO)", "R"),
+         signatures=("ECDSA and Schnorr on secp256k1", "R"), hash=("SHA-256; RIPEMD-160", "R"), consensus=("proof of work", "R"),
+         freeze=("none found", "U"), upgrade=("soft or hard fork adopted by node operators and miners", "R"), policy=("each key holder", "R"),
+         pq=("proposal only: BIP-360 (draft) hides public keys until spend; contains no post-quantum signature", "V")),
+    dict(name="Stellar", category="public", status=("live", "R"), ledger=("Stellar; Soroban smart contracts", "R"),
+         signatures=("Ed25519", "R"), hash=("SHA-256", "R"), consensus=("Stellar Consensus Protocol (federated agreement among validators)", "R"),
+         freeze=("the asset's issuer, if it enabled revocation and clawback flags", "V"),
+         upgrade=("validator vote", "R"), policy=("issuer for its asset; account holder for its signers", "V"),
+         pq=("yes: ML-DSA verification in contracts planned for 2026, quantum-safe account signers for 2027", "V")),
+    dict(name="Hedera", category="public permissioned-governance", status=("live", "R"), ledger=("Hedera hashgraph", "R"),
+         signatures=U, hash=U, consensus=("governing council", "R"),
+         freeze=("holder of the token's freeze key, if one was set", "R"), upgrade=("Governing Council", "R"),
+         policy=("key holders per token", "R"), pq=U),
+    dict(name="XRP Ledger", category="public", status=("live", "R"), ledger=("XRP Ledger", "R"), signatures=U, hash=U, consensus=U,
+         freeze=("the issuer (freeze; clawback only if enabled before issuance)", "R"), upgrade=("amendment voting by validators", "U"),
+         policy=U, pq=U),
+    dict(name="Solana (Token-2022)", category="public", status=("live", "R"), ledger=("Solana", "R"), signatures=U, hash=U, consensus=U,
+         freeze=("the mint's freeze authority; a permanent delegate can move or burn", "R"), upgrade=U, policy=U, pq=U),
+    dict(name="USDC (Circle)", category="stablecoin", status=("live", "R"), ledger=("multiple public chains", "R"),
+         signatures=("as host chain", "R"), hash=U, consensus=U,
+         freeze=("Circle (block-listing and freezing, per its terms)", "V"), upgrade=("not stated in the terms", "U"),
+         policy=("Circle", "V"), pq=U),
+    dict(name="USDT (Tether)", category="stablecoin", status=("live", "R"), ledger=("multiple public chains", "R"),
+         signatures=("as host chain", "R"), hash=U, consensus=U,
+         freeze=("Tether (freeze and blacklist, per its terms)", "V"), upgrade=U, policy=("Tether", "V"), pq=U),
+    dict(name="Canton Network / Global Synchronizer", category="institutional", status=("live", "R"), ledger=("Canton (Daml)", "V"),
+         signatures=("Ed25519 (default); ECDSA P-256 (cloud KMS default), P-384, secp256k1", "V"), hash=("SHA-256", "V"),
+         consensus=("BFT among Super Validators; assumes two thirds honest", "V"),
+         freeze=("not defined at network level; set per application", "U"),
+         upgrade=("Super Validator governance vote; who controls the software itself is not stated", "V"),
+         policy=("Super Validator vote for network settings; detail not stated", "V"),
+         pq=("none in the published cryptographic-schemes reference", "V")),
+    dict(name="Kinexys by J.P. Morgan (JPMD)", category="institutional", status=("live on Base and Ethereum; Canton announced", "R"),
+         ledger=("permissioned deposit token on public chains", "R"), signatures=("as host chain", "R"), hash=U, consensus=U,
+         freeze=("the bank as issuer; mechanism not found", "U"), upgrade=U, policy=("J.P. Morgan (permissioned access)", "R"), pq=U),
+    dict(name="Citi Token Services", category="institutional", status=("live in seven markets", "R"), ledger=U, signatures=U, hash=U,
+         consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Swift shared ledger", category="institutional", status=("initial use; 17 banks piloting", "R"),
+         ledger=("permissioned EVM (Besu) per secondary sources only", "R"), signatures=U, hash=U, consensus=U,
+         freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="HSBC Orion / Tokenised Deposit Service", category="institutional", status=("live in several markets", "R"),
+         ledger=("HSBC private ledger", "R"), signatures=U, hash=U, consensus=U,
+         freeze=("HSBC (private chain managed by the bank)", "R"), upgrade=U, policy=("HSBC", "R"), pq=U),
+    dict(name="Clearstream D7 DLT", category="institutional", status=("live since November 2025", "R"), ledger=U, signatures=U, hash=U,
+         consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Partior", category="institutional", status=("live", "R"), ledger=("private permissioned ledger", "R"), signatures=U, hash=U,
+         consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Fnality (Sterling)", category="institutional", status=("live, controlled phase", "R"), ledger=U, signatures=U, hash=U,
+         consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Broadridge DLR", category="institutional", status=("live", "R"), ledger=("Canton", "R"),
+         signatures=("as Canton", "R"), hash=("as Canton", "R"), consensus=("as Canton", "R"), freeze=U,
+         upgrade=("as Canton", "R"), policy=U, pq=U),
+    dict(name="DTCC tokenisation service", category="institutional", status=("live", "R"), ledger=("Canton and a private Besu network", "R"),
+         signatures=U, hash=U, consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Eurosystem Pontes", category="central bank", status=("live since 21 September 2026", "V"),
+         ledger=("links market DLT platforms to TARGET services; no technical detail in the release", "V"),
+         signatures=U, hash=U, consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+    dict(name="Digital euro", category="central bank", status=("preparation", "R"), ledger=U, signatures=U, hash=U, consensus=U,
+         freeze=U, upgrade=U, policy=U, pq=("cryptographic agility stated as a design aim; no algorithm named", "R")),
+    dict(name="BIS Project Agorá", category="central bank", status=("prototype; real-value testing", "R"),
+         ledger=("not named on the report page", "V"), signatures=U, hash=U, consensus=U, freeze=U, upgrade=U, policy=U,
+         pq=("none on the report page", "V")),
+    dict(name="mBridge", category="central bank", status=("operating under partner central banks", "R"), ledger=U, signatures=U, hash=U,
+         consensus=U, freeze=U, upgrade=U, policy=U, pq=U),
+]
+
+# Primitive reference data. Classical levels are the conventional estimates; "quantum" states
+# the effect of a cryptographically relevant quantum computer. Sizes for ML-DSA-44 were also
+# observed in this repository's fixtures (public key 1312 bytes, signature 2420 bytes).
+PRIMITIVES = [
+    # name, type, classical security (bits), under a large quantum computer, public key bytes, signature bytes, standard
+    ("ECDSA secp256k1", "signature", "about 128", "broken by Shor's algorithm", 33, 64, "SEC 2"),
+    ("ECDSA P-256", "signature", "about 128", "broken by Shor's algorithm", 33, 64, "FIPS 186-5"),
+    ("Ed25519", "signature", "about 128", "broken by Shor's algorithm", 32, 64, "FIPS 186-5 / RFC 8032"),
+    ("BLS12-381", "signature / pairing", "about 120", "broken by Shor's algorithm", 48, 96, "IETF draft"),
+    ("ML-DSA-44", "signature", "NIST category 2", "designed to resist", 1312, 2420, "FIPS 204"),
+    ("ML-DSA-65", "signature", "NIST category 3", "designed to resist", 1952, 3309, "FIPS 204"),
+    ("SLH-DSA-SHA2-128s", "signature", "NIST category 1", "designed to resist", 32, 7856, "FIPS 205"),
+    ("SHA-256", "hash", "256 preimage / 128 collision", "generic search speed-up only (Grover)", "", "", "FIPS 180-4"),
+    ("Keccak-256", "hash", "256 preimage / 128 collision", "generic search speed-up only (Grover)", "", "", "Keccak (pre-FIPS 202 padding)"),
+]

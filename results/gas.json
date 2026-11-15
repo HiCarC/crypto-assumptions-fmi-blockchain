@@ -4,16 +4,16 @@
     "sigBytes": 65,
     "transferCalldataBytes": 356,
     "transferCalldataZeroBytes": 204,
-    "transferExecutionGas": 122018,
-    "verifyGas": 7955
+    "transferExecutionGas": 121958,
+    "verifyGas": 7895
   },
   "hybrid-ecdsa+mldsa44": {
     "keyBytes": 1332,
     "sigBytes": 2656,
     "transferCalldataBytes": 2916,
     "transferCalldataZeroBytes": 356,
-    "transferExecutionGas": 8278845,
-    "verifyGas": 8160630
+    "transferExecutionGas": 8278785,
+    "verifyGas": 8160570
   },
   "hybrid-ecdsa+p256": {
     "keyBytes": 84,
@@ -21,7 +21,7 @@
     "transferCalldataBytes": 0,
     "transferCalldataZeroBytes": 0,
     "transferExecutionGas": 0,
-    "verifyGas": 26322
+    "verifyGas": 26262
   },
   "mldsa44": {
     "keyBytes": 1312,

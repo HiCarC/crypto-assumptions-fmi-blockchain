@@ -44,10 +44,11 @@ Recorded on 15 November 2026 by running each tool's version command. Nothing her
 
 | Tool | Status | Plan |
 |---|---|---|
-| Gambit (mutation testing) | not found | Install in Phase 2, or use the Trail of Bits `mutation-testing` skill tooling (mewt/muton); record which |
-| Kontrol | not found | Not needed if Halmos and Certora cover the three critical invariants |
+| Gambit (mutation testing) | installed 15 Nov 2026 with `cargo install --git https://github.com/Certora/gambit` | Used for the mutation campaign |
+| Kontrol | not installed | Skipped by the author's decision; Halmos and Certora cover the critical properties |
 | just | not found | Use `make` |
-| Docker inside WSL | only the Windows Docker Desktop binary is on the path; not tested | A Dockerfile/devcontainer will be written, but whether it was built and run here will be stated explicitly |
+| Docker inside WSL | `docker` not found in the WSL distro | No local container build. CI runs the analysis job in a `python:3.12-slim` container instead (untested until first push) |
+| Medusa | installed but could not compile the project | Echidna used instead; see audit/reports/medusa.txt |
 
 ## MCP servers (as reported by `claude mcp list`)
 
@@ -71,3 +72,14 @@ Which MCP servers and skills were actually used, and for what. Updated as the wo
 | Date | Tool / skill | Used for |
 |---|---|---|
 | 2026-11-15 | Web search and fetch | Phase 1 research |
+| 2026-11-15 | 3 general-purpose sub-agents (reading only) | Primary-source verification: research/primary/ |
+| 2026-11-15 | OpenZeppelin Stellar MCP (Contracts Wizard) | Generated soroban/token |
+| 2026-11-15 | OpenZeppelin Contracts 5.7.0 (git submodule) | AccessManager, UUPS, EIP-712, ERC-7913 P-256 verifier |
+| 2026-11-15 | Foundry, Slither, Aderyn, Semgrep (Decurity rules), Echidna, Halmos, Certora, Gambit | Component C; results in audit/reports/ |
+| 2026-11-15 | ZKNoxHQ/ETHDILITHIUM @ f9f4fe1 (submodule) + its Python reference signer in tools/.venv-pq | ML-DSA-44 verification and test fixtures |
+| 2026-11-15 | Kissat, CaDiCaL, CryptoMiniSat, python-sat | Component E |
+| 2026-11-15 | Not used: context7, Slither MCP, Trail of Bits skills invoked as skills | Library APIs were read directly from the pinned sources; Trail of Bits checklists were applied manually in the audit report |
+
+## Python environment for the ML-DSA signer
+
+`tools/.venv-pq` (not committed) is created with `make pq-venv` from `tools/requirements-pq.txt`.

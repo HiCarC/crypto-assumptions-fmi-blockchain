@@ -1,0 +1,13 @@
+incident,date,loss_usd_m,class,root_cause,evidence,source,note
+Binance,2026-10-29,6340,c,"Unauthorised use of an internal wallet signing service, which signed EIP-7702 authorisations; no key was extracted",V,binance.com/en/blog/community/3229153443759566763 (3 Nov 2026),"Binance's own figure; other firms report 6.36-6.43bn; about 2.85bn frozen or intercepted"
+Bybit,2025-02-21,1500,c,"Compromised developer machine at the wallet provider altered what signers were shown; they signed a disguised transaction",V amount / R cause,"FBI PSA I-022625-PSA (amount); Safe statement and forensic findings via BleepingComputer (cause)",
+Ronin,2022-03-23,625,c,"Five of nine validator keys obtained after spear-phishing an employee",R,"secondary reports; operator's post-mortem no longer retrievable",
+Poly Network,2021-08-10,611,e,"Cross-chain contract permission flaw or keeper-key compromise (accounts differ)",R,Dedaub analysis; operator account not verified,Funds largely returned
+Bitget,2026-09-24,387,u,"No technical root cause published",V amount,chainalysis.com/blog/387m-bitget-theft-2026/,
+Wormhole,2022-02-02,325,e,"Signature-verification step could be bypassed, allowing unbacked minting",R,secondary reports; incident report not retrievable,
+Kelp DAO,2026-04-18,292,e,"Bridge message verification relied on a single verifier and compromised data sources (disputed between the parties)",R,"The Block, CoinDesk",
+Drift,2026-04-01,285,f,"Six-month social-engineering campaign obtained pre-signed approvals from council members",R,Nexus Mutual incident report,
+Nomad,2022-08-01,190,e,"Upgrade left the bridge treating a zero root as proven, so unproven messages were accepted",R,secondary reports; root-cause post not retrievable,
+Wintermute,2022-09-20,160,b,"Key most likely produced by a vanity-address tool with a small seed space (firm's own assessment), plus an internal error",V,"theblock.co/post/171559 (CEO statement)",
+Truebit,2026-01-08,26,d,"Smart-contract logic flaw",R,news.dextools.io 2026 tracker,
+THORChain,2026-05-15,10,b,"Threshold-signature library never verified a Paillier modulus, letting a malicious node reconstruct a vault key",V,blog.thorchain.org/thorchain-exploit-report-2 (3 Jul 2026),

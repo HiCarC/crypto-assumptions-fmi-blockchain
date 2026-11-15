@@ -1,0 +1,2542 @@
+{
+ "bomFormat": "CycloneDX",
+ "specVersion": "1.6",
+ "version": 1,
+ "metadata": {
+  "timestamp": "2026-11-15T00:00:00Z",
+  "component": {
+   "type": "application",
+   "name": "crypto-assumptions-fmi-blockchain comparative CBOM"
+  },
+  "properties": [
+   {
+    "name": "fmi:evidenceLabels",
+    "value": "V=official source read; R=reported; U=not found in public material retrieved"
+   }
+  ]
+ },
+ "components": [
+  {
+   "type": "platform",
+   "bom-ref": "platform:Ethereum L1",
+   "name": "Ethereum L1",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Ethereum (account model, EVM)"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "ECDSA secp256k1 (accounts); BLS12-381 (consensus)"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "Keccak-256; SHA-256"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "proof of stake"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "none at protocol level found"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "hard fork adopted by client teams and node operators"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "each key holder"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "yes: hash-based consensus signatures in development; ML-DSA and Falcon precompiles proposed (EIP-8051, EIP-8052); no committed date"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Base",
+   "name": "Base",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "optimistic rollup on Ethereum (OP Stack)"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as Ethereum accounts"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "Coordinator multisig plus Security Council; no delay"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public L2"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Arbitrum One",
+   "name": "Arbitrum One",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "optimistic rollup on Ethereum"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as Ethereum accounts"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "DAO path with about 17-day delay; Security Council 9 of 12 with no delay"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public L2"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Linea",
+   "name": "Linea",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "zero-knowledge rollup on Ethereum"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as Ethereum accounts"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "Linea Security Council; no delay"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public L2"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:ZKsync Era",
+   "name": "ZKsync Era",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "zero-knowledge rollup on Ethereum"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as Ethereum accounts"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "standard path with a delay of several days; emergency board with no delay"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public L2"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:ZKsync Prividium",
+   "name": "ZKsync Prividium",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "product; deployments not verified"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "permissioned validium settling to Ethereum; data held by the operator"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "single operator runs sequencer and prover"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "chain operator and its permissioning administrators"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "permissioned L2 framework"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Bitcoin",
+   "name": "Bitcoin",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Bitcoin (UTXO)"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "ECDSA and Schnorr on secp256k1"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "SHA-256; RIPEMD-160"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "proof of work"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "none found"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "soft or hard fork adopted by node operators and miners"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "each key holder"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "proposal only: BIP-360 (draft) hides public keys until spend; contains no post-quantum signature"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Stellar",
+   "name": "Stellar",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Stellar; Soroban smart contracts"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "Ed25519"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "SHA-256"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "Stellar Consensus Protocol (federated agreement among validators)"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "the asset's issuer, if it enabled revocation and clawback flags"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "validator vote"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "issuer for its asset; account holder for its signers"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "yes: ML-DSA verification in contracts planned for 2026, quantum-safe account signers for 2027"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Hedera",
+   "name": "Hedera",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Hedera hashgraph"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "governing council"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "holder of the token's freeze key, if one was set"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "Governing Council"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "key holders per token"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public permissioned-governance"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:XRP Ledger",
+   "name": "XRP Ledger",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "XRP Ledger"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "the issuer (freeze; clawback only if enabled before issuance)"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "amendment voting by validators"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Solana (Token-2022)",
+   "name": "Solana (Token-2022)",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Solana"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "the mint's freeze authority; a permanent delegate can move or burn"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "public"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:USDC (Circle)",
+   "name": "USDC (Circle)",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "multiple public chains"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as host chain"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "Circle (block-listing and freezing, per its terms)"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not stated in the terms"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "Circle"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "stablecoin"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:USDT (Tether)",
+   "name": "USDT (Tether)",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "multiple public chains"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as host chain"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "Tether (freeze and blacklist, per its terms)"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "Tether"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "stablecoin"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Canton Network / Global Synchronizer",
+   "name": "Canton Network / Global Synchronizer",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Canton (Daml)"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "Ed25519 (default); ECDSA P-256 (cloud KMS default), P-384, secp256k1"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "SHA-256"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "BFT among Super Validators; assumes two thirds honest"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not defined at network level; set per application"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "Super Validator governance vote; who controls the software itself is not stated"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "Super Validator vote for network settings; detail not stated"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "none in the published cryptographic-schemes reference"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Kinexys by J.P. Morgan (JPMD)",
+   "name": "Kinexys by J.P. Morgan (JPMD)",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live on Base and Ethereum; Canton announced"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "permissioned deposit token on public chains"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as host chain"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "the bank as issuer; mechanism not found"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "J.P. Morgan (permissioned access)"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Citi Token Services",
+   "name": "Citi Token Services",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live in seven markets"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Swift shared ledger",
+   "name": "Swift shared ledger",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "initial use; 17 banks piloting"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "permissioned EVM (Besu) per secondary sources only"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:HSBC Orion / Tokenised Deposit Service",
+   "name": "HSBC Orion / Tokenised Deposit Service",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live in several markets"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "HSBC private ledger"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "HSBC (private chain managed by the bank)"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "HSBC"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Clearstream D7 DLT",
+   "name": "Clearstream D7 DLT",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live since November 2025"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Partior",
+   "name": "Partior",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "private permissioned ledger"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Fnality (Sterling)",
+   "name": "Fnality (Sterling)",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live, controlled phase"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Broadridge DLR",
+   "name": "Broadridge DLR",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Canton"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "as Canton"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "as Canton"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "as Canton"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "as Canton"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:DTCC tokenisation service",
+   "name": "DTCC tokenisation service",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "Canton and a private Besu network"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "institutional"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Eurosystem Pontes",
+   "name": "Eurosystem Pontes",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "live since 21 September 2026"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "links market DLT platforms to TARGET services; no technical detail in the release"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "central bank"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:Digital euro",
+   "name": "Digital euro",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "preparation"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "cryptographic agility stated as a design aim; no algorithm named"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:category",
+     "value": "central bank"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:BIS Project Agorá",
+   "name": "BIS Project Agorá",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "prototype; real-value testing"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not named on the report page"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "none on the report page"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "V"
+    },
+    {
+     "name": "fmi:category",
+     "value": "central bank"
+    }
+   ]
+  },
+  {
+   "type": "platform",
+   "bom-ref": "platform:mBridge",
+   "name": "mBridge",
+   "properties": [
+    {
+     "name": "fmi:status",
+     "value": "operating under partner central banks"
+    },
+    {
+     "name": "fmi:ledger",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:signatures",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:hash",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:consensus",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:freeze",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:upgrade",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:policy",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:pq",
+     "value": "not found in public material retrieved"
+    },
+    {
+     "name": "fmi:status:evidence",
+     "value": "R"
+    },
+    {
+     "name": "fmi:ledger:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:signatures:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:hash:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:consensus:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:freeze:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:upgrade:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:policy:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:pq:evidence",
+     "value": "U"
+    },
+    {
+     "name": "fmi:category",
+     "value": "central bank"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:ECDSA secp256k1",
+   "name": "ECDSA secp256k1",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "about 128"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "broken by Shor's algorithm"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "SEC 2"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "33"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "64"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:ECDSA P-256",
+   "name": "ECDSA P-256",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "about 128"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "broken by Shor's algorithm"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 186-5"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "33"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "64"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:Ed25519",
+   "name": "Ed25519",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "about 128"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "broken by Shor's algorithm"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 186-5 / RFC 8032"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "32"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "64"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:BLS12-381",
+   "name": "BLS12-381",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "about 120"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "broken by Shor's algorithm"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "IETF draft"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "48"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "96"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:ML-DSA-44",
+   "name": "ML-DSA-44",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "NIST category 2"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "designed to resist"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 204"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "1312"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "2420"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:ML-DSA-65",
+   "name": "ML-DSA-65",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "NIST category 3"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "designed to resist"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 204"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "1952"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "3309"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:SLH-DSA-SHA2-128s",
+   "name": "SLH-DSA-SHA2-128s",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "NIST category 1"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "designed to resist"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 205"
+    },
+    {
+     "name": "fmi:publicKeyBytes",
+     "value": "32"
+    },
+    {
+     "name": "fmi:signatureBytes",
+     "value": "7856"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:SHA-256",
+   "name": "SHA-256",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "hash"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "256 preimage / 128 collision"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "generic search speed-up only (Grover)"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "FIPS 180-4"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto:Keccak-256",
+   "name": "Keccak-256",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "hash"
+    }
+   },
+   "properties": [
+    {
+     "name": "fmi:classicalSecurity",
+     "value": "256 preimage / 128 collision"
+    },
+    {
+     "name": "fmi:quantum",
+     "value": "generic search speed-up only (Grover)"
+    },
+    {
+     "name": "fmi:standard",
+     "value": "Keccak (pre-FIPS 202 padding)"
+    }
+   ]
+  }
+ ]
+}

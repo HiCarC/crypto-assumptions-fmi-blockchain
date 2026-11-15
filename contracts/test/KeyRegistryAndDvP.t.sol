@@ -44,6 +44,29 @@ contract KeyRegistryTest is Fixture {
         registry.rotateKey(alice, address(p256V), newKey, sig);
     }
 
+    /// Added after mutation testing: the replay test above passes even without the nonce,
+    /// because the key changes. Here the key returns to the original, so only the nonce
+    /// stops the first rotation signature from being replayed.
+    function test_rotationNonceBlocksReplayAfterKeyReturns() public {
+        bytes memory p256Key = _p256Key(aliceP256);
+        bytes memory ecdsaKey = abi.encodePacked(alice);
+        bytes memory first = _signECDSA(alicePk, registry.rotationDigest(alice, address(p256V), p256Key, 0));
+        registry.rotateKey(alice, address(p256V), p256Key, first);
+        registry.rotateKey(
+            alice, address(ecdsaV), ecdsaKey, _signP256(aliceP256, registry.rotationDigest(alice, address(ecdsaV), ecdsaKey, 1))
+        );
+        assertEq(registry.rotationNonce(alice), 2);
+        vm.expectRevert(KeyRegistry.InvalidRotationSignature.selector);
+        registry.rotateKey(alice, address(p256V), p256Key, first);
+    }
+
+    /// Added after mutation testing: a longer key whose first 20 bytes are the signer must not verify.
+    function test_ecdsaVerifierRejectsOverlongKey() public view {
+        bytes32 h = keccak256("h");
+        assertEq(ecdsaV.verify(abi.encodePacked(alice), h, _signECDSA(alicePk, h)), ecdsaV.verify.selector);
+        assertEq(ecdsaV.verify(abi.encodePacked(alice, bytes12(0)), h, _signECDSA(alicePk, h)), bytes4(0xffffffff));
+    }
+
     function test_rotationNeedsCurrentKey() public {
         bytes memory newKey = abi.encodePacked(bob);
         bytes memory sig = _signECDSA(bobPk, registry.rotationDigest(alice, address(ecdsaV), newKey, 0));
