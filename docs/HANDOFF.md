@@ -117,7 +117,7 @@ Nothing. All work is committed and pushed.
 
 ## Open questions for the author
 
-- Add the GitHub secret `CERTORAKEY` (Settings → Secrets → Actions) if Certora should run in CI. The job already exists and skips itself until then.
+- `CERTORAKEY` secret: set on 15 Nov 2026; the Certora CI job now runs and passed.
 - Chapter 3 topic (to be proposed in the author brief).
 
 ## External actions awaiting approval

@@ -92,7 +92,7 @@ Alternative: **AI as an attacker of financial infrastructure.** This is the capa
 | Publish the article on Substack | Awaiting your approval |
 | Publish the annex PDF (and where to host it) | Awaiting your approval |
 | Make the GitHub repository public, or share it with named reviewers | Awaiting your approval; it is private today |
-| Add the `CERTORAKEY` secret to enable the Certora CI job | Your action, if wanted |
+| Add the `CERTORAKEY` secret to enable the Certora CI job | Done 15 Nov 2026 (set from the local environment, never printed); CI run passed with "No errors found by Prover" |
 
 ## 7. Definition of done (brief §13)
 
