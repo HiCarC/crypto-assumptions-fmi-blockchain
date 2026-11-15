@@ -2,7 +2,7 @@
 
 Companion repository to Chapter 2 of a series on cryptography and financial stability (Carles Cerqueda, *TheKarlC*). Written for the technical team of an authority, an FMI or a bank's tokenisation programme.
 
-**Status: research code, private, not audited by a third party. Do not deploy anything here.**
+**Status: research code, not audited by a third party. Do not deploy anything here.**
 
 ## The question
 
