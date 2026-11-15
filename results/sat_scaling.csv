@@ -56,3 +56,15 @@ A_rounds,17,512,2,kissat,14487,61642,SAT,0.657,True
 A_rounds,18,512,0,cryptominisat,15709,67113,SAT,43.343,True
 A_rounds,18,512,1,cryptominisat,15709,67113,TIMEOUT,120.000,
 A_rounds,18,512,2,cryptominisat,15709,67113,TIMEOUT,120.000,
+A_rounds,18,512,0,cadical,15709,67113,TIMEOUT,120.000,
+A_rounds,18,512,1,cadical,15709,67113,SAT,78.346,True
+A_rounds,18,512,2,cadical,15709,67113,SAT,80.595,True
+A_rounds,18,512,0,kissat,15709,67113,SAT,60.238,True
+A_rounds,18,512,1,kissat,15709,67113,SAT,50.829,True
+A_rounds,18,512,2,kissat,15709,67113,SAT,83.539,True
+A_rounds,19,512,0,cryptominisat,16931,72584,TIMEOUT,120.000,
+A_rounds,19,512,1,cryptominisat,16931,72584,TIMEOUT,120.000,
+A_rounds,19,512,2,cryptominisat,16931,72584,TIMEOUT,120.000,
+A_rounds,19,512,0,cadical,16931,72584,TIMEOUT,120.000,
+A_rounds,19,512,1,cadical,16931,72584,TIMEOUT,120.000,
+A_rounds,19,512,2,cadical,16931,72584,TIMEOUT,120.000,
