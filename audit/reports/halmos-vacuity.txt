@@ -1,0 +1,3 @@
+[FAIL] check_EXPECT_FAIL_settlementIsReachable(uint256,uint256,uint256,bytes32) (paths: 4, time: 0.30s, bounds: [])
+[FAIL] check_EXPECT_FAIL_validTransferIsReachable(uint256,bytes32) (paths: 2, time: 0.27s, bounds: [])
+Symbolic test result: 0 passed; 2 failed; time: 1.28s

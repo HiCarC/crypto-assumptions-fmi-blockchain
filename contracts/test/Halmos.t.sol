@@ -171,3 +171,21 @@ contract HalmosChecks is Test {
         assert(cash.totalSupply() == 2_000);
     }
 }
+
+/// @notice Vacuity controls. Each asserts the OPPOSITE of what the checks above rely on,
+///         so Halmos MUST report a counterexample for every function here. If one of these
+///         "passes", the corresponding property above was proved over an empty set of cases.
+contract HalmosVacuity is HalmosChecks {
+    function check_EXPECT_FAIL_validTransferIsReachable(uint256 v, bytes32 nonce) public {
+        (bool ok,) = address(cash).call(
+            abi.encodeCall(SettlementToken.transferWithAuthorization, (ALICE, BOB, v, 0, type(uint256).max, nonce, ALICE_SIG))
+        );
+        assert(!ok); // must fail: a correctly signed transfer does succeed
+    }
+
+    function check_EXPECT_FAIL_settlementIsReachable(uint256 a, uint256 c, uint256 deadline, bytes32 nonce) public {
+        DvP.Order memory o = DvP.Order(ALICE, BOB, asset, a, cash, c, deadline, nonce);
+        (bool ok,) = address(dvp).call(abi.encodeCall(DvP.settle, (o, ALICE_SIG, BOB_SIG)));
+        assert(!ok); // must fail: a correctly signed order does settle
+    }
+}

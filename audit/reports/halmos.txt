@@ -1,5 +1,5 @@
-[32m[PASS][0m check_dvpIsAtomic(uint256,uint256,uint256,bytes32,bytes3,bytes3) (paths: 10, time: 0.57s, bounds: [])
-[32m[PASS][0m check_noValidSignatureNoTransfer(address,uint256,uint256,uint256,bytes32,bytes3) (paths: 5, time: 0.13s, bounds: [])
-[32m[PASS][0m check_nonceIsSingleUse(address,uint256,address,uint256,uint256,bytes32) (paths: 4, time: 0.15s, bounds: [])
-[32m[PASS][0m check_outsiderHasNoPrivilegedPower(address,address,uint256,bool) (paths: 5, time: 0.59s, bounds: [])
-Symbolic test result: 4 passed; 0 failed; time: 2.03s
+[PASS] check_dvpIsAtomic(uint256,uint256,uint256,bytes32,bytes3,bytes3) (paths: 10, time: 0.74s, bounds: [])
+[PASS] check_noValidSignatureNoTransfer(address,uint256,uint256,uint256,bytes32,bytes3) (paths: 5, time: 0.28s, bounds: [])
+[PASS] check_nonceIsSingleUse(address,uint256,address,uint256,uint256,bytes32) (paths: 4, time: 0.18s, bounds: [])
+[PASS] check_outsiderHasNoPrivilegedPower(address,address,uint256,bool) (paths: 18, time: 1.69s, bounds: [])
+Symbolic test result: 4 passed; 0 failed; time: 3.78s

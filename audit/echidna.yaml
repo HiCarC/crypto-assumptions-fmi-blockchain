@@ -1,0 +1,9 @@
+testMode: property
+testLimit: 50000
+seqLen: 60
+seed: 2026
+corpusDir: ../audit/corpus-echidna
+deployer: "0x10000"
+sender: ["0x10000"]
+allContracts: false
+cryticArgs: ["--foundry-compile-all"]

@@ -1,0 +1,8 @@
+echidna_supply_conserved: passing
+echidna_implementation_unchanged: passing
+echidna_nothing_impossible_happened: passing
+Unique instructions: 22695
+Unique codehashes: 10
+Corpus size: 18
+Seed: 2026
+Total calls: 50160

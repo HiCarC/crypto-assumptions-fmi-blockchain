@@ -1,0 +1,23 @@
+{
+  "fuzzing": {
+    "workers": 8,
+    "testLimit": 100000,
+    "timeout": 600,
+    "callSequenceLength": 60,
+    "corpusDirectory": "../audit/corpus-medusa",
+    "coverageEnabled": true,
+    "targetContracts": ["FuzzHarness"],
+    "deployerAddress": "0x10000",
+    "senderAddresses": ["0x10000"],
+    "testing": {
+      "stopOnFailedTest": true,
+      "assertionTesting": { "enabled": false },
+      "propertyTesting": { "enabled": true, "testPrefixes": ["echidna_"] },
+      "optimizationTesting": { "enabled": false }
+    }
+  },
+  "compilation": {
+    "platform": "crytic-compile",
+    "platformConfig": { "target": ".", "solcVersion": "", "exportDirectory": "", "args": ["--foundry-compile-all", "--foundry-out-directory", "out"] }
+  }
+}

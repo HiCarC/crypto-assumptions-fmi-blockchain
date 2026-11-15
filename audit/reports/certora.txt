@@ -1,0 +1,16 @@
+Certora Prover, certora-cli 8.20.3, 15 November 2026. Config: audit/certora/SettlementToken.conf. Spec: audit/certora/SettlementToken.spec.
+Result: "No errors found by Prover". Prover time about 52 seconds. rule_sanity=basic reported no vacuous rule.
+
+Verified  invalidSignatureCannotTransfer
+Verified  nonceIsSingleUse
+Verified  supplyChangesOnlyByMintOrBurn        (13 state-changing functions)
+Verified  pausedMeansNoBalanceChange           (13 state-changing functions)
+Verified  privilegedFunctionsNeedPermission
+
+Scope and abstractions (read before relying on this):
+- Target is the SettlementToken implementation, from an arbitrary storage state.
+- KeyRegistry.isValidSignature is an uninterpreted predicate; AccessManager's answer is an uninterpreted permission table.
+- upgradeToAndCall is excluded from the two parametric rules (it delegatecalls arbitrary code); R5 separately shows it reverts without permission.
+- DvP and KeyRegistry are not covered by Certora; DvP atomicity is covered by Halmos (audit/reports/halmos.txt).
+- First run (job eb3bd71e...) failed R5 because the permission check is a low-level staticcall the first spec did not summarise. That was a specification error, fixed by summarising AuthorityUtils.canCallWithDelay; no contract change was needed.
+- Job reports are on prover.certora.com under the author's account (not public).
