@@ -53,3 +53,6 @@ A_rounds,17,512,2,cadical,14487,61642,SAT,0.414,True
 A_rounds,17,512,0,kissat,14487,61642,SAT,0.639,True
 A_rounds,17,512,1,kissat,14487,61642,SAT,0.540,True
 A_rounds,17,512,2,kissat,14487,61642,SAT,0.657,True
+A_rounds,18,512,0,cryptominisat,15709,67113,SAT,43.343,True
+A_rounds,18,512,1,cryptominisat,15709,67113,TIMEOUT,120.000,
+A_rounds,18,512,2,cryptominisat,15709,67113,TIMEOUT,120.000,
