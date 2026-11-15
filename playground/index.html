@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger Lab</title>
+<meta name="description" content="Test the contracts, failure modes and networks behind 'Did AI Just Break the Blockchain?' in your browser. Real signatures and hashes; ledger rules ported from the repository's contracts.">
+<style>
+:root{
+  --bg:#f7f5f1; --surface:#fffefb; --ink:#1d1a17; --ink2:#5d574f; --ink3:#8a837a; --line:#e3ded5;
+  --accent:#8c2f22; --ok:#2c6a3e; --okbg:#e8f1ea; --bad:#a1271c; --badbg:#f7e7e4; --warn:#7d5300; --warnbg:#fbf1dc;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151311; --surface:#1d1a17; --ink:#ede8e1; --ink2:#aaa197; --ink3:#7c746b; --line:#322e29;
+  --accent:#e08068; --ok:#86c595; --okbg:#1c2a20; --bad:#f08e81; --badbg:#36201c; --warn:#e6b85c; --warnbg:#33281a; color-scheme:dark;}}
+:root[data-theme="dark"]{--bg:#151311; --surface:#1d1a17; --ink:#ede8e1; --ink2:#aaa197; --ink3:#7c746b; --line:#322e29;
+  --accent:#e08068; --ok:#86c595; --okbg:#1c2a20; --bad:#f08e81; --badbg:#36201c; --warn:#e6b85c; --warnbg:#33281a; color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 20px 60px;display:grid;grid-template-columns:180px 1fr;gap:52px}
+header.top{max-width:1100px;margin:0 auto;padding:40px 20px 0}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.025em;margin:0}
+.lede{color:var(--ink);font-size:17px;margin:10px 0 0;max-width:640px}
+.meta{color:var(--ink2);font-size:13px;margin-top:8px;max-width:640px}
+.res{font-size:17px;font-weight:600;margin:16px 0 0;min-height:1.5em}
+.res.ok{color:var(--ok)} .res.bad{color:var(--bad)}
+details.raw{margin-top:10px;font-size:13px} details.raw summary{cursor:pointer;color:var(--ink2)}
+nav{position:sticky;top:20px;align-self:start;display:flex;flex-direction:column;gap:2px}
+nav button{all:unset;cursor:pointer;padding:6px 10px;border-radius:6px;color:var(--ink2);font-size:13.5px}
+nav button:hover{color:var(--ink);background:var(--surface)}
+nav button[aria-current="true"]{color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--accent);border-radius:0 6px 6px 0}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav .n{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-right:8px}
+section{display:none} section.on{display:block}
+h2{font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
+h3{font-size:13px;margin:22px 0 8px;color:var(--ink2);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+p.sub{color:var(--ink2);margin:0 0 16px;max-width:640px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--ink3)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+select,input[type=number]{font:inherit;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+input[type=number]{width:90px}
+label.f{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--ink2);font-size:12px;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.mono,td.num{font-family:var(--mono);font-size:12.5px}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{font-size:13px;font-weight:600;white-space:nowrap}
+.pill.ok{color:var(--ok)} .pill.bad{color:var(--bad)} .pill.warn{color:var(--accent)} .pill.mut{color:var(--ink3);font-weight:400}
+.log{list-style:none;margin:10px 0 0;padding:0;border-top:1px solid var(--line);font-size:13px;max-height:300px;overflow:auto}
+.log li{padding:7px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:18px 1fr;gap:8px}
+.log .i{font-weight:700} .log .i.ok{color:var(--ok)} .log .i.bad{color:var(--bad)} .log .i.info{color:var(--ink3)}
+.log .d{color:var(--ink2);font-size:12px;font-family:var(--mono);word-break:break-all}
+.log:empty::before{content:"Results appear here.";display:block;color:var(--ink3);padding:8px 0}
+.card{border-top:1px solid var(--line);padding:16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;font-size:12.5px}
+.kv dt{color:var(--ink3)} .kv dd{margin:0;font-family:var(--mono);word-break:break-all}
+.note{font-size:13px;color:var(--ink2);margin-top:10px;max-width:640px}
+.thesis{font-size:26px;line-height:1.25;letter-spacing:-.015em;margin:0 0 6px}
+.layer{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:center;min-height:72px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.layer:first-child{border-top:1px solid var(--ink)}
+.layer:hover .t{text-decoration:underline;text-underline-offset:3px}
+.layer:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.layer .no{font-family:var(--mono);font-size:15px;color:var(--ink3)} .layer .t{font-weight:600;font-size:16px} .layer .s{color:var(--ink2);font-size:14px}
+.layer .v{font-size:15px;font-weight:600;text-align:right} .layer .v.ok{color:var(--ok)} .layer .v.warn{color:var(--accent)}
+.bars{display:grid;grid-template-columns:170px 1fr 92px;gap:6px 10px;align-items:center;font-size:12.5px}
+.bar{height:10px;background:var(--ink);border-radius:2px;min-width:2px}
+.bar.hi{background:var(--accent)}
+.matrix td.cell{text-align:center;cursor:pointer}
+.matrix td.cell:hover{background:var(--surface)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{all:unset;cursor:pointer;padding:5px 12px;font-size:13px;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--accent)}
+svg text{fill:var(--ink2);font:11px var(--sans)}
+footer{max-width:1100px;margin:0 auto;padding:0 20px 40px;color:var(--ink3);font-size:12px}
+@media (max-width:760px){
+  .wrap{grid-template-columns:1fr;gap:18px;padding:16px 16px 48px}
+  header.top{padding:20px 16px 0}
+  nav{position:static;flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:4px}
+  nav button{white-space:nowrap}
+  nav button[aria-current="true"]{box-shadow:inset 0 -2px 0 var(--accent)}
+  .grid2{grid-template-columns:1fr}
+  .bars{grid-template-columns:120px 1fr 70px}
+  footer{padding:0 16px 40px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Ledger Lab</h1>
+  <p class="lede">Test the contracts, failure modes and networks behind <em>Did AI Just Break the Blockchain?</em> Everything runs in this page, offline.</p>
+  <p class="meta">Real signatures and hashes, computed by your browser. Rules ported from the <a href="https://github.com/HiCarC/crypto-assumptions-fmi-blockchain">repository's contracts</a>. <a href="#overview" onclick="show('overview');setTimeout(()=>document.getElementById('caveat').scrollIntoView(),0)">What this page is</a>.</p>
+</header>
+
+<div class="wrap">
+<nav aria-label="Sections" id="nav"></nav>
+<main>
+
+<!-- 1 OVERVIEW -->
+<section id="overview" data-title="Overview">
+  <p class="thesis">Would a much faster 3-SAT algorithm break a ledger? Test each layer yourself.</p>
+  <div id="layers" style="margin-top:22px"></div>
+  <p class="note">* Only functions used in academic research are touched; none is deployed.</p>
+  <p class="note" id="caveat" style="margin-top:22px;color:var(--ink)"><b>What this page is.</b> It reproduces the rules and failure patterns of the reference system so you can watch each check fire. It is not a blockchain node and not the audited code: for that, run <span class="mono">make all</span> in the repository. Browsers have no post-quantum signatures, so ML-DSA is simulated with its measured sizes and costs, and labelled where used.</p>
+</section>
+
+<!-- 2 HASH LAB -->
+<section id="hash" data-title="Hash lab">
+  <h2>Can a solver reverse SHA-256?</h2>
+  <p class="sub">Hide some bits of a message, keep its SHA-256 fingerprint, and recover the bits by plain search in your browser. Then compare with the times three of the best SAT solvers needed for the same task.</p>
+  <div class="row">
+    <label class="f">Hidden bits <input type="range" id="hk" min="4" max="22" step="1" value="12" aria-describedby="hkv"></label>
+    <span class="mono" id="hkv">12 bits · 4,096 possibilities</span>
+    <button class="btn primary" id="hrun">Run plain search</button>
+    <button class="btn" id="hstop" disabled>Stop</button>
+  </div>
+  <div id="hchart" style="margin-top:18px"></div>
+  <p class="res" aria-live="polite"></p><ol class="log" id="hlog"></ol>
+  <p class="note">SAT results: full 64-round SHA-256 written as one SAT problem of 71,925 variables and about 319,000 clauses; three random instances per point; 120-second limit (<span class="mono">results/sat_scaling.csv</span>). One encoding, one machine: it describes today's tools, not future algorithms.</p>
+</section>
+
+<!-- 3 TOKEN -->
+<section id="token" data-title="Settlement token">
+  <h2>A permissioned settlement token</h2>
+  <p class="sub">Holders move money with a signed authorisation. The issuer holds powers: allow, freeze, pause, mint. Try to break the rules.</p>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:0">Accounts</h3>
+      <table><thead><tr><th>Holder</th><th>Address</th><th style="text-align:right">EUR</th><th>Allowed</th><th>Frozen</th></tr></thead><tbody id="tacc"></tbody></table>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="tpause">Pause token</button>
+        <button class="btn" id="tmint">Mint 100 to Carol</button>
+        <button class="btn" id="tclock">Advance clock 2 h</button>
+        <span class="mono" id="tnow" style="color:var(--ink3)"></span>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Signed transfer</h3>
+      <div class="row">
+        <label class="f">From <select id="tfrom"></select></label>
+        <label class="f">To <select id="tto"></select></label>
+        <label class="f">Amount <input type="number" id="tamt" value="50" min="1"></label>
+        <button class="btn primary" id="tsign" style="align-self:flex-end">Sign</button>
+      </div>
+      <details class="raw"><summary>Show raw signature</summary><dl class="kv" id="tauth" style="margin-top:8px"></dl></details>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="ttamper" disabled>Attack: amount ×10</button>
+        <button class="btn" id="tchain" disabled>Attack: replay on another chain</button>
+        <button class="btn" id="tsub" disabled>Submit</button>
+        <button class="btn" id="treplay" disabled>Submit again</button>
+      </div>
+      <p class="note">Try the attacks before submitting: once the nonce is spent, every later attempt stops at that check first.</p>
+    </div>
+  </div>
+  <p class="res" aria-live="polite"></p><ol class="log" id="tlog"></ol>
+</section>
+
+<!-- 4 DVP -->
+<section id="dvp" data-title="Delivery vs payment">
+  <h2>Both legs or neither</h2>
+  <p class="sub">Alice sells bonds to Bob for euros. Both sign one order; the settlement contract moves both legs in one transaction. Make one leg fail and watch the other undo.</p>
+  <div class="grid2">
+    <div>
+      <div class="row">
+        <label class="f">Bonds <input type="number" id="dq" value="2" min="1"></label>
+        <label class="f">Price, EUR <input type="number" id="dp" value="200" min="1"></label>
+        <button class="btn primary" id="dsign" style="align-self:flex-end">Both sign</button>
+        <button class="btn" id="dsettle" style="align-self:flex-end" disabled>Settle</button>
+      </div>
+      <details class="raw"><summary>Show raw order and signatures</summary><dl class="kv" id="dorder" style="margin-top:8px"></dl></details>
+      <h3>Make it fail</h3>
+      <div class="row">
+        <button class="btn" id="dfreeze">Freeze Bob's euro account</button>
+        <button class="btn" id="dbig">Price above Bob's balance</button>
+      </div>
+    </div>
+    <div>
+      <table><thead><tr><th></th><th style="text-align:right">Bonds</th><th style="text-align:right">EUR</th></tr></thead><tbody id="dbal"></tbody></table>
+      <h3>Proven for every possible state</h3>
+      <ul style="margin:0;padding-left:18px;color:var(--ink2);font-size:13px">
+        <li>Settlement moves both legs or neither (Halmos)</li>
+        <li>No transfer without a valid signature (Certora)</li>
+        <li>Each authorisation works only once (Certora)</li>
+        <li>Supply changes only by issuance and redemption (Certora)</li>
+        <li>Nothing moves while paused (Certora)</li>
+        <li>Privileged functions refuse unauthorised callers (Certora)</li>
+      </ul>
+    </div>
+  </div>
+  <p class="res" aria-live="polite"></p><ol class="log" id="dlog"></ol>
+</section>
+
+<!-- 5 KEYS -->
+<section id="keys" data-title="Key migration">
+  <h2>Changing the locks</h2>
+  <p class="sub">The registry decides which signature schemes count. Move Alice to a post-quantum scheme, retire the old one, and see what happens to Bob, who never migrated.</p>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:0">Schemes</h3>
+      <table><thead><tr><th>Scheme</th><th>Status</th><th></th></tr></thead><tbody id="kstat"></tbody></table>
+      <h3>Holders</h3>
+      <table><thead><tr><th>Holder</th><th>Scheme</th><th style="text-align:right">Key</th><th style="text-align:right">Signature</th></tr></thead><tbody id="kacc"></tbody></table>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="krot">Alice rotates to ML-DSA-44</button>
+        <button class="btn" id="kalice">Alice pays Bob 10</button>
+        <button class="btn" id="kbob">Bob pays Alice 10</button>
+        <button class="btn" id="kreg">Registrar re-keys Bob</button>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Gas to verify one signature</h3>
+      <div class="bars" id="kgas"></div>
+      <p class="note">Log scale. Measured on the repository's contracts with Foundry (<span class="mono">results/gas.json</span>). The ML-DSA verifier is third-party research code, not audited.</p>
+    </div>
+  </div>
+  <p class="res" aria-live="polite"></p><ol class="log" id="klog"></ol>
+</section>
+
+<!-- 6 FAILURES -->
+<section id="fail" data-title="Failure modes">
+  <h2>How real losses happened</h2>
+  <p class="sub">Each case runs the vulnerable pattern, then the fix. In none of them is the mathematics broken.</p>
+  <div id="fcards"></div>
+</section>
+
+<!-- 7 NETWORKS -->
+<section id="nets" data-title="Three networks">
+  <h2>Who can do what, on which network</h2>
+  <p class="sub">The same questions on the three platforms the project built on. Click any cell to see the rule behind it.</p>
+  <div class="seg" role="group" aria-label="Network" id="nseg"></div>
+  <div id="nextra" style="margin-top:14px"></div>
+  <table class="matrix" style="margin-top:14px"><thead id="nhead"></thead><tbody id="nbody"></tbody></table>
+  <p class="note" id="nsrc"></p>
+  <p class="res" aria-live="polite"></p><ol class="log" id="nlog"></ol>
+</section>
+
+</main>
+</div>
+<footer>Ledger Lab · companion to <a href="https://thekarlc.substack.com">TheKarlC</a> · code, tests and data on <a href="https://github.com/HiCarC/crypto-assumptions-fmi-blockchain">GitHub</a></footer>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const enc=new TextEncoder();
+const hex=u8=>Array.from(u8,b=>b.toString(16).padStart(2,"0")).join("");
+const short=h=>"0x"+h.slice(0,6)+"…"+h.slice(-4);
+const fmt=n=>Number(n).toLocaleString("en-GB");
+async function sha(b){return new Uint8Array(await crypto.subtle.digest("SHA-256",typeof b==="string"?enc.encode(b):b));}
+const EC={name:"ECDSA",namedCurve:"P-256"},SIG={name:"ECDSA",hash:"SHA-256"};
+async function newKey(){const k=await crypto.subtle.generateKey(EC,true,["sign","verify"]);const raw=new Uint8Array(await crypto.subtle.exportKey("raw",k.publicKey));return{priv:k.privateKey,pub:k.publicKey,raw};}
+async function ecSign(k,m){return new Uint8Array(await crypto.subtle.sign(SIG,k.priv,enc.encode(m)));}
+async function ecVerify(pub,m,s){try{return await crypto.subtle.verify(SIG,pub,s,enc.encode(m));}catch(e){return false;}}
+class Revert extends Error{constructor(code,why){super(code);this.code=code;this.why=why||"";}}
+function log(id,kind,title,detail){const li=document.createElement("li");const i=kind==="ok"?"✓":kind==="bad"?"✕":"·";
+  li.innerHTML=`<span class="i ${kind}" aria-label="${kind==="ok"?"success":kind==="bad"?"reverted":"note"}">${i}</span><div><div>${title}</div>${detail?`<div class="d">${detail}</div>`:""}</div>`;
+  const ol=$("#"+id);ol.prepend(li);
+  const res=ol.previousElementSibling;if(res&&res.classList.contains("res")&&kind!=="info"){res.className="res "+kind;res.textContent=(kind==="ok"?"✓ ":"✕ ")+title;}}
+
+/* ---------- navigation ---------- */
+const sections=[...document.querySelectorAll("section")];
+function show(id){sections.forEach(s=>s.classList.toggle("on",s.id===id));
+  document.querySelectorAll("#nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id?"true":"false"));
+  if(location.hash!=="#"+id)history.replaceState(null,"","#"+id);}
+sections.forEach((s,i)=>{const b=document.createElement("button");b.dataset.id=s.id;b.innerHTML=`<span class="n">${i+1}</span>${s.dataset.title}`;b.onclick=()=>show(s.id);$("#nav").append(b);});
+
+/* ---------- overview ---------- */
+const LAYERS=[["1","Hash functions","The fingerprint every ledger links its records with.","Holds","ok","hash"],
+ ["2","Signatures","How validators agree and how transfers are approved.","Holds","ok","token"],
+ ["3","Zero-knowledge proofs","Rest on other assumptions; only research-only functions are touched.","Holds*","ok",null],
+ ["4","Smart contracts","The tools that prove contracts safe run on SAT-type solvers.","Twist","warn","dvp"]];
+LAYERS.forEach(([n,t,s,v,k,go])=>{const d=document.createElement("div");d.className="layer";d.tabIndex=go?0:-1;
+  d.innerHTML=`<span class="no">${n}</span><div><div class="t">${t}</div><div class="s">${s}</div></div><span class="v ${k}">${v}${go?" →":""}</span>`;
+  if(go){d.onclick=()=>show(go);d.onkeydown=e=>{if(e.key==="Enter")show(go);};}else d.style.cursor="default";$("#layers").append(d);});
+
+/* ---------- accounts & registry ---------- */
+const P={};
+const REG={status:{ecdsa:"Approved",mldsa44:"Approved"},keys:{}};
+const STEPS=["Approved","Deprecated","Retired"];
+async function mlSecret(){return crypto.getRandomValues(new Uint8Array(32));}
+async function mlSign(secret,m){const t=await sha(new Uint8Array([...secret,...enc.encode(m)]));const s=new Uint8Array(2420);s.set(t);return s;}
+REG.isValid=async function(name,m,sig){const k=REG.keys[name];if(!k||!sig)return false;const st=REG.status[k.scheme];
+  if(st!=="Approved"&&st!=="Deprecated")return false;if(sig.scheme!==k.scheme)return false;
+  if(k.scheme==="ecdsa")return ecVerify(P[name].ec.pub,m,sig.bytes);
+  const t=await mlSign(k.secret,m);return hex(t.slice(0,32))===hex(sig.bytes.slice(0,32));};
+async function walletSign(name,m){const k=REG.keys[name];
+  if(k.scheme==="ecdsa")return{scheme:"ecdsa",bytes:await ecSign(P[name].ec,m)};
+  return{scheme:"mldsa44",bytes:await mlSign(k.secret,m),simulated:true};}
+async function makeAcct(name){const ec=await newKey();const addr="0x"+hex(await sha(ec.raw)).slice(0,40);P[name]={name,addr,ec};REG.keys[name]={scheme:"ecdsa"};}
+
+/* ---------- token ---------- */
+const TOK={name:"Settlement EUR",chainId:1,addr:"0x5e7713e47c0ffee0000000000000000000000e47",now:100,paused:false,
+  bal:{Alice:1000,Bob:250,Carol:0},allowed:{Alice:true,Bob:true,Carol:false},frozen:{},used:new Set()};
+const BOND={name:"Bond 2030",paused:false,bal:{Alice:10,Bob:0,Carol:0},allowed:{Alice:true,Bob:true,Carol:true},frozen:{}};
+function checkMove(t,from,to,amt){if(t.paused)throw new Revert("EnforcedPause()","the token is paused");
+  if(from){if(!t.allowed[from])throw new Revert(`NotAllowed(${from})`,`${from} is not on the allow-list`);
+    if(t.frozen[from])throw new Revert(`AccountFrozen(${from})`,`the issuer froze ${from}`);
+    if((t.bal[from]||0)<amt)throw new Revert(`ERC20InsufficientBalance(${from})`,`${from} has ${fmt(t.bal[from]||0)}`);}
+  if(!t.allowed[to])throw new Revert(`NotAllowed(${to})`,`${to} is not on the allow-list`);
+  if(t.frozen[to])throw new Revert(`AccountFrozen(${to})`,`the issuer froze ${to}`);}
+function move(t,from,to,amt){checkMove(t,from,to,amt);if(from)t.bal[from]-=amt;t.bal[to]=(t.bal[to]||0)+amt;}
+function authMsg(a,chainId){return JSON.stringify({domain:{name:TOK.name,version:"1",chainId,verifyingContract:TOK.addr},
+  type:"TransferWithAuthorization",from:a.from,to:a.to,value:a.amount,validAfter:a.validAfter,validBefore:a.validBefore,nonce:a.nonce});}
+async function transferWithAuthorization(a,sig,chainId=TOK.chainId){
+  if(TOK.now<=a.validAfter)throw new Revert("AuthorizationNotYetValid()");
+  if(TOK.now>=a.validBefore)throw new Revert("AuthorizationExpired()","the signed validity window has closed");
+  if(TOK.used.has(a.from+":"+a.nonce))throw new Revert("AuthorizationAlreadyUsed()","this nonce was already spent");
+  if(!await REG.isValid(a.from,authMsg(a,chainId),sig))throw new Revert("InvalidAuthorization()","the signature does not match this exact message");
+  move(TOK,a.from,a.to,a.amount);TOK.used.add(a.from+":"+a.nonce);}
+let AUTH=null,AUTHSIG=null;
+const NAMES=["Alice","Bob","Carol"];
+function renderTok(){$("#tacc").innerHTML=NAMES.map(n=>`<tr><td>${n}</td><td class="mono">${short(P[n].addr.slice(2))}</td><td class="num">${fmt(TOK.bal[n]||0)}</td>
+  <td><button class="btn" data-a="${n}" data-k="allowed" aria-pressed="${!!TOK.allowed[n]}">${TOK.allowed[n]?"Yes":"No"}</button></td>
+  <td><button class="btn" data-a="${n}" data-k="frozen" aria-pressed="${!!TOK.frozen[n]}">${TOK.frozen[n]?"Frozen":"No"}</button></td></tr>`).join("");
+  $("#tpause").textContent=TOK.paused?"Unpause token":"Pause token";$("#tnow").textContent=`clock ${TOK.now}:00`;renderDvP();}
+$("#tacc").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const n=b.dataset.a,k=b.dataset.k;TOK[k][n]=!TOK[k][n];
+  log("tlog","info",`Issuer sets ${k==="allowed"?"allow-list":"freeze"} for ${n}: ${TOK[k][n]?"on":"off"}`,`${k==="allowed"?"setAllowed":"setFrozen"}(${n}, ${!!TOK[k][n]}) · restricted to the issuer role`);renderTok();});
+$("#tpause").onclick=()=>{TOK.paused=!TOK.paused;log("tlog","info",TOK.paused?"Issuer paused the token":"Issuer unpaused the token",TOK.paused?"pause() · restricted":"unpause() · restricted");renderTok();};
+$("#tmint").onclick=()=>{try{move(TOK,null,"Carol",100);log("tlog","ok","Issuer minted 100 EUR to Carol","mint(Carol, 100) · restricted");}catch(e){log("tlog","bad",`Mint reverted: ${e.code}`,e.why);}renderTok();};
+$("#tclock").onclick=()=>{TOK.now+=2;log("tlog","info",`Clock advanced to ${TOK.now}:00`,"signed authorisations are valid for one hour");renderTok();};
+function fillSel(sel,def){sel.innerHTML=NAMES.map(n=>`<option ${n===def?"selected":""}>${n}</option>`).join("");}
+$("#tsign").onclick=async()=>{const from=$("#tfrom").value,to=$("#tto").value,amount=Math.max(1,Math.floor(+$("#tamt").value||1));
+  const nonce="0x"+hex(crypto.getRandomValues(new Uint8Array(8)));AUTH={from,to,amount,validAfter:TOK.now-1,validBefore:TOK.now+1,nonce};
+  const m=authMsg(AUTH,TOK.chainId);AUTHSIG=await walletSign(from,m);const dg=hex(await sha(m));
+  $("#tauth").innerHTML=`<dt>Message</dt><dd>${from} → ${to}, ${fmt(amount)} EUR, valid ${AUTH.validAfter}:00–${AUTH.validBefore}:00, chain ${TOK.chainId}</dd><dt>Nonce</dt><dd>${nonce}</dd><dt>Digest</dt><dd>${short(dg)}</dd><dt>Signature</dt><dd>${short(hex(AUTHSIG.bytes))} (${AUTHSIG.bytes.length} bytes, ${AUTHSIG.scheme==="ecdsa"?"P-256":"ML-DSA-44, simulated"})</dd>`;
+  ["#tsub","#treplay","#ttamper","#tchain"].forEach(s=>$(s).disabled=false);log("tlog","info",`${from} signed an authorisation for ${fmt(amount)} EUR to ${to}`,`signed by ${from}'s own key; nothing has moved yet`);};
+async function submit(a,chain,label){try{await transferWithAuthorization(a,AUTHSIG,chain);log("tlog","ok",`${label}: ${a.from} paid ${fmt(a.amount)} EUR to ${a.to}`,"transferWithAuthorization · signature verified by the key registry");}
+  catch(e){log("tlog","bad",`${label} reverted: ${e.code}`,e.why);}renderTok();}
+$("#tsub").onclick=()=>submit(AUTH,TOK.chainId,"Submitted");
+$("#treplay").onclick=()=>submit(AUTH,TOK.chainId,"Replayed");
+$("#ttamper").onclick=()=>submit({...AUTH,amount:AUTH.amount*10},TOK.chainId,"Tampered amount");
+$("#tchain").onclick=()=>submit(AUTH,TOK.chainId+1,"Same signature on chain 2");
+
+/* ---------- DvP ---------- */
+let ORDER=null,OSIG=null,SETTLED=new Set();
+function renderDvP(){$("#dbal").innerHTML=["Alice","Bob"].map(n=>`<tr><td>${n}</td><td class="num">${fmt(BOND.bal[n]||0)}</td><td class="num">${fmt(TOK.bal[n]||0)}${TOK.frozen[n]?' <span class="pill bad">frozen</span>':""}</td></tr>`).join("");
+  $("#dfreeze").textContent=TOK.frozen.Bob?"Unfreeze Bob's euro account":"Freeze Bob's euro account";}
+function orderMsg(o){return JSON.stringify({domain:{name:"DvP",chainId:1},type:"Order",seller:o.seller,buyer:o.buyer,bond:o.q,price:o.p,deadline:o.deadline,salt:o.salt});}
+$("#dsign").onclick=async()=>{ORDER={seller:"Alice",buyer:"Bob",q:Math.max(1,Math.floor(+$("#dq").value||1)),p:Math.max(1,Math.floor(+$("#dp").value||1)),deadline:TOK.now+1,salt:hex(crypto.getRandomValues(new Uint8Array(6)))};
+  const m=orderMsg(ORDER);OSIG={s:await walletSign("Alice",m),b:await walletSign("Bob",m)};
+  $("#dorder").innerHTML=`<dt>Order</dt><dd>Alice sells ${ORDER.q} bonds to Bob for ${fmt(ORDER.p)} EUR</dd><dt>Seller sig</dt><dd>${short(hex(OSIG.s.bytes))}</dd><dt>Buyer sig</dt><dd>${short(hex(OSIG.b.bytes))}</dd>`;
+  $("#dsettle").disabled=false;log("dlog","info","Alice and Bob both signed the order","one message, two signatures; nothing has moved yet");};
+$("#dsettle").onclick=async()=>{const o=ORDER,m=orderMsg(o),dg=hex(await sha(m));
+  try{if(TOK.now>o.deadline)throw new Revert("OrderExpired()");
+    if(SETTLED.has(dg))throw new Revert("OrderAlreadySettled()","this exact order already settled");
+    if(!await REG.isValid(o.seller,m,OSIG.s))throw new Revert("InvalidSellerSignature()");
+    if(!await REG.isValid(o.buyer,m,OSIG.b))throw new Revert("InvalidBuyerSignature()");
+    const snap=JSON.stringify([TOK.bal,BOND.bal]);
+    try{move(BOND,o.seller,o.buyer,o.q);log("dlog","info",`Leg 1 executed: ${o.q} bonds Alice → Bob`,"inside the same transaction");
+      move(TOK,o.buyer,o.seller,o.p);}
+    catch(e){const [t,b]=JSON.parse(snap);TOK.bal=t;BOND.bal=b;throw new Revert(e.code,e.why+" · leg 2 failed, so the whole transaction reverted and leg 1 was undone");}
+    SETTLED.add(dg);log("dlog","ok",`Settled: ${o.q} bonds for ${fmt(o.p)} EUR`,"settle() · both legs moved atomically");}
+  catch(e){log("dlog","bad",`Settlement reverted: ${e.code}`,e.why);}renderTok();};
+$("#dfreeze").onclick=()=>{TOK.frozen.Bob=!TOK.frozen.Bob;log("dlog","info",TOK.frozen.Bob?"Issuer froze Bob's euro account":"Issuer unfroze Bob's euro account","same token as section 3");renderTok();};
+$("#dbig").onclick=()=>{$("#dp").value=(TOK.bal.Bob||0)+500;log("dlog","info","Price set above Bob's balance","sign again, then settle");};
+
+/* ---------- key migration ---------- */
+function renderKeys(){$("#kstat").innerHTML=[["ecdsa","ECDSA (today's scheme)"],["mldsa44","ML-DSA-44 (post-quantum, simulated)"]].map(([k,l])=>{const st=REG.status[k],i=STEPS.indexOf(st);
+  return `<tr><td>${l}</td><td><span class="pill ${st==="Approved"?"ok":st==="Deprecated"?"warn":"bad"}">${st}</span></td><td style="text-align:right">${i<2?`<button class="btn" data-s="${k}">${STEPS[i+1]==="Deprecated"?"Deprecate":"Retire"}</button>`:""}</td></tr>`;}).join("");
+  $("#kacc").innerHTML=["Alice","Bob"].map(n=>{const k=REG.keys[n];const ml=k.scheme==="mldsa44";return `<tr><td>${n}</td><td>${ml?"ML-DSA-44":"ECDSA"}</td><td class="num">${ml?"1,312":"64"} B</td><td class="num">${ml?"2,420":"64"} B</td></tr>`;}).join("");}
+$("#kstat").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.s,i=STEPS.indexOf(REG.status[k]);REG.status[k]=STEPS[i+1];
+  log("klog","info",`Registrar set ${k==="ecdsa"?"ECDSA":"ML-DSA-44"} to ${REG.status[k]}`,REG.status[k]==="Retired"?"retired schemes are refused everywhere, at once":"deprecated schemes still verify; status can only move forward");renderKeys();});
+$("#krot").onclick=async()=>{if(REG.keys.Alice.scheme==="mldsa44"){log("klog","info","Alice already uses ML-DSA-44");return;}
+  const secret=await mlSecret();const m=JSON.stringify({type:"Rotation",account:"Alice",newScheme:"mldsa44",newKey:short(hex(await sha(secret))),nonce:1});
+  const sig=await walletSign("Alice",m);
+  if(REG.status.mldsa44!=="Approved"){log("klog","bad","Rotation reverted: VerifierNotApproved(ML-DSA-44)");return;}
+  if(!await REG.isValid("Alice",m,sig)){log("klog","bad","Rotation reverted: InvalidRotationSignature()","the current key is no longer accepted, so Alice cannot authorise her own rotation");return;}
+  REG.keys.Alice={scheme:"mldsa44",secret};log("klog","ok","Alice rotated to ML-DSA-44","rotateKey(), authorised by her current ECDSA key · same address, same balance");renderKeys();};
+async function keyPay(from,to){const a={from,to,amount:10,validAfter:TOK.now-1,validBefore:TOK.now+1,nonce:"0x"+hex(crypto.getRandomValues(new Uint8Array(8)))};
+  const s=await walletSign(from,authMsg(a,TOK.chainId));
+  try{AUTHSIG=s;await transferWithAuthorization(a,s);log("klog","ok",`${from} paid ${to} 10 EUR`,`signed with ${s.scheme==="ecdsa"?"ECDSA":"ML-DSA-44 (simulated, 2,420-byte signature)"}`);}
+  catch(e){log("klog","bad",`${from}'s payment reverted: ${e.code}`,REG.status[REG.keys[from].scheme]==="Retired"?`${from}'s scheme is retired: the balance is intact but ${from} can no longer sign`:e.why);}renderTok();}
+$("#kalice").onclick=()=>keyPay("Alice","Bob");
+$("#kbob").onclick=()=>keyPay("Bob","Alice");
+$("#kreg").onclick=async()=>{if(REG.status.mldsa44!=="Approved"){log("klog","bad","Reverted: VerifierNotApproved(ML-DSA-44)");return;}
+  REG.keys.Bob={scheme:"mldsa44",secret:await mlSecret()};log("klog","ok","Registrar gave Bob a new ML-DSA-44 key","registerKeyFor(Bob) · no signature from Bob needed: the remedy is also a single point of control");renderKeys();};
+const GAS=[["ECDSA",7895],["P-256, built into the ledger",12712],["ECDSA + P-256 hybrid",26262],["P-256 in contract code",237278],["ML-DSA-44",8146057],["ECDSA + ML-DSA-44 hybrid",8160570]];
+(function(){const mx=Math.log10(1e7);$("#kgas").innerHTML=GAS.map(([l,g])=>`<span>${l}</span><div class="bar ${g>1e6?"hi":""}" style="width:${(Math.log10(g)-3)/(mx-3)*100}%"></div><span class="mono" style="text-align:right">${fmt(g)}</span>`).join("");})();
+
+/* ---------- failure modes ---------- */
+const N256=0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551n;
+const FAILS=[
+ {t:"Replay",s:"A signed payment order with nothing that makes it unique is paid again and again.",
+  v:async()=>{const m=JSON.stringify({to:"Mallory",amount:10});const s=await ecSign(P.Alice.ec,m);let paid=0;for(let i=0;i<3;i++)if(await ecVerify(P.Alice.ec.pub,m,s))paid+=10;return[false,`One signature, submitted 3 times: Mallory received ${paid} EUR.`];},
+  f:async()=>{const m=JSON.stringify({to:"Mallory",amount:10,nonce:1,chainId:1,contract:"0xVault"});const s=await ecSign(P.Alice.ec,m);const used=new Set();const r=[];for(let i=0;i<3;i++){if(used.has(1)){r.push("AuthorizationAlreadyUsed");continue;}if(await ecVerify(P.Alice.ec.pub,m,s)){used.add(1);r.push("paid 10");}}return[true,`Nonce, chain and contract in the message: ${r.join(" · ")}.`];}},
+ {t:"Signature malleability",s:"Every ECDSA signature has a twin. A contract that tracks spent orders by signature bytes pays twice.",
+  v:async()=>{const m=JSON.stringify({claim:7,to:"Mallory",amount:50});const s=await ecSign(P.Alice.ec,m);const r=s.slice(0,32),sv=BigInt("0x"+hex(s.slice(32)));
+   const s2=(N256-sv).toString(16).padStart(64,"0");const twin=new Uint8Array([...r,...s2.match(/../g).map(h=>parseInt(h,16))]);
+   const ok2=await ecVerify(P.Alice.ec.pub,m,twin);const spent=new Set();let paid=0;for(const x of [s,twin]){const id=hex(x);if(!spent.has(id)&&await ecVerify(P.Alice.ec.pub,m,x)){spent.add(id);paid+=50;}}
+   return[false,`Twin signature (r, n−s) verifies: ${ok2?"yes":"no (this browser enforces low-s)"}. Claims paid: ${paid} EUR for one order.`];},
+  f:async()=>{const m=JSON.stringify({claim:7,to:"Mallory",amount:50});const s=await ecSign(P.Alice.ec,m);const spent=new Set();let paid=0,out=[];for(let i=0;i<2;i++){if(spent.has(7)){out.push("rejected: claim 7 already paid");continue;}if(await ecVerify(P.Alice.ec.pub,m,s)){spent.add(7);paid+=50;out.push("paid 50");}}return[true,`Spent orders tracked by claim id: ${out.join(" · ")}.`];}},
+ {t:"Compromised signing screen (Bybit pattern)",s:"Owners approve what their screen shows; the hash they sign is a delegatecall that swaps the wallet's code.",
+  v:async()=>{const payload=JSON.stringify({to:"0xSwapper",data:"swap(0xAttackerLogic)",operation:1});const sigs=[await ecSign(P.Alice.ec,payload),await ecSign(P.Bob.ec,payload)];
+   const ok=(await ecVerify(P.Alice.ec.pub,payload,sigs[0]))&&(await ecVerify(P.Bob.ec.pub,payload,sigs[1]));
+   return[false,`Screen showed "move 10 to cold storage". 2 of 3 valid signatures: ${ok?"yes":"no"}. Delegatecall ran: slot 0 now points to attacker code; the next call swept the wallet.`];},
+  f:async()=>[true,"A transaction guard on chain refuses delegatecall to any target not pre-approved: reverted \"Guard: delegatecall not allowed\". Valid signatures, refused instruction."]},
+ {t:"Signing service without a request policy (Binance pattern)",s:"A service checks who is asking, not what it is asked to sign. A delegation of the hot wallet to attacker code is signed like anything else.",
+  v:async()=>{const req=JSON.stringify({type:"0x04 set-code authorization (EIP-7702)",delegateTo:"0xAttackerCode",chainId:1});const s=await ecSign(P.Carol.ec,req);
+   return[false,`Caller authenticated (a compromised engineer device): yes. Request type checked: no. Signed: ${short(hex(s))}. The hot wallet now runs attacker code; the key never left the service.`];},
+  f:async()=>[true,"Policy accepts only typed requests it understands (transfer, to an allow-listed address, within limits). Unknown type 0x04: refused before signing."],
+  n:"A reconstruction of the pattern described in Binance's own report, not Binance's system."},
+ {t:"Bridge that treats 'unproven' as proven (Nomad pattern)",s:"An upgrade marked the zero root as confirmed; an unproven message has root zero.",
+  v:async()=>[false,"process(Mallory, 100,000): proof root = 0x00 (none) · confirmAt[0x00] = 1 · message accepted, funds released."],
+  f:async()=>[true,"Initialisation refuses a zero root: confirmAt[0x00] = 0 · process() reverted \"not proven\"."]},
+ {t:"Bridge that lets the caller choose the verifier (Wormhole pattern)",s:"The code that checks guardian signatures is taken from the caller's input.",
+  v:async()=>[false,"redeem(Mallory, 120,000, checker = AlwaysYes) · attested() returned true · 120,000 tokens minted with no guardian signature."],
+  f:async()=>[true,"Verifier fixed at deployment to the guardian set; the caller's checker is ignored · redeem() reverted \"not attested\"."]},
+ {t:"Weak key generation (Profanity pattern)",s:"A key derived from a small seed can be found by trying every seed. This one is real: your browser searches 65,536 seeds.",
+  v:async()=>{const seed=Math.floor(Math.random()*65536);const addr=hex(await sha(await sha(new Uint8Array([seed>>8,seed&255])))).slice(0,40);const t0=performance.now();let found=-1;
+   for(let i=0;i<65536;i++){const a=hex(await sha(await sha(new Uint8Array([i>>8,i&255])))).slice(0,40);if(a===addr){found=i;break;}}
+   return[false,`Target address ${short(addr)}. Seed recovered: ${found} after ${((performance.now()-t0)/1000).toFixed(2)} s. Whoever has the seed has the key.`];},
+  f:async()=>[true,"Key drawn from 256 bits of operating-system randomness: 2^256 seeds. No search can cover that."]}
+];
+FAILS.forEach((c,i)=>{const d=document.createElement("div");d.className="card";
+  d.innerHTML=`<div style="font-weight:600">${c.t}</div><div style="color:var(--ink2);font-size:13px;margin:2px 0 10px">${c.s}</div><div class="row"><button class="btn" data-v>Run vulnerable</button><button class="btn" data-f>Run with fix</button></div><ol class="log" id="f${i}"></ol>${c.n?`<p class="note">${c.n}</p>`:""}`;
+  const run=async(fn,lab,b)=>{b.disabled=true;try{const[ok,txt]=await fn();log("f"+i,ok?"ok":"bad",lab,txt);}finally{b.disabled=false;}};
+  d.querySelector("[data-v]").onclick=e=>run(c.v,"Vulnerable",e.target);d.querySelector("[data-f]").onclick=e=>run(c.f,"With fix",e.target);$("#fcards").append(d);});
+
+/* ---------- networks ---------- */
+const ACT=["Holder","Issuer","Operators","Outsider"];
+const NETS={
+ evm:{l:"EVM ledger",src:"Reference contracts in contracts/src (Solidity, OpenZeppelin AccessManager, UUPS upgrade behind a 2-day timelock).",
+  rows:[["Move own funds",["✓ with a signed authorisation","✕ not without the holder's signature","✕","✕"]],
+   ["Move a holder's funds in settlement",["✕","✓ only the settlement contract's role (settlementTransfer)","✕","✕"]],
+   ["Freeze an account",["✕","✓ setFrozen, issuer role","✕","✕"]],
+   ["Pause everything",["✕","✓ pause, issuer role","✕","✕"]],
+   ["Upgrade the contract code",["✕","✓ after a 2-day timelock","✕","✕"]],
+   ["Replace a holder's key",["✓ rotateKey, signed with the current key","✓ registerKeyFor, registrar role","✕","✕"]],
+   ["Change the ledger's own signature scheme",["✕","✕","✓ network upgrade (a hard fork)","✕"]]]},
+ stellar:{l:"Stellar",src:"Soroban contracts in soroban/ (token generated with the OpenZeppelin Wizard, DvP, contract account). Issuer freeze and clawback depend on how the asset is configured.",
+  rows:[["Move own funds",["✓ authorised by the account's own check","✕","✕","✕"]],
+   ["Change signature scheme, keep the address",["✓ rotate(), signed with the current key","✕","✕","✕"]],
+   ["Freeze or claw back",["✕","✓ if the asset enables it","✕","✕"]],
+   ["Upgrade the contract code",["✕","✓ contract admin, if upgradeable","✕","✕"]],
+   ["Change the network protocol",["✕","✕","✓ validators vote (reported)","✕"]]],
+  extra:true},
+ canton:{l:"Canton",src:"Daml model in daml/Powers.daml (template Holding: signatories issuer and owner).",
+  rows:[["Offer a transfer",["✓ choice Transfer, controller owner","✕ missing authorisation from owner","✕","✕"]],
+   ["Split a holding",["✓ choice Split, controller owner","✕","✕","✕"]],
+   ["Freeze a holding",["✕ missing authorisation from issuer","✓ choice SetFrozen, controller issuer","✕","✕"]],
+   ["Claw back",["✕","✓ choice ClawBack, controller issuer","✕","✕"]],
+   ["Destroy (archive) a holding",["✕ needs issuer too","✕ needs owner too","✕","✕"]],
+   ["Upgrade the package",["✕","✕","✓ node operators vet the new version","✕"]]]}
+};
+let NET="evm";
+function renderNet(){const n=NETS[NET];$("#nseg").innerHTML=Object.entries(NETS).map(([k,v])=>`<button data-n="${k}" aria-pressed="${k===NET}">${v.l}</button>`).join("");
+  $("#nhead").innerHTML=`<tr><th>Action</th>${ACT.map(a=>`<th style="text-align:center">${a}</th>`).join("")}</tr>`;
+  $("#nbody").innerHTML=n.rows.map(([a,c],r)=>`<tr><td>${a}</td>${c.map((x,j)=>`<td class="cell" tabindex="0" data-r="${r}" data-c="${j}" aria-label="${a}, ${ACT[j]}: ${x}"><span class="pill ${x[0]==="✓"?"ok":"mut"}">${x[0]==="✓"?"Yes":"No"}</span></td>`).join("")}</tr>`).join("");
+  $("#nsrc").textContent="Source: "+n.src;
+  $("#nextra").innerHTML=n.extra?`<div class="row"><span>Contract account <span class="mono" id="sacct"></span> · scheme <b id="sscheme">P-256</b> · balance <span class="mono">1,000</span></span><button class="btn" id="srot">Rotate to Ed25519</button></div>`:"";
+  if(n.extra){$("#sacct").textContent=short(P.Alice.addr.slice(2));$("#srot").onclick=()=>{const cur=$("#sscheme").textContent,nx=cur==="P-256"?"Ed25519":"P-256";$("#sscheme").textContent=nx;$("#srot").textContent="Rotate to "+cur;
+    log("nlog","ok",`Stellar contract account rotated ${cur} → ${nx}`,"rotate() · address and balance unchanged; tokens and DvP never see the scheme. On an EVM ledger a new scheme means a new address.");};}}
+$("#nseg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;NET=b.dataset.n;renderNet();});
+function cellLog(t){const td=t.closest("td.cell");if(!td)return;const n=NETS[NET],[a,c]=n.rows[+td.dataset.r],x=c[+td.dataset.c];
+  log("nlog",x[0]==="✓"?"ok":"bad",`${n.l} · ${ACT[+td.dataset.c]} tries: ${a}`,x.slice(2)||"no rule grants this power");}
+$("#nbody").addEventListener("click",e=>cellLog(e.target));$("#nbody").addEventListener("keydown",e=>{if(e.key==="Enter")cellLog(e.target);});
+
+/* ---------- hash lab ---------- */
+const SATD={4:[.733,.574,.517,.644,.178,.631,.606,.126,.538],8:[1.535,2.756,1.052,3.676,.404,4.059,5.04,.143,6.214],12:[31.352,14.435,42.135,2.88,19.329,7.906,53.496,33.495,48.663],16:[null,null,null,null,null,null,null,null,73.655],20:[null,null,null]};
+const BROWSER={};let STOP=false;
+function hkLabel(){const k=+$("#hk").value;$("#hkv").textContent=`${k} bits · ${fmt(2**k)} possibilities`;}
+function drawChart(){const W=640,H=220,L=46,R=16,T=12,B=34,ks=[4,8,12,16,20],x=k=>L+(k-4)/16*(W-L-R),lo=-4,hi=Math.log10(120),y=s=>T+(hi-Math.log10(Math.max(s,1e-4)))/(hi-lo)*(H-T-B);
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Seconds to recover hidden bits: SAT solvers versus plain search in this browser">`;
+  [1e-4,1e-2,1,100].forEach(v=>{g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v>=1?v+" s":v*1000+" ms"}</text>`;});
+  g+=`<line x1="${L}" x2="${W-R}" y1="${y(120)}" y2="${y(120)}" stroke="var(--ink3)" stroke-dasharray="3 3"/><text x="${W-R}" y="${y(120)-5}" text-anchor="end">120 s limit</text>`;
+  ks.forEach(k=>{g+=`<text x="${x(k)}" y="${H-12}" text-anchor="middle">${k} bits</text>`;(SATD[k]||[]).forEach((s,i)=>{const cx=x(k)-9+(i%3)*9;
+    g+=s==null?`<text x="${cx}" y="${y(120)+4}" text-anchor="middle" style="fill:var(--ink3)">×</text>`:`<circle cx="${cx}" cy="${y(s)}" r="4" fill="var(--ink)" fill-opacity=".75" stroke="var(--bg)" stroke-width="1.5"><title>SAT solver: ${s} s</title></circle>`;});});
+  const pts=Object.entries(BROWSER).map(([k,s])=>[+k,s]).sort((a,b)=>a[0]-b[0]);
+  if(pts.length>1)g+=`<polyline fill="none" stroke="var(--accent)" stroke-width="2" points="${pts.map(([k,s])=>x(k)+","+y(s)).join(" ")}"/>`;
+  pts.forEach(([k,s])=>{g+=`<circle cx="${x(k)}" cy="${y(s)}" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"><title>Plain search here: ${s.toFixed(3)} s</title></circle>`;});
+  g+=`<text x="${x(12)-16}" y="${y(40)+4}" text-anchor="end" style="fill:var(--ink);font-weight:600">SAT solvers, recorded</text>`;
+  if(pts.length){const [lk,ls]=pts[pts.length-1];g+=`<text x="${x(lk)+(lk>=16?-10:10)}" y="${y(ls)+(lk>=16?18:4)}" text-anchor="${lk>=16?"end":"start"}" style="fill:var(--accent);font-weight:600">plain search, your browser</text>`;}
+  else g+=`<text x="${x(4)}" y="${y(1e-3)}" style="fill:var(--accent)">Run a search to add your browser's time</text>`;
+  g+=`</svg>`;
+  $("#hchart").innerHTML=g;}
+$("#hk").oninput=hkLabel;
+$("#hstop").onclick=()=>{STOP=true;};
+$("#hrun").onclick=async()=>{const k=+$("#hk").value;STOP=false;$("#hrun").disabled=true;$("#hstop").disabled=false;
+  const msg=crypto.getRandomValues(new Uint8Array(64));const target=hex(await sha(msg));const work=msg.slice();const t0=performance.now();let found=-1;
+  for(let v=0;v<2**k;v++){for(let b=0;b<k;b++){const bit=511-b,byte=bit>>3,mask=1<<(7-(bit&7));if((v>>b)&1)work[byte]|=mask;else work[byte]&=~mask;}
+    if(hex(await sha(work))===target){found=v;break;}
+    if((v&4095)===4095){$("#hrun").textContent=`Searching… ${Math.round(v/2**k*100)}%`;await new Promise(r=>setTimeout(r));if(STOP)break;}}
+  const s=(performance.now()-t0)/1000;$("#hrun").disabled=false;$("#hstop").disabled=true;$("#hrun").textContent="Run plain search";
+  if(found<0){log("hlog","info",`Stopped after ${s.toFixed(2)} s`);return;}
+  BROWSER[k]=s;drawChart();const sat=(SATD[k]||[]).filter(x=>x!=null);
+  log("hlog","ok",`${k} hidden bits recovered by plain search in ${s<1?(s*1000).toFixed(0)+" ms":s.toFixed(2)+" s"}`,`target ${short(target)} · ${fmt(found+1)} hashes tried${SATD[k]?` · SAT solvers: ${sat.length}/${SATD[k].length} solved${sat.length>1?`, ${Math.min(...sat).toFixed(2)}–${Math.max(...sat).toFixed(2)} s`:sat.length?`, in ${sat[0].toFixed(2)} s`:""}`:""}`);};
+
+/* ---------- init ---------- */
+(async()=>{const start=(location.hash||"").slice(1);show(sections.some(s=>s.id===start)?start:"overview");hkLabel();drawChart();
+  if(!(window.crypto&&crypto.subtle)){const m=document.createElement("p");m.className="lede";m.style.color="var(--bad)";
+    m.textContent="Your browser blocks WebCrypto in this context, so signatures and hashes cannot run. Open the file directly in Chrome, Edge, Firefox or Safari (double-click it), or from the GitHub page.";
+    $("header.top").append(m);return;}
+  for(const n of [...NAMES]) await makeAcct(n);fillSel($("#tfrom"),"Alice");fillSel($("#tto"),"Bob");
+  renderTok();renderKeys();renderNet();})();
+</script>
+</body>
+</html>
