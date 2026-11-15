@@ -49,11 +49,11 @@ These rules are also in Claude memory (`chapter2-working-rules`).
   git log --all -p | grep -nE "BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|github_pat_|xox[baprs]-|sk-[A-Za-z0-9]{20,}|CERTORAKEY *=" | cut -c1-120
   ```
   Expected: no output. Note: `contracts/lib/` submodules are not part of our history; `contracts/test/fixtures/mldsa44.json` holds an ML-DSA *public* key and signatures from a public test seed (not secret).
-- **SAT experiment:** may still be running in the background (`sat/run_experiment.py`, log `results/sat_run.log`, data `results/sat_scaling.csv`). At last check: rounds 12–17 all solved by all three solvers; at 18 rounds CryptoMiniSat solved 1 of 3.
+- **SAT experiment: FINISHED** (`results/sat_scaling.csv`, `results/fig_sat_scaling.png`, `results/sat_summary.csv`; 120 s limit, 3 instances per point). All 512 message bits unknown: every solver solved 12–17 rounds; at 18 rounds CryptoMiniSat 1/3, CaDiCaL 2/3, Kissat 3/3; at 19 rounds none. Full 64 rounds with k unknown bits: all solved at k ≤ 12; at k = 16 Kissat 1/3, the others 0/3; at k = 20 none. Interpretation for the annex: at full rounds the solvers do no better than trying the 2^k candidates would (2^16 hash evaluations take well under a second). Still to do: look at the figure once, then fill `docs/checkpoint-2.md` §5 and `CLAIMS.md` C13.
 
 ## Next steps
 
-1. **Check the SAT run:** `pgrep -f run_experiment.py; tail -5 results/sat_run.log`. If it has finished (`wrote ...` line), run `cd sat && ~/.venvs/research/bin/python plot.py`, check `results/fig_sat_scaling.png`, then update `docs/checkpoint-2.md` §5 and `CLAIMS.md` C13. If it died, rerun with `--timeout 60` in the background.
+1. **SAT write-up:** view `results/fig_sat_scaling.png`, then update `docs/checkpoint-2.md` §5 and `CLAIMS.md` C13 with the results recorded above.
 2. **Finish the secret scan** (command above), then:
    - Add an optional Certora job to `.github/workflows/ci.yml` that runs only when `secrets.CERTORAKEY` is set, and tell the author to add the secret.
    - `gh repo create crypto-assumptions-fmi-blockchain --private --source . --push`, then `gh run watch` or `gh run list`. Fix CI failures.
