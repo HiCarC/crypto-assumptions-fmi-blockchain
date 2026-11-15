@@ -150,3 +150,13 @@ Nothing. All work is committed and pushed.
 ## Status at Checkpoint 3 (latest)
 
 Phases 5 and 6 are done. Next actions depend only on the author's answers to `docs/author-brief.md` §4 and §6 (publish the article, publish the annex, repository visibility, the CERTORAKEY secret). Do not publish anything or change the repository's visibility without an explicit yes.
+
+## Update: article version 2 (15 November 2026, later)
+
+The author replaced the article direction with `docs/rewrite-instruction.md`: Chapter 2 must answer the Chapter 1 promise layer by layer (consensus, signatures, ZK proofs, smart-contract execution, "a different security problem?"). Written in the first person singular, with the SAT experiment as the hook. Binance gets one paragraph. The gas measurements and Project Leap move to Chapter 3.
+
+- Done: `article/final.md` (v2, 1,650 words), `article/draft.md` (v2 draft), `article/review-log.md` (v2 reviews, cryptographer weighted most), `docs/author-brief.md` (v2 thesis, step-size audit, promise checklist). New sources in `research/primary/layers.md`; claims F1–F14 in `CLAIMS.md`. Article figure: `results/fig_sat_article.png` (from `sat/plot.py`).
+- Preserved: `article/final-v1-powers.md`, `review-log-v1.md`, `draft-v1-powers.md`.
+- Open issue for the author: SAT comparability with Zaikin (2026); see `LIMITATIONS.md` and `docs/author-brief.md` §4.1.
+- Possible follow-up if the author wants it: align the annex summary (§1) with the v2 framing. Its body already supports it.
+- STOP state: waiting for the author. Nothing is published; the repository is private.

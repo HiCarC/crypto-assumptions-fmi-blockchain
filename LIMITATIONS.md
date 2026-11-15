@@ -9,6 +9,10 @@ Read this before relying on any number, figure or statement in this repository.
 - **It does not estimate the cost of attacking a full-round hash function.** The SAT experiment measures three solvers on one plain encoding at reduced rounds and at full rounds with few unknown bits. No extrapolation is made or implied.
 - **It does not predict when a cryptographically relevant quantum computer will exist**, and uses no probability for it.
 
+## SAT experiment versus the SAT literature
+
+A 2026 preprint (Zaikin) reports that SAT methods inverted 16-round SHA-256 in 2012 and reached 19 rounds only with a parameterised solver. My plain encoding found inputs at 18 rounds with the whole 512-bit block free. Every solution was checked against a reference implementation that matches `hashlib` at 64 rounds, so the result is correct *for my problem definition*. The definitions in the literature (message padding, choice of targets, how rounds are counted, feed-forward) were not reconciled with mine. My round counts must therefore not be compared with published records until that is done.
+
 ## The October 2026 results
 
 Both papers are unrefereed. Independent review is reported as under way; as of 15 November 2026 no confirmation and no refutation has been published. Everything here is conditional on the results standing. The Lean formalisations were not re-checked in this project.

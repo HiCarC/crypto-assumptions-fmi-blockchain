@@ -54,6 +54,25 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | E5 | A new Daml package version must pass compatibility checks at build and at each participant's upload; there is no separate authorisation ceremony | V | docs.canton.network |
 | E6 | Ronin and Nomad root causes and amounts | R | Primaries returned 404/403 |
 
+## F. Layer-by-layer facts (article v2, read 15 November 2026; `research/primary/layers.md`)
+
+| ID | Claim | Label | Evidence |
+|---|---|---|---|
+| F1 | OpenAI's preprint (Appendix C, Corollary C.2) gives 2^{o(n)}-time inversion of Boolean maps with constant output locality, notes it applies to constant-locality versions of Goldreich's candidate one-way functions, and says it "does not rule out one-wayness against polynomial-time algorithms"; the PDF does not mention pseudorandom generators or hashing | V | OpenAI preprint PDF |
+| F2 | Goldreich (2000) proposed candidate one-way functions applying a fixed local predicate to small, expander-defined subsets of input bits | V | ECCC TR00-090 |
+| F3 | Jain–Lin–Sahai obtain indistinguishability obfuscation from four assumptions, one of which is a Boolean PRG in NC^0 (constant locality) | V | IACR ePrint 2020/1003 |
+| F4 | A published preimage attack reaches 42 of SHA-256's 64 steps at about 2^251.7 operations | V | Guo–Matusiewicz, ePrint 2009/477 |
+| F5 | Later attacks reportedly reach 43 steps (2^254.9) and 45 rounds (2^255.5) | R | Aoki et al. 2009; Khovratovich–Rechberger–Savelieva 2012 (excerpts) |
+| F6 | A 2026 SAT-based preprint reports inverting 19-round SHA-256 compression for the first time, the previous SAT record being 16 rounds (2012). **Not directly comparable with C13**: problem definitions (padding, targets, round counting) not reconciled | V (the preprint's claim) | Zaikin 2026 preprint |
+| F7 | Certora: rules and contract are "compiled to a logical formula … proved or disproved by an SMT solver" | V | docs.certora.com |
+| F8 | Halmos is a symbolic testing tool for EVM smart contracts | V | github.com/a16z/halmos README. Solver names are R |
+| F9 | Bitcoin block headers are hashed with SHA256(SHA256()) | V | developer.bitcoin.org |
+| F10 | Ethereum's consensus specification defines validator signatures as BLS12-381 signatures | V (type definition) / R (attestation use not read) | ethereum/consensus-specs phase0 |
+| F11 | CometBFT validators use Ed25519 keys in the documented configuration | V (sample config) | cometbft docs |
+| F12 | SETH implies ETH, so refuting ETH refutes SETH | R / I (a standard implication) | Wikipedia; Impagliazzo–Paturi–Zane 2001 |
+| F13 | My SHA-256 encoding of one full compression call has about 72,000 variables | V | `results/sat_summary.csv` |
+| F14 | An elliptic-curve discrete-log instance written as SAT would be far larger than the SHA-256 formula, so the claimed speed-up leaves that route slower than known attacks | I | Author's reasoning; not computed |
+
 ## C. Measurements made in this repository (all V, reproducible)
 
 | ID | Claim | Evidence |

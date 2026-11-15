@@ -1,83 +1,68 @@
-# Adversarial review log — Chapter 2 article
+# Adversarial review log — Chapter 2, version 2 (layer by layer)
 
-Draft reviewed: `article/draft.md` (15 November 2026). Each reviewer's objections were written down before any revision. Resolutions are applied in `article/final.md`. "CLAIMS" refers to `CLAIMS.md`.
+Text reviewed: `article/draft.md` (v2), revised into `article/final.md`. Version 1 (powers framing) and its review are kept in `final-v1-powers.md` and `review-log-v1.md`. Objections were written down before any revision. The cryptographer's review was weighted most, as the rewrite instruction asks.
 
-## 1. Applied cryptographer (MIT/IACR standard)
-
-| # | Objection | Resolution |
-|---|---|---|
-| 1.1 | "The signatures, hash functions and zero-knowledge proofs … do not rest on that hardness" is stated as fact, but CLAIMS A5 is an inference. | Reworded as the author's reading of the published security analyses ("As I read…"). The supporting evidence (A6, E1, E2) is in the annex. |
-| 1.2 | "Large quantum computers would break the signature schemes" is imprecise: it needs a sufficiently large, error-corrected machine running Shor's algorithm, and it applies to elliptic-curve and RSA signatures, not to hash-based ones. | Now "a sufficiently large, error-corrected quantum computer would break the elliptic-curve signatures that ledgers use today". |
-| 1.3 | "ML-DSA, the new NIST standard": NIST published three post-quantum standards in 2024. | Now "one of NIST's new post-quantum signature standards". |
-| 1.4 | The SAT paragraph risks being read as evidence that SHA-256 is secure. | The existing caveat ("a statement about today's tools") is kept, and "and one way of writing the problem" is added. |
-| 1.5 | "Every signature was valid" — whose assessment? | Supported by Chainalysis ("valid signed authorizations", V) and by Binance's description of the signing service being used. Kept. |
-
-## 2. Head of FMI oversight at a euro-area NCB (primary persona)
+## 1. Applied cryptographer (weighted most)
 
 | # | Objection | Resolution |
 |---|---|---|
-| 2.1 | "Hot wallet", "gas", "contract code", "DLT" and "multi-party key stores" are not defined. | Each is defined in one clause at first use, or replaced. |
-| 2.2 | The paragraph on cost ("The cost is not fixed…") makes three steps: native verifier, governance, Project Leap. | Split into two paragraphs. |
-| 2.3 | "Two further limits appeared" makes two separate points. | Split into two paragraphs. |
-| 2.4 | The closing frameworks paragraph makes three steps (PFMI silence, DORA wording, the gap). | Split: first the PFMI and DORA facts, then the gap. |
-| 2.5 | "Leave about five years" — from November 2026 to end-2030 is about four. | Corrected to "about four years". |
-| 2.6 | Can I act on Monday? The questions are answerable, but action 2 does not say what a good signer policy looks like. | Action 2 now names the control: signing systems accept only request types they understand, with limits. |
+| 1.1 | **Any NP problem reduces to SAT, so a faster SAT algorithm *is* a route to the discrete-logarithm problem.** The draft's "offers no known route" is wrong as stated. | Rewritten. The route exists in principle, but the formula is far larger than the SHA-256 one (about 72,000 variables in my encoding), so the claimed speed-up leaves it far slower than known attacks. Marked as the author's reading (CLAIMS F13, F14). |
+| 1.2 | "Not known to be one of the hard problems 3-SAT represents" is loose. The discrete-logarithm problem is not believed to be NP-complete. | Now "not believed to be among the hardest problems that 3-SAT stands for". |
+| 1.3 | The local-PRG nuance in the draft claimed OpenAI's result "concerns" pseudorandom generators. The paper speaks only of Goldreich's candidate one-way functions, and adds that polynomial-time one-wayness is not ruled out. | Rewritten to the paper's own claim and caveat (F1). The link to generators and obfuscation is stated separately, as Jain–Lin–Sahai's assumption (F3), with "I found no published analysis" of whether the result matters there. |
+| 1.4 | Reduced-round SHA-256: the draft left the literature unverified. | Now cites the verified 42-step attack at almost brute-force cost (F4). The 43- and 45-step results are reported only (F5) and are not used. |
+| 1.5 | **My 18-round SAT result appears to exceed the SAT literature (16 rounds in 2012, 19 only in 2026 with a specialised solver).** | Every solution was checked against the hash, so the result holds for my definition. But definitions were not reconciled, so the article makes no comparison with the SAT literature; the caption says "one straightforward encoding of my own". Recorded in LIMITATIONS, and item 1 of the author's checks. |
+| 1.6 | Ethereum's validators use BLS signatures, but the attestation use was not read at source. Ed25519 is a signature scheme, not a curve, and "usually elsewhere" generalises. | Now "BLS signatures on the BLS12-381 curve in Ethereum's case, Ed25519 in several permissioned ledgers". Supported by the BLS12-381 type in the consensus specification (F10), Canton's default (D13) and CometBFT's documented configuration (F11). |
+| 1.7 | "Because the strong form implies the ordinary one" is standard but sourced only to a survey. | Kept as a standard implication; labelled R/I (F12). |
+| 1.8 | ZK soundness list: STARKs rest mainly on hashing and the random-oracle model; SNARKs on curve and knowledge assumptions. | The list covers both; no change. |
+
+## 2. Head of FMI oversight (primary persona)
+
+| # | Objection | Resolution |
+|---|---|---|
+| 2.1 | "SAT solver" and "round" are not defined. | Both defined in one clause in the hook. |
+| 2.2 | "Pairing-based mathematics" is jargon. | Now "related curve problems". |
+| 2.3 | The smart-contract paragraph listing five proved properties is dense. | Turned into a short bullet list; the Halmos result is a separate paragraph. |
+| 2.4 | Can I act on Monday? | Six questions, each answerable by an operator. Question 2 ties to an existing DORA duty. |
 
 ## 3. G-SIB CISO
 
 | # | Objection | Resolution |
 |---|---|---|
-| 3.1 | "At Binance, the system checked who was asking, not what it was being asked to sign" goes beyond what Binance published. | Removed as a statement about Binance. The point is now made through our own reconstruction (CLAIMS C7, V), labelled as such. |
-| 3.2 | "Binance's signing policy, on its own account, was not ready for it" — Binance's report does not say this; it came from third-party analysis. | Removed. The article now says only that the attacker used the authorisation type added in May 2025 (V). |
-| 3.3 | "Handing control of a hot wallet" overstates Binance's "partial execution rights". | Now "giving code chosen by the attacker the right to act on a hot wallet". |
-| 3.4 | The registrar point needs a control, not only a warning. | Covered by question 4 and the annex; no change in the article, for length. |
+| 3.1 | The questions should connect to obligations institutions already have. | Question 2 cites DORA's technical standard: update cryptography on developments in cryptanalysis (CLAIMS D22). |
+| 3.2 | Binance is now one paragraph of evidence. Is "the operations around them failed" fair? | It follows from Binance's own description: unauthorised use of the signing service, no evidence of key leakage (B2, B4). Kept. |
 
 ## 4. Smart-contract auditor
 
 | # | Objection | Resolution |
 |---|---|---|
-| 4.1 | The thousandfold figure comes from one experimental, unaudited verifier; its authors report an optimised version about seven times cheaper. | Sentence added: "its authors report an experimental version about seven times cheaper", read from the project's own README. The caption already states the implementation is experimental. |
-| 4.2 | "In our reference contracts" should make clear that this is a research build, not a production system. | The annex and repository links carry this; the caption says so. Kept. |
-| 4.3 | The incident sentence "none came from a broken cryptographic primitive" relies partly on root causes that are only reported (Ronin, Wormhole, Nomad, Bybit). | Reworded to "we found none" and flagged in the author brief as a qualitative statement partly resting on reported sources. |
+| 4.1 | "Proved for every possible state" hides the abstraction: signature validity is assumed. | Added "taking the signature checks themselves as given". |
+| 4.2 | Halmos's solver names are only reported. | Not named in the article (F8). |
+| 4.3 | "SMT, a richer descendant of SAT solving" is a simplification. | Acceptable for the persona; SMT solvers are built around a SAT core. Kept as plain description. |
 
 ## 5. Sceptical journalist or economist
 
 | # | Objection | Resolution |
 |---|---|---|
-| 5.1 | Strongest counter-argument: regulated FMIs on permissioned ledgers, with HSMs and four-eyes controls, are not exchanges. Using Binance is alarmist. | Added: a well-run FMI will have stronger controls than an exchange. The point is that the same four questions apply, and on a shared ledger some answers sit outside the institution. |
-| 5.2 | Comparing "affected" (Binance) with "stolen" (Bybit) mixes measures. | Now "more than four times the US$1.5 billion taken from Bybit". Both are gross amounts as reported; noted in the annex. |
-| 5.3 | "47 of 56 not found" could be read as an indictment. | Already qualified ("not evidence of weakness … have to be requested"). Kept. |
-| 5.4 | "AI-assisted attacks now pass the test" overstates benchmark results; other studies find weaker real-world performance. | Now "comes much closer, at least in benchmarks". |
-| 5.5 | "Freezes … were possible only because some assets have issuers…" is an inference about a specific case. | Reworded as a general statement: freezes are possible only where some party holds a freeze power. |
+| 5.1 | Strongest counter-argument: nobody serious thought ETH threatened ECDSA, so the article knocks down a straw man. | The article's added value is concrete: my own solver measurements, the one genuine nuance (local functions) and the dual-use twist in verification. The TL;DR states the conclusion up front rather than building suspense. |
+| 5.2 | The dual-use twist is speculative, given that the result is asymptotic. | The text says so: "a direction to watch, not a change today". |
+| 5.3 | "47 of 56" could read as an indictment. | Worded as "not found in public material". The fuller context is in the annex and v1. |
 
 ## 6. The senior expert who reviewed Chapter 1
 
 | # | Objection | Resolution |
 |---|---|---|
-| 6.1 | Formula count. | Zero displayed equations; no inline symbols beyond figures in US$ and percentages. |
-| 6.2 | Step size: see the audit in `docs/author-brief.md`. Three paragraphs had two or three steps (2.2–2.4). | Split. No remaining paragraph is rated "large". |
-| 6.3 | The jump from "the mathematics holds" to "four powers" needs one sentence of bridge. | "The short answer…" paragraph in the Chapter 1 section provides it; kept. |
-| 6.4 | Typos and terminology. | Proofread for British spelling (authorisation, tokenised, programme), consistent "post-quantum", "signer policy", "freeze". |
-
-## Claims check
-
-Every factual sentence in `article/final.md` was traced to a V claim, an explicitly marked inference, or the repository's own measurements. The trace table is in `docs/author-brief.md` §4.
+| 6.1 | Formula count. | Zero displayed equations; no inline symbols. |
+| 6.2 | Uniform step size across the four layers. | Each layer follows the same four-step order (relies on → rests on ETH? → what I found → residual). See the step-size audit in `docs/author-brief.md`. |
+| 6.3 | The jump from signatures to quantum. | One sentence, pointing to Chapter 3. |
 
 ## Number check
 
-| Number in the article | Source |
+| Number | Source |
 |---|---|
-| US$6.3 billion (Binance) | CLAIMS B1 (Binance report: about US$6.34 billion) |
-| US$1.5 billion (Bybit), "more than four times" | B10 (FBI PSA); 6.34 / 1.5 = 4.2 |
-| US$2.85 billion frozen or intercepted | B5 |
-| May 2025 (EIP-7702) | E3 |
-| 18 and 19 of 64 rounds; a dozen bits; up to a minute | C13; `results/sat_summary.csv` (12 bits: median up to 48.7 s) |
-| 207 hacks, about US$972 million, 15% / 76% | B13 (TRM Labs) |
-| 207 of 405; 2,849 contracts; two flaws; US$3,476 | D19 |
-| 27 platforms; 14; 47 of 56 | C15; `results/cbom_summary.json` |
-| after 2030 / after 2035 (NIST); end of 2030 (EU) | D1, D5 |
-| about a thousand times; 37 times larger | C1 (8,146,057 / 7,955 = 1,024); C2 (2,420 / 65 = 37.2) |
-| almost twenty times cheaper | C1 (237,278 / 12,712 = 18.7) |
-| about seven times cheaper (optimised variant) | ETHDILITHIUM README: 1,196,707 vs 8.1 million measured = 6.8 |
-| at least ten times slower (Project Leap) | D23 ("at least an order of magnitude") |
-| about four years | November 2026 to end-2030 |
+| 18 / 19 of 64 rounds; a dozen bits; up to a minute; two minutes | C13, `results/sat_summary.csv` (120 s limit) |
+| 42 of 64 steps | F4 |
+| about 72,000 variables | F13 (71,925) |
+| 14 platforms; 47 of 56 answers | C15 |
+| US$6.3 billion | B1 |
+| 2020 (Jain–Lin–Sahai) | F3 |
+| five properties (Certora) | C11 |

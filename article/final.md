@@ -2,125 +2,122 @@
 
 ## Headline options
 
-1. The Mathematics Held. Who Holds the Powers That Matter?
-2. Valid Signatures, Wrong Instructions: Where Blockchain Cryptography Fails
-3. The Ledger's Cryptography Is Sound. Who Can Change Its Locks?
+1. Would a Faster 3-SAT Algorithm Break the Blockchain? Layer by Layer, No — With One Twist
+2. From 3-SAT to the Ledger: Consensus, Signatures and Proofs Stand; Verification Shifts
+3. The October 3-SAT Results Meet Blockchain Finance: Sound Mathematics, a Dual-Use Twist
 
 ## Subtitle options
 
-1. The October 3-SAT results leave blockchain cryptography intact. The risks sit with those who instruct, change and freeze the ledger. Next: post-quantum migration of payment systems.
-2. From Chapter 1's question to tokenised finance: four powers, one price tag, and the questions authorities should ask. Next chapter: post-quantum migration in payments.
-3. A sound primitive is not a secure system. Lessons from a US$6.3 billion attack that broke no cryptography. Next chapter: post-quantum migration in payments.
+1. Chapter 1 promised to test consensus, signatures, zero-knowledge proofs and smart contracts against the October results. The mathematics holds; what changes is the remedy. Next: post-quantum migration of payment systems.
+2. I pointed today's best SAT solvers at the hash behind Bitcoin, then asked the same question of every layer of a ledger. Next chapter: post-quantum migration in payments.
+3. Why the AI-generated 3-SAT results leave blockchain cryptography standing, why contract-verification tools are the exception, and what authorities should ask. Next: post-quantum payments.
 
 ---
 
-*TL;DR: The AI-generated 3-SAT results of October do not weaken the cryptography that blockchains rely on. The losses that matter come from four powers around that cryptography: who can instruct a signing system, who can change a ledger's rules, who can freeze an asset, and who decides which keys count. Public documentation rarely says who holds these powers on institutional ledgers. And moving a ledger to post-quantum signatures has a real cost that only its governance can lower.*
+*TL;DR: On current knowledge, a much faster algorithm for 3-SAT would not weaken the consensus, signatures or zero-knowledge proofs that blockchains rely on, because none of them rests on the hardness the October results address. The one place where SAT solving matters directly is smart-contract verification, where any practical advance would help defenders and attackers alike. What blockchains do change is the consequence and the remedy when an assumption weakens: the record is permanent, and replacing a primitive is a governance decision. That is where authorities' questions should go.*
 
 ---
 
-On 29 October, an attack affected about US$6.3 billion in digital assets held by Binance. That is more than four times the US$1.5 billion taken from Bybit in February 2025.
+I wanted to see what today's tools can do before asking what a better algorithm might do. So I pointed three of the best SAT solvers available, programs that search for values satisfying a set of logical constraints, at SHA-256, the hash function behind Bitcoin. I asked them to find inputs that produce a given output.
 
-Binance's own account is notable for what did not happen. The day after the attack, it said it had found no evidence that any wallet's private key had leaked.
+SHA-256 scrambles its input in 64 successive rounds. On versions cut down to 18 rounds, the solvers succeeded. At 19 rounds, none succeeded within two minutes.
 
-What did happen, according to Binance's report of 3 November, is that the attacker gained unauthorised use of an internal signing service. The attacker used it to obtain a type of authorisation that Ethereum had introduced in a protocol upgrade in May 2025, giving code of the attacker's choosing the right to act on a hot wallet, an online account used for day-to-day withdrawals.
+On the full function, I hid only a dozen bits of the input and gave the solvers the rest. They took up to a minute to find what a plain search through every possibility finds in milliseconds.
 
-The signatures were valid. The mathematics held. The instructions were wrong.
+![Two scatter charts on a logarithmic time scale. Left: time for three SAT solvers to find an input for reduced versions of SHA-256 with the whole input unknown; under a tenth of a second up to 16 rounds, under one second at 17, between about 40 and 120 seconds or no answer at 18, and no answer at 19. Right: the full 64-round function with 4 to 20 input bits hidden; times rise from under a second at 4 bits to tens of seconds at 12 bits, one answer at 16 bits and none at 20.](../results/fig_sat_article.png)
 
-## The question from Chapter 1
+*Figure: Time for three current SAT solvers (Kissat, CaDiCaL, CryptoMiniSat) to find an input for SHA-256; three random instances per point, 120-second limit, x = no answer. Left: rounds increasing, whole input unknown. Right: full function, a few input bits hidden. One straightforward encoding of my own, on one machine. It describes today's tools, not future algorithms.*
 
-In [Chapter 1](https://thekarlc.substack.com/p/ai-3sat-eth-refutation-banking-cryptography) I asked whether the October results from OpenAI and Anthropic on 3-SAT put the cryptography of banks and financial market infrastructures at risk. I found no newly feasible attack, and I promised to ask the same question of blockchain networks.
+## The promise from Chapter 1
 
-The short answer is that the mathematics is not where the problem lies. The longer answer is about who holds the powers around it.
+In [Chapter 1](https://thekarlc.substack.com/p/ai-3sat-eth-refutation-banking-cryptography) I looked at the AI-generated results from OpenAI and Anthropic that, if correct, overturn the Exponential Time Hypothesis for 3-SAT. I found an extraordinary result but no newly feasible attack, and I proposed a test: show me the attack, the system and the resources.
 
-## Does the October result change blockchain cryptography?
+I also promised to examine what happens when cryptographic assumptions underpin public consensus, digital signatures, zero-knowledge proofs and smart-contract execution, and whether the October results create a different security problem for blockchain-based financial infrastructure. This chapter keeps that promise, one layer at a time.
 
-Not on the evidence available. Both papers remain preprints, and both concern how quickly the hardest instances of a logic puzzle grow as they become arbitrarily large.
+## One question, four layers
 
-As I read the published security analyses, the signatures, hash functions and zero-knowledge proofs that blockchains use do not rest on that hardness. Each is assessed against the best known attacks on its own mathematical problem, and those attacks are unaffected.
+The question is the same for each layer: would a much faster algorithm for 3-SAT and #3-SAT change anything here?
 
-To test the practical side, we pointed three of today's best SAT solvers at SHA-256, the hash function behind Bitcoin. They found inputs for versions cut down to 18 of its 64 rounds, but none at 19. On the full function, with only a dozen input bits hidden, they took up to a minute to find what a simple search finds in milliseconds.
+For each layer I ask what it relies on, whether that rests on the hardness the hypothesis describes, what my tests found, and what remains uncertain.
 
-That describes today's tools and one way of writing the problem, not every possible future algorithm. But it confirms that the risk has to be looked for elsewhere.
+## Consensus
 
-## Four powers decide what the cryptography is worth
+Consensus is how a ledger's participants agree on one history. Bitcoin uses proof of work: miners hash candidate blocks with SHA-256, applied twice, until one meets a target. Ethereum's proof of stake and the permissioned ledgers used in finance rely instead on validators' signatures: BLS signatures on the BLS12-381 curve in Ethereum's case, Ed25519 in several permissioned ledgers.
 
-Blockchains are often described as immutable. For tokenised money and securities, that is not a property of the ledger. It is a property of each asset, set by whoever holds four powers.
+Neither rests on the hardness the October results address. As I read the published analyses, a hash function's security is a judgement about the best known attacks on that specific function, and signatures rest on problems in elliptic-curve mathematics.
 
-**Who can instruct the signer.** A key does what its signing system is told to do. In our reconstruction of the pattern, a signing service that checks who is asking, but not what it is being asked to sign, hands over an account without the key ever leaving the service.
+My tests show where SAT methods stand against the hash. The best published attack on reduced SHA-256 that I could verify reaches 42 of its 64 steps, and still costs almost as much as trying every input.
 
-**Who can change the rules.** An upgrade to a ledger or to a contract can change what a valid signature does. Ethereum's May 2025 upgrade added a new kind of authorisation, and that is the kind the attacker used.
+Size matters here too, as it did for AES in Chapter 1. Written as a SAT problem, a single full SHA-256 computation took about 72,000 variables in my encoding, not 256. Any speed-up applies to that larger number.
 
-**Who can freeze or reverse.** According to Binance's report, about US$2.85 billion of the affected assets was frozen or intercepted. Freezes of this kind are possible only where some party, usually an asset's issuer, holds the power to make them.
+The residual is narrow. A practical method for finding hash inputs faster than plain search would matter for proof of work. Neither paper offers one.
 
-**Who decides which keys count.** When a key is lost, or a signature scheme must be retired, someone has to be able to replace keys. That power is the remedy, and it is also a single point of control.
+## Digital signatures
 
-Each of these powers decides whether a valid signature turns into a valid transfer. They are cryptographic powers and governance powers at the same time.
+Every transfer on a ledger is authorised by a digital signature, almost always based on elliptic curves. Their security rests on the difficulty of the elliptic-curve discrete-logarithm problem.
 
-An exchange is not a financial market infrastructure. But tokenised deposits and settlement systems on distributed ledgers are built from the same parts: signing services in front of hardware key stores, policy engines, and ledgers that change through upgrades. Each has a signer policy, an upgrade path, a freeze power and a registrar.
+That problem is not believed to be among the hardest problems that 3-SAT stands for, and its security estimates do not come from the hypothesis. In principle it can be rewritten as a SAT formula, but the formula would be far larger than my SHA-256 one. As far as I can see, the claimed speed-up leaves that route far slower than the attacks already known.
 
-A well-run infrastructure will have stronger controls than an exchange. The point is not that the same failure will occur. It is that the same four questions apply, and on a shared ledger some of the answers sit outside the institution.
+The real long-term threat to these signatures is a large quantum computer, which is a different question with a different timetable. It is the subject of Chapter 3.
 
-## Where losses actually happen
+## Zero-knowledge proofs
 
-The Binance case is not an outlier. TRM Labs counted 207 hacks in the first half of 2026, with about US$972 million stolen. What it classes as infrastructure compromises were about 15% of incidents but about 76% of the losses.
+Zero-knowledge proofs let one party convince another that a statement is true without revealing why. Ledgers use them for privacy, and to compress the checking of many transactions into one proof.
 
-In the major incidents we examined since 2021, we found none that came from a broken cryptographic primitive. The few rooted in cryptography came from faulty code or badly generated keys, not from the mathematics, and they were far smaller.
+Their soundness rests on other assumptions: discrete-logarithm and related curve problems, collision-resistant hashing, assumptions about what a prover must know, and treating a hash function as a source of randomness. None of these is the hardness the October results address.
 
-## The capability that did change
+There is one genuine nuance. OpenAI's paper also gives a faster way to invert functions in which each output bit depends on only a few input bits. It notes that this applies to such versions of Oded Goldreich's candidate one-way functions, and adds that it does not rule out their being hard for efficient attackers.
 
-Chapter 1 proposed a test: show the newly feasible attack, the system it affects and the resources required. The October results did not pass it. AI-assisted attacks on smart contracts come much closer, at least in benchmarks.
+Generators of that local kind are one of the assumptions behind a 2020 research construction of program obfuscation, by Jain, Lin and Sahai. Whether the October result matters there depends on how much hardness the construction assumes, and I found no published analysis. I found none of these constructions in production use.
 
-In a benchmark published by Anthropic, AI agents produced working exploits, in simulation, for 207 of 405 smart contracts that had been attacked in the past. Run against 2,849 recently deployed contracts, they found two previously unknown flaws, at a cost of about US$3,476 in model usage.
+The zero-knowledge failures that have actually occurred were implementation bugs: circuits that failed to constrain what they should, and flawed implementations of the step that turns an interactive proof into a single message.
 
-Binance's report also says an internal AI tool was used during the intrusion, without explaining how. The new capability is aimed at contract logic and operations, which is where the losses are.
+A related family is in a similar position. Because the strong form of the hypothesis implies the ordinary one, refuting the ordinary form refutes both. Constructions whose security is proved from either, including some proposals for "useful" proof of work, lose their proofs. I found none in production use.
 
-## What institutional ledgers disclose
+## Smart-contract execution
 
-We built a comparative inventory of the cryptography and the four powers across 27 public, institutional and central-bank platforms, using only public material.
+Here is the twist. The mathematics of contract execution is not at stake, but the tools that check contracts are built on solvers of the same family.
 
-For the 14 institutional and central-bank platforms, 47 of the 56 answers on who can freeze, who can upgrade, who sets signer policy, and whether there is a post-quantum plan were not found in public material.
+Certora's prover, for example, compiles a contract and the rules it must obey into a logical formula, "which is then proved or disproved by an SMT solver", a richer descendant of SAT solving. Bug-finding tools work in a similar way, looking for an input that breaks a rule.
 
-That is not evidence of weakness. Operators may document these matters to their authorities. It means the answers have to be requested, because they cannot be read.
+In this project I used Certora and a second tool, Halmos, on a reference settlement system. Taking the signature checks themselves as given, Certora proved, for every possible state of the token, five things:
 
-## The price of changing the locks
+- no transfer happens without a valid signature;
+- each authorisation works only once;
+- supply changes only through issuance and redemption;
+- nothing moves while the system is paused;
+- privileged functions refuse unauthorised callers.
 
-A sufficiently large, error-corrected quantum computer would break the elliptic-curve signatures that ledgers use today. NIST now deprecates such schemes after 2030 and disallows them after 2035. The EU's coordinated roadmap sets the end of 2030 for high-risk use cases.
+Halmos proved that a delivery-versus-payment settlement moves both legs or neither, whatever the amounts.
 
-On a ledger, migration has a measurable cost. Ledgers built on Ethereum's design charge for computation in units called gas. In our reference contracts, checking one signature under ML-DSA, one of NIST's new post-quantum standards, cost about a thousand times as much gas as checking today's signature. The signature itself is 37 times larger.
+A genuinely faster solver would make this kind of assurance cheaper. It would also make it cheaper to search other people's contracts for flaws. That is a dual-use shift, and it would favour whoever adopts it first.
 
-![Bar chart on a logarithmic scale showing the gas needed to verify one signature on an Ethereum-style ledger. Today's ECDSA signature: about 8,000. P-256 using a verifier built into the ledger: about 12,700. A hybrid of two classical schemes: about 26,000. P-256 in contract code: about 237,000. ML-DSA-44, alone or in a hybrid: about 8.1 million.](../results/fig_gas.png)
+The October results are about how running time grows as problems become arbitrarily large. As I read them, they do not come with a faster solver for problems of the size these tools handle. The twist is a direction to watch, not a change today.
 
-*Figure: Gas needed to verify one signature on an Ethereum-style ledger, by scheme (logarithmic scale). Measured in the repository's research contracts. The post-quantum verifier is experimental third-party code; other ledgers and implementations will differ.*
+## A different security problem?
 
-The cost is not fixed. The verifier's authors report an experimental version about seven times cheaper. And in the same tests, a verifier built into the ledger made a classical scheme almost twenty times cheaper than contract code. But only a ledger's governance can build one in.
+Not from the mathematics. But blockchains do change two things when a cryptographic assumption weakens: the consequence and the remedy.
 
-Central banks have met the same pattern. In Project Leap, the BIS Innovation Hub and three Eurosystem central banks put post-quantum signatures into a test of the Eurosystem's T2 payment system. The signatures worked, but verification was at least ten times slower, and the planned test of hybrid signatures was not carried out.
+The consequence is larger because the assumptions are public and the record is permanent. Every signature, and every public key revealed by spending, stays on the ledger for anyone to attack later.
 
-The tests showed a further limit. Changing the scheme inside the contracts did not reach the ledger's own transaction signature, which only the ledger itself can change.
+The remedy is harder because replacing a primitive is a governance decision. It needs a protocol upgrade, or a migration of every account, decided by whoever can change the ledger's rules. In my tests, holders who never migrated kept their balances but could no longer sign, and only a privileged registrar could bring them back.
 
-They also showed what happens to holders who never migrate. They keep their balances but can no longer sign. Only the registrar can bring them back.
+So three powers matter alongside the mathematics: who can change the rules, who can freeze an asset, and who decides which keys count. For 14 institutional and central-bank platforms I examined, I recorded 47 of 56 answers on those powers and on post-quantum plans as not found in public material.
+
+Losses so far confirm where the risk sits. According to Binance's own report, the attack that affected about US$6.3 billion of its assets in October went through unauthorised use of an internal signing service, and Binance said it found no evidence that any wallet's private key had leaked. The signatures were valid; the operations around them failed.
 
 ## What authorities should ask
 
-1. Which kinds of message will each signing system sign, and who reviewed that list after the last upgrade of every ledger the institution relies on?
-2. Who can change the code of the ledger and of the contracts that hold the assets, with what delay, and whose consent is required?
-3. For each settlement asset, who can freeze, claw back or reverse a transfer, and how does that power sit with the legal point of finality?
-4. If a signature scheme had to be retired, who could replace participants' keys, under what controls, and what happens to holders who do not act?
-5. What does it cost today to verify a post-quantum signature on this ledger, and whose decision would make it affordable?
+1. Which cryptographic primitives does each layer of this ledger depend on (consensus, account signatures, any proof system, contract code), and on which assumptions?
+2. Who tracks developments in cryptanalysis for each of them, as DORA's technical standard already requires of financial entities, and who would decide on a replacement if one weakened?
+3. How quickly could a replacement be deployed, and what would happen to holders who do not act?
+4. Are the contracts that hold settlement assets formally verified, against which properties, and with which tools?
+5. Who can change the ledger's rules and the contracts' code, with what delay, and who can freeze or reverse a transfer of each settlement asset?
 6. Which of these answers are written down, and who outside the operator can read them?
 
-## What to do now
+Chapter 1 asked for the newly feasible attack before discussing a change in risk. For a ledger, first ask which assumption each layer rests on and who could replace it in time; only then discuss the mathematics.
 
-1. **Extend cryptographic inventories to ledger powers.** The EU roadmap asks Member States to take first steps, including inventories of cryptographic assets, by the end of 2026. For any ledger an institution relies on, the inventory should record the four powers, not only the algorithms.
-2. **Link ledger upgrades to signer policy.** DORA requires documented change management, and the PFMI expect controls to be tested after significant changes. A protocol upgrade of a ledger the institution relies on is such a change. Signing systems should accept only the request types they understand, within limits.
-3. **Ask for disclosure of upgrade and freeze powers.** The PFMI require clear lines of responsibility and a clearly defined point of settlement finality. On a shared ledger, both depend on parties outside the institution.
-4. **Plan migration at ledger level, starting with the governance decision.** NIST's 2030 deprecation and the EU's 2030 milestone leave about four years. The plan must cover verification cost, the native support that only the ledger can provide, and holders who do not act.
-
-The four PFMI principles closest to these questions do not mention cryptography. DORA's technical standard requires institutions to update their cryptography as cryptanalysis develops, without naming quantum computing.
-
-So the frameworks reach these powers through general duties. What they do not yet do is ask the questions about the ledger as well as about the institution.
-
-Chapter 1 asked for the newly feasible attack before discussing a change in risk. For blockchain-based finance the test runs the other way: show me who can sign, who can change the rules and who can freeze the asset, and then we can discuss the mathematics.
+*Next, Chapter 3: the threat that does reach these signatures. Post-quantum migration of payment systems, what it costs on a ledger, and what central banks' own tests found.*
 
 ---
 
@@ -129,18 +126,18 @@ Chapter 1 asked for the newly feasible attack before discussing a change in risk
 
 **Primary sources**
 
-- Binance, *29 October 2026 Binance Security Incident: Initial Findings and Response Update*, 3 November 2026: https://www.binance.com/en/blog/community/3229153443759566763
-- OpenAI, *The Exponential Time Hypothesis is False*, preprint, 25 October 2026: https://github.com/openai/math/tree/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026
+- OpenAI, *The Exponential Time Hypothesis is False*, preprint, 25 October 2026 (Appendix C on constant-locality maps): https://github.com/openai/math/tree/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026
 - Anthropic, *A 2^{o(n)} Time Algorithm for 3-SAT*, preprint, 27 October 2026: https://hexagonmath.org/2610.00577v1
-- TRM Labs, H1 2026 crypto hacks report, 1 July 2026: https://www.trmlabs.com/resources/blog/h1-2026-crypto-hacks-reach-record-high-as-losses-fall-below-usd-1-billion
-- Anthropic Frontier Red Team, smart-contract exploitation benchmark (SCONE-bench), 1 December 2025: https://red.anthropic.com/2025/smart-contracts/
-- NIST IR 8547, *Transition to Post-Quantum Cryptography Standards* (final), October 2026: https://csrc.nist.gov/pubs/ir/8547/final
-- NIS Cooperation Group, *A Coordinated Implementation Roadmap for the Transition to Post-Quantum Cryptography*, v1.1, June 2025: https://digital-strategy.ec.europa.eu/en/library/coordinated-implementation-roadmap-transition-post-quantum-cryptography
+- J. Guo and K. Matusiewicz, *Preimages for Step-Reduced SHA-2*, IACR ePrint 2009/477: https://eprint.iacr.org/2009/477
+- O. Zaikin, *Preimage attacks on round-reduced MD5, SHA-1, and SHA-256 using parameterized SAT solver*, preprint, 2026: https://olegzaikin.github.io/publications/2026-z-constraints-preprint.pdf
+- O. Goldreich, *Candidate One-Way Functions Based on Expander Graphs*, ECCC TR00-090, 2000: https://eccc.weizmann.ac.il/report/2000/090/
+- A. Jain, H. Lin, A. Sahai, *Indistinguishability Obfuscation from Well-Founded Assumptions*, IACR ePrint 2020/1003: https://eprint.iacr.org/2020/1003
+- S. Chaliasos et al., *SoK: What Don't We Know? Understanding Security Vulnerabilities in SNARKs*, USENIX Security 2024: https://arxiv.org/abs/2402.15293
+- Trail of Bits, *Coordinated disclosure of vulnerabilities affecting Girault, Bulletproofs, and PlonK* ("Frozen Heart"), April 2022: https://blog.trailofbits.com/2022/04/13/part-1-coordinated-disclosure-of-vulnerabilities-affecting-girault-bulletproofs-and-plonk/
+- Certora Prover documentation: https://docs.certora.com/en/latest/docs/user-guide/
+- Halmos, symbolic testing for EVM smart contracts: https://github.com/a16z/halmos
+- Binance, *29 October 2026 Binance Security Incident: Initial Findings and Response Update*, 3 November 2026: https://www.binance.com/en/blog/community/3229153443759566763
 - Commission Delegated Regulation (EU) 2024/1774, DORA technical standard on ICT risk management: https://eur-lex.europa.eu/eli/reg_del/2024/1774/oj
-- CPMI-IOSCO, *Principles for Financial Market Infrastructures*, 2012: https://www.bis.org/cpmi/publ/d101.htm
-- BIS Innovation Hub, *Project Leap phase 2: quantum-proofing payment systems*, December 2025: https://www.bis.org/publ/othp107.htm
-- EIP-7702, *Set Code for EOAs*: https://eips.ethereum.org/EIPS/eip-7702
-- FBI, PSA I-022625-PSA on the Bybit theft, 26 February 2025: https://www.ic3.gov/PSA/2025/PSA250226
 
 ---
 
@@ -152,7 +149,7 @@ Chapter 1 asked for the newly feasible attack before discussing a change in risk
 
 ## SEO
 
-- **SEO title (≤60):** Blockchain Cryptography: Who Holds the Powers That Matter
-- **Meta description (≤155):** The October 3-SAT results leave blockchain cryptography intact. The risks sit with signer policy, upgrades, freeze keys and post-quantum migration costs.
-- **Slug:** blockchain-cryptography-powers-tokenised-finance
-- **Tags:** blockchain, cryptography, financial market infrastructure, tokenisation, post-quantum, DORA, operational resilience, settlement finality
+- **SEO title (≤60):** Would Faster 3-SAT Break the Blockchain? Layer by Layer
+- **Meta description (≤155):** Consensus, signatures and zero-knowledge proofs survive the October 3-SAT results; contract verification is the twist. What authorities should ask.
+- **Slug:** faster-3sat-blockchain-security-layer-by-layer
+- **Tags:** blockchain, cryptography, 3-SAT, exponential time hypothesis, zero-knowledge proofs, formal verification, financial market infrastructure, tokenisation

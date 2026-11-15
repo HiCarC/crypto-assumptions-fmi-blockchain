@@ -56,3 +56,24 @@ summary = (
 )
 summary.to_csv(os.path.join(RES, "sat_summary.csv"), index=False)
 print(summary.to_string(index=False), file=sys.stderr)
+
+# Article version: two panels, plain labels, no figure title (the caption carries the message).
+fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.2), sharey=True)
+for ax, sweep, x, xlabel, title in (
+    (axes[0], "A_rounds", "rounds", "rounds of SHA-256 (the full function has 64)", "Whole input unknown"),
+    (axes[1], "B_unknown_bits", "unknown_bits", "number of hidden input bits", "Full 64 rounds, a few bits hidden"),
+):
+    d = df[df.sweep == sweep]
+    for solver, g in d.groupby("solver"):
+        ok, to = g[g.status == "SAT"], g[g.status == "TIMEOUT"]
+        ax.scatter(ok[x], ok.seconds, s=24, color=colors[solver], label=solver, alpha=0.85)
+        ax.scatter(to[x], to.seconds, s=40, color=colors[solver], marker="x")
+    ax.axhline(timeout, color="#bbb", lw=0.8, ls=":")
+    ax.set(yscale="log", xlabel=xlabel, title=title)
+    ax.spines[["top", "right"]].set_visible(False)
+axes[0].set_ylabel("seconds to find an input (log scale)")
+axes[0].text(12, timeout * 1.12, f"{timeout:.0f}-second limit; x = not found", fontsize=8, color="#666")
+axes[1].legend(frameon=False, fontsize=8, loc="lower right")
+fig.tight_layout()
+fig.savefig(os.path.join(RES, "fig_sat_article.png"), dpi=170)
+print("wrote", os.path.join(RES, "fig_sat_article.png"))
