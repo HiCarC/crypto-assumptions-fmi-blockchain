@@ -58,8 +58,8 @@ Rule for the article: only **V** claims, and **I** claims marked as the author's
 | C9 | Echidna: three properties held over 50,160 calls (seed 2026) | `audit/reports/echidna.txt` |
 | C10 | Halmos: four properties hold symbolically; two vacuity controls fail as required | `audit/reports/halmos.txt`, `halmos-vacuity.txt` |
 | C11 | Certora Prover: five rules verified on the token, with no vacuous rule | `audit/reports/certora.txt` |
-| C12 | Mutation score | *pending: campaign running at Checkpoint 2 draft* |
-| C13 | SAT solver scaling on reduced-round SHA-256 | *pending: experiment not yet run* |
+| C12 | Mutation testing: 83 of 89 compilable mutants killed (93.3%); after triage every non-equivalent mutant is killed | `audit/reports/mutation.txt` |
+| C13 | On a plain encoding, three current SAT solvers found SHA-256 preimages with a free message up to 18 rounds of 64 and none at 19; at full rounds they were slower than trying every value of the unknown bits, and failed beyond 16 unknown bits within 120 s | `results/sat_scaling.csv`, `results/fig_sat_scaling.png`, `sat/`. No extrapolation |
 | C14 | Under the stated planning assumptions, a migration started in January 2027 disallows classical-only keys in January 2031 | `scripts/migration_timeline.py`. An illustration of sequencing, not a forecast |
 | C15 | For the institutional and central-bank platforms examined, 47 of 56 cells on who can freeze, upgrade, set signer policy, and on post-quantum plans were not found in the public material retrieved | `cbom/build.py` → `results/cbom_summary.json`. Time-boxed search; see LIMITATIONS |
 

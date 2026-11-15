@@ -1,6 +1,6 @@
 # Checkpoint 2 — results summary for the author
 
-15 November 2026. Phases 2 and 3 (build and test) are complete, except that the SAT experiment is still running (section 5). Nothing has been pushed; the repository exists only locally.
+15 November 2026. Phases 2 and 3 (build and test) are complete. Nothing has been pushed; the repository exists only locally.
 
 ## 1. What was built
 
@@ -48,9 +48,16 @@ Still "reported": the FBI attribution to North Korea (the fbi.gov page refused a
 | Primary sources not yet read | PFMI text, DORA articles, EU roadmap document, BIS Project Leap report, CNSA 2.0, MiCA and DLT Pilot Regime status, lattice lower-bound papers, Ronin, Wormhole, Nomad and Poly Network post-mortems, L2BEAT pages, Swift releases | These claims stay R or U in `CLAIMS.md` and are barred from the article until read |
 | Usage limit | The run stopped once at the 5-hour usage window; resumed from `docs/HANDOFF.md` | None on results |
 
-## 5. SAT experiment (in progress)
+## 5. SAT experiment
 
-All 512 message bits unknown: every solver solved every instance up to 17 rounds within 120 seconds; at 18 rounds solving starts to fail. Full results and the second sweep (full 64 rounds, few unknown bits) will be added to `results/` when the run ends. Scope: one plain encoding, three solvers, one machine. It says nothing about what a different algorithm could do and makes no extrapolation.
+Own Tseitin encoding of one SHA-256 compression call (validated against `hashlib`), three solvers (Kissat 4.0.4, CaDiCaL 1.7.3, CryptoMiniSat 5.11.15), three random instances per point, 120-second limit, one 12-core machine. Every model returned by a solver was checked by recomputing the hash. Data: `results/sat_scaling.csv`; figure: `results/fig_sat_scaling.png`.
+
+| Sweep | Result |
+|---|---|
+| All 512 message bits unknown | 12–16 rounds: every instance in under 0.1 s (there are many preimages, so the problem is easy). 17 rounds: under 1 s. 18 rounds: Kissat 3/3, CaDiCaL 2/3, CryptoMiniSat 1/3. **19 rounds: none.** Encoding size grows from about 10,000 to 17,000 variables. |
+| Full 64 rounds, k message bits unknown | k = 4, 8, 12: all solved, median up to 48 s at k = 12. k = 16: one instance of nine. k = 20: none. Encoding about 72,000 variables and 319,000 clauses. |
+
+Reading: at full rounds the solvers were slower than simply trying the 2^k candidates, which for k = 12 is 4,096 hash evaluations, a few milliseconds. On this encoding, generic SAT solving gives no advantage against full SHA-256; the solvable region ends at 18–19 of 64 rounds when the message is free. This describes today's solvers on one plain encoding. It says nothing about what a different algorithm could do, and no extrapolation is made.
 
 ## 6. Something more important than the brief asked for
 

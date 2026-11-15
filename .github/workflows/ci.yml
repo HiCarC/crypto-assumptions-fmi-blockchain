@@ -57,3 +57,29 @@ jobs:
       - run: python sat/sha256_cnf.py
       - run: cd cbom && python build.py
       - run: python scripts/gas_table.py && python scripts/migration_timeline.py && python scripts/incidents_chart.py
+  certora:
+    # Runs only if the repository secret CERTORAKEY exists; otherwise every step is skipped.
+    # The key is passed through the environment and never echoed.
+    runs-on: ubuntu-24.04
+    env:
+      CERTORAKEY: ${{ secrets.CERTORAKEY }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.CERTORAKEY != ''
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        if: env.CERTORAKEY != ''
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v4
+        if: env.CERTORAKEY != ''
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Certora Prover (rules R1-R5)
+        if: env.CERTORAKEY != ''
+        run: |
+          pip install certora-cli==8.20.3 solc-select
+          solc-select install 0.8.38 && solc-select use 0.8.38
+          certoraRun audit/certora/SettlementToken.conf
