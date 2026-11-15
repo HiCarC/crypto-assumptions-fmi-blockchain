@@ -29,12 +29,12 @@ Written 15 November 2026 when the usage window reached 95%. Work is in Phase 2/3
 
 ## In progress when stopped
 
-- **Halmos** (`contracts/test/Halmos.t.sol`, four `check_` properties). First run failed because forge 1.9 rewrites `new` into an unsupported cheatcode; the fix is the environment variable `FOUNDRY_DYNAMIC_TEST_LINKING=false`. The second run failed only because I added `--forge-build-out out-halmos`; drop that flag (or set `FOUNDRY_OUT` consistently) and rerun. **No Halmos result exists yet.**
+- **Halmos**: all four properties pass (`audit/reports/halmos.txt`; run with `FOUNDRY_DYNAMIC_TEST_LINKING=false halmos --contract HalmosChecks`, about 2 seconds). Path counts are small (4 to 10), so before reporting these as proofs, add a vacuity check: confirm at least one path reaches the success branch in `check_nonceIsSingleUse` and `check_dvpIsAtomic` (for example a mirror check asserting the opposite, which must fail). The cryptography is replaced by an oracle verifier in these checks; say so in the audit report.
 - Uncommitted work since commit `0ee1d02`: demos, invariants, Halmos file, audit reports. Committed together with this file.
 
 ## Not started
 
-1. Component C remainder: Halmos result, Echidna and/or Medusa campaign, Certora Prover on the three critical invariants (free tier, keep runs focused), Gambit mutation score, written triage of static-analysis findings, internal audit report (`audit/report.md`).
+1. Component C remainder: Halmos vacuity check, Echidna and/or Medusa campaign, Certora Prover on the three critical invariants (free tier, keep runs focused), Gambit mutation score, written triage of static-analysis findings, internal audit report (`audit/report.md`).
 2. Component E: reduced-round SHA-256/Keccak SAT experiment (`sat/`).
 3. Component A: CBOM (CycloneDX JSON + CSV) from `research/primary/ledgers.md`; many fields are "not publicly documented".
 4. Component F: quantum exposure table and migration timeline. Note the correction below on the Glassnode figure.
