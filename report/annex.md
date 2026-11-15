@@ -1,5 +1,5 @@
 ---
-title: "Who Holds the Powers: Cryptographic Assumptions and Blockchain-Based Financial Infrastructure"
+title: "Would a Faster 3-SAT Algorithm Break the Blockchain? Cryptographic Assumptions, Layer by Layer"
 subtitle: "Technical annex to Chapter 2"
 author: "Carles Cerqueda"
 date: "15 November 2026 (draft for review)"
@@ -7,22 +7,36 @@ date: "15 November 2026 (draft for review)"
 
 # How to read this annex
 
-This annex documents the research, the code, the tests and the findings behind Chapter 2. It is written for CTOs, CISOs, architects, auditors and the technical teams of authorities. Every quantitative statement points to a file in the companion repository that reproduces it, or to a claim in `CLAIMS.md` with its evidence label:
+This annex documents the research, the code, the tests and the findings behind Chapter 2. It is written for CTOs, CISOs, architects, auditors and the technical teams of authorities.
+
+Chapter 1 ended with a promise: to examine what happens when cryptographic assumptions underpin public consensus, digital signatures, zero-knowledge proofs and smart-contract execution, and whether the October 2026 3-SAT results create a different security problem for blockchain-based financial infrastructure. This annex keeps that promise layer by layer. For each layer it asks one question: would a much faster algorithm for 3-SAT and #3-SAT change anything here?
+
+Every quantitative statement points to a file in the companion repository that reproduces it, or to a claim in `CLAIMS.md` with its evidence label:
 
 - **V**: verified against a primary source read for this project, or reproduced by code in the repository;
 - **R**: reported by a credible secondary source, or seen only as an official excerpt;
-- **I**: our inference, with the reasoning written out;
+- **I**: my inference, with the reasoning written out;
 - **U**: not found in the public material retrieved.
 
 "Not found in public material" means exactly that: a time-boxed search on 15 November 2026 did not find it. It is never a claim that something does not exist, has not been done, or is weak. The limits of the work are set out in section 12 and in `LIMITATIONS.md`.
 
-# 1. Summary
+# 1. Executive summary
 
-1. **The October 2026 results do not reach deployed blockchain cryptography.** The signature schemes, hash functions and proof systems used by blockchains are not protected by the hypothesis those results address. The results remain unrefereed (section 2).
-2. **The mathematics held in every major loss we examined; the losses came from the powers around it.** In the largest theft on record (Binance, October 2026) the signatures were valid. An internal signing service was used to authorise a delegation that a protocol upgrade had made possible (section 4).
-3. **The spine: four powers decide what a ledger's cryptography is worth.** They are who can instruct the signer, who can change the rules (upgrade), who can freeze or reverse, and who can say which keys count (registrar). For most institutional ledgers we examined, who holds these powers is not found in public material (sections 3 and 7).
-4. **The second pillar: post-quantum agility has a measurable price.** Verifying one ML-DSA-44 signature in EVM contract code costs about 8.1 million gas, roughly a thousand times ECDSA. Application-level agility also stops at the ledger's own transaction signature (sections 5 and 6).
-5. **Attacker capability changed more than mathematics did.** AI agents now exploit vulnerable smart contracts in benchmarks at a stated cost. On the Chapter 1 test (a newly feasible attack, the system affected, the resources required) this shift qualifies; the October results do not (section 8).
+1. **The October results.** Both are unrefereed preprints claiming that 3-SAT, and its counting version #3-SAT, can be solved in subexponential time, which would refute the Exponential Time Hypothesis (ETH) and with it the strong form, SETH. The claim concerns growth as instances become arbitrarily large; neither paper presents a faster practical solver (section 2).
+2. **Consensus.** Proof of work rests on a hash function (SHA-256, applied twice, in Bitcoin). Proof of stake and BFT consensus rest on validators' signatures (BLS on BLS12-381 in Ethereum; Ed25519 in several permissioned ledgers). None of these rests on ETH-type hardness. My SAT experiment found generic solvers *slower* than plain search when recovering a few hidden input bits of the full SHA-256, and one SHA-256 computation became about 72,000 SAT variables. Published preimage attacks on reduced versions cover only part of the function at almost brute-force cost. Proposals whose security is *proved* from ETH or SETH, such as some "useful" proof-of-work designs, lose their proofs; I found none in production (sections 2 and 9).
+3. **Digital signatures.** Elliptic-curve signatures rest on the discrete-logarithm problem, which is not believed to be NP-complete and whose security estimates do not come from ETH. A SAT route exists in principle, but through a formula far larger than SHA-256's, so the claimed speed-up leaves it far behind known attacks. Quantum computing is the real long-term threat and is left to Chapter 3 (sections 2 and 10).
+4. **Zero-knowledge proofs.** Soundness rests on curve and pairing problems, collision-resistant hashing, knowledge assumptions and the random-oracle treatment of Fiat–Shamir, none of them ETH-type. The one nuance is that OpenAI's paper gives subexponential inversion of maps with constant output locality. It applies this to Goldreich's candidate one-way functions, and states that polynomial-time one-wayness is not ruled out. Local generators of that kind are an assumption in research obfuscation constructions, none in production. Real failures have been implementation bugs (section 2).
+5. **Smart-contract execution: the twist.** The tools that verify contracts and search for bugs, such as the Certora Prover and Halmos used here, rest on SAT-family (SMT) solvers. A practical advance in SAT solving would make assurance cheaper for defenders and bug-finding cheaper for attackers. In this project Certora verified five properties of the settlement token and Halmos verified the atomicity of delivery versus payment (section 6).
+6. **A different security problem?** Not in the mathematics, but in consequence and remedy. The assumptions are public, the record is permanent, and replacing a primitive is a governance decision. Hence the powers around the cryptography: who can change the rules, who can freeze, who decides which keys count, and who instructs the signer. For most institutional ledgers examined, these are not found in public material. The Binance case of October 2026 shows losses arising around valid signatures (sections 3, 4 and 7). The cost of a post-quantum signature on a ledger, measured here, belongs to Chapter 3 (sections 5 and 10).
+7. **Attacker capability.** AI-assisted exploitation of smart contracts, unlike the October results, comes close to Chapter 1's test of a newly feasible attack with stated resources (section 8).
+
+| Promised layer | Where it is analysed |
+|---|---|
+| Consensus | §2 (hash and signature assumptions), §9 (SAT experiment and literature) |
+| Digital signatures | §2, §6 (scheme replacement), §10 (quantum) |
+| Zero-knowledge proofs | §2 |
+| Smart-contract execution | §6 (verification results), §4 (demonstrations), audit report |
+| A different security problem? | §3 (powers), §4 (losses), §5 and §6 (agility and its cost), §7 (public documentation), §11 (frameworks) |
 
 # 2. The October 2026 results, re-verified
 
@@ -34,25 +48,25 @@ where *L* is the length of the encoded formula. The manuscript claims a single l
 
 **What the hypothesis is about, in words.** ETH says that some fixed fraction of the variables must be "paid for" exponentially when solving 3-SAT in the worst case. Refuting it means that the worst case grows a little more slowly than that. It is a statement about growth as problems become arbitrarily large. It says nothing direct about how long any particular instance takes, and nothing at all about problems that are not reduced to SAT.
 
-**Does it reach blockchain cryptography?** We consider each assumption a ledger relies on (A5, I):
+**Does it reach blockchain cryptography?** I consider each assumption a ledger relies on (A5, I):
 
-- *Elliptic-curve signatures* (secp256k1, P-256, Ed25519) and *pairings* (BLS12-381, BN254). Their security levels come from the best known algorithms for the specific algebraic problem: Pollard's rho method for discrete logarithms, number-field-sieve variants for pairing target groups. These problems are not known to be NP-hard, and their security estimates are not derived from ETH. One could write a discrete-logarithm instance as a Boolean circuit and then as a SAT formula. The claimed running time is subexponential in the number of variables *of that formula*, which for a 256-bit scalar multiplication runs to hundreds of thousands. That is far more than the 128 bits that bound the generic attack. Chapter 1 made the same argument for AES.
+- *Elliptic-curve signatures* (secp256k1, P-256, Ed25519) and *pairings* (BLS12-381, BN254). Their security levels come from the best known algorithms for the specific algebraic problem: Pollard's rho method for discrete logarithms, number-field-sieve variants for pairing target groups. These problems are not known to be NP-hard, and their security estimates are not derived from ETH. One could write a discrete-logarithm instance as a Boolean circuit and then as a SAT formula. The claimed running time is subexponential in the number of variables *of that formula*, which for a 256-bit scalar multiplication is far larger than the about 72,000 variables of one SHA-256 compression call (section 9). That is far more than the 128 bits that bound the generic attack (my estimate, not computed). Chapter 1 made the same argument for AES.
 - *Hash functions* (SHA-256, Keccak-256, SNARK-friendly hashes such as Poseidon). Their security is a cryptanalytic judgement about a fixed function, not a consequence of ETH. SAT solvers are a real cryptanalytic tool, and section 9 measures how far they get today.
 - *Lattice-based post-quantum schemes* (ML-DSA, ML-KEM). Their parameters are set with concrete cost models for lattice reduction. Some *conditional lower bounds* for lattice problems are proved assuming ETH or its strong variant. If ETH is false, those particular arguments lose their premise. The main results are by Bennett, Golovnev and Stephens-Davidowitz (FOCS 2017) and by Aggarwal and Stephens-Davidowitz (STOC 2018). They show that, unless SETH or a gap version of ETH fails, the closest-vector and shortest-vector problems cannot be solved much faster than exponentially in some norms. Neither covers the closest-vector problem in the Euclidean norm, which is what the schemes use, and the shortest-vector result in that norm needs an extra unproven hypothesis (V). All of these are worst-case, asymptotic statements. ML-DSA's parameters were instead chosen from concrete cost models of the best known lattice-reduction attacks: the Dilithium specification reports "Core-SVP" estimates per parameter set (V). If ETH is false, these conditional lower bounds lose their premise. That removes a piece of supporting theory; it supplies no attack, and it does not touch the cost models on which the parameters rest.
 - *Zero-knowledge proof systems.* Soundness of deployed SNARKs and STARKs rests on algebraic assumptions in pairing groups or on collision-resistant hashing, on knowledge-type assumptions or idealised group models, and on the random-oracle heuristic for the Fiat–Shamir transform. None is an ETH-type assumption. Where ZK systems have failed in practice, they failed in implementation. A systematic study of 141 SNARK vulnerabilities from 2018 to 2024 found 99 in circuits, of which 95 were under-constrained circuits: a circuit that accepts witnesses it should reject (Chaliasos et al., USENIX Security 2024; V). Trail of Bits' 2022 "Frozen Heart" disclosure showed that insecure implementations of the Fiat–Shamir transformation let attackers forge proofs in implementations of Girault's proof, Bulletproofs and PlonK (V).
-- *Constructions that do rest on fine-grained hardness.* These include proofs of useful work based on Orthogonal Vectors or 3SUM, and the local pseudorandom generators behind some indistinguishability-obfuscation results. They would be directly affected. No production use in a blockchain or financial system was found (A7, R/U). Goldreich-type local generators are, in addition, under separate cryptanalytic pressure published in 2026.
+- *Constructions closer to the October results.* Proofs of useful work based on Orthogonal Vectors or 3SUM have security proved from fine-grained conjectures implied by SETH; since refuting ETH refutes SETH, those proofs lose their premise (F12, I). OpenAI's paper itself (Appendix C, Corollary C.2) gives 2^{o(n)} inversion of Boolean maps with constant output locality, notes that this applies to constant-locality versions of Goldreich's candidate one-way functions, and states that it "does not rule out one-wayness against polynomial-time algorithms" (F1, F2, V). Pseudorandom generators of constant locality (NC^0) are one of four assumptions in Jain, Lin and Sahai's indistinguishability-obfuscation construction (F3, V). Whether the October result matters there depends on the hardness assumed; I found no published analysis. No production use of any of these in a blockchain or financial system was found (A7, R/U). Separate 2026 cryptanalysis of Goldreich-type generators is reported (R).
 
 **Conclusion for section 2.** On the evidence available, the October results change the theory of computation, not the security of any deployed ledger. This is conditional on the results standing, and on no new reduction appearing that links them to a deployed primitive.
 
-# 3. The spine: four powers
+# 3. A different security problem? The powers around the cryptography
 
-A blockchain is often described as immutable. For tokenised money and securities that is not a property of the ledger; it is a property of each asset, set by who holds four powers:
+The October results do not weaken the mathematics of any layer (section 2). What blockchains do change is the consequence and the remedy when an assumption weakens. The assumptions are public, the record is permanent, and replacing a primitive is a governance decision. A blockchain is often described as immutable; for tokenised money and securities that is a property of each asset, set by who holds four powers:
 
 | Power | What it decides | Where the Binance and Bybit cases touched it |
 |---|---|---|
-| **Signer policy** | Which messages a key will sign, for whom, under what limits | Binance: a signing service signed an authorisation type its policy did not anticipate. Bybit: signers approved bytes that differed from what their screen showed |
+| **Signer policy** | Which messages a key will sign, for whom, under what limits | Binance: an internal signing service was used without authorisation to exploit the EIP-7702 authorisation mechanism (Binance's report). Bybit: signers approved a disguised transaction (reported) |
 | **Upgrade** | What the code, and therefore a signature, means | Binance: a protocol upgrade (EIP-7702, May 2025) gave a signed authorisation a new meaning |
-| **Freeze and reversal** | Whether a theft is final | Binance: about US$2.85 billion was frozen or intercepted, because some assets have issuers with freeze powers |
+| **Freeze and reversal** | Whether a theft is final | Binance: about US$2.85 billion was frozen or intercepted (Binance's report); freezes are possible only where some party holds a freeze power |
 | **Registrar** | Which keys count, and how a lost or broken key is replaced | The remedy when a scheme fails, and also a single point of control (section 6) |
 
 These are cryptographic powers in a precise sense: each decides whether a valid signature results in a valid transfer. They are also governance powers, which is why the question of who holds them belongs to supervision as much as to engineering.
@@ -61,11 +75,11 @@ The reference system in the repository makes each power explicit, as a separate 
 
 # 4. Where losses happen
 
-**The case that opens the chapter.** On 29 October 2026 about US$6.34 billion in digital assets were affected at Binance (B1, V). Binance's own report of 3 November 2026 states three things. The attacker made unauthorised use of an internal wallet signing service. The attacker exploited Ethereum's EIP-7702 authorisation mechanism to give an attacker-controlled contract execution rights over a hot wallet (B2, V). And because the wallet used multi-party computation, no single private key existed with which to revoke the authorisations at once (B3, V). Binance's update of 30 October says it found no evidence that wallet private keys were leaked (B4, V). The same report says an internal AI tool was used to gain control of an engineer's access, without explaining how (B6, V). About US$2.85 billion was frozen or intercepted (B5, V). Which issuers froze funds is reported by third parties, not by Binance (B8, R). The FBI attributed the theft to a North Korean group, according to press reports of an alert we could not open (B7, R).
+**The case that opens the chapter.** On 29 October 2026 about US$6.34 billion in digital assets were affected at Binance (B1, V). Binance's own report of 3 November 2026 states three things. The attacker made unauthorised use of an internal wallet signing service. The attacker exploited Ethereum's EIP-7702 authorisation mechanism to give an attacker-controlled contract execution rights over a hot wallet (B2, V). And because the wallet used multi-party computation, no single private key existed with which to revoke the authorisations at once (B3, V). Binance's update of 30 October says it found no evidence that wallet private keys were leaked (B4, V). The same report says an internal AI tool was used to gain control of an engineer's access, without explaining how (B6, V). About US$2.85 billion was frozen or intercepted (B5, V). Which issuers froze funds is reported by third parties, not by Binance (B8, R). The FBI attributed the theft to a North Korean group, according to press reports of an alert I could not open (B7, R).
 
 **From an exchange to an FMI.** An exchange is not an FMI, and the article does not treat it as one. The relevant point is structural. Institutional tokenisation uses the same building blocks: hot and warm wallets, signing services in front of HSMs or MPC clusters, policy engines, and EVM-compatible ledgers that change through protocol upgrades. A tokenised-deposit platform or a DLT settlement system has a signer policy, an upgrade path, a freeze power and a registrar. The Binance case shows what happens when the first two are out of step.
 
-**The pattern across incidents.** No incident in our list, which covers 2021–2026, came from a broken cryptographic primitive (`data/incidents.csv`, `results/fig_incidents.png`). The list is a selection of large and instructive cases, not a census, so it is not used to compute shares. Industry-wide figures point the same way. TRM Labs counted 207 hacks in the first half of 2026, about US$972 million stolen. Infrastructure compromises were about 15% of incidents and about 76% of losses (B13, V). Chainalysis put thefts from January to early December 2025 at over US$3.4 billion (B12, V).
+**The pattern across incidents.** No incident in my list, which covers 2021–2026, came from a broken cryptographic primitive (`data/incidents.csv`, `results/fig_incidents.png`). The list is a selection of large and instructive cases, not a census, so it is not used to compute shares. Industry-wide figures point the same way. TRM Labs counted 207 hacks in the first half of 2026, about US$972 million stolen. Infrastructure compromises were about 15% of incidents and about 76% of losses (B13, V). Chainalysis put thefts from January to early December 2025 at over US$3.4 billion (B12, V).
 
 Two incidents in the list are rooted in cryptographic *code* or key generation rather than operations. THORChain (2026, about US$10 million): a threshold-signature library never verified a Paillier modulus, which let a malicious node reconstruct a key (B14, V). Wintermute (2022, about US$160 million): the firm said the key had most likely come from a vanity-address tool with a small seed space (B15, V). Both are failures of implementation. Neither breaks the mathematics. Both are small next to the operational cases.
 
@@ -106,7 +120,7 @@ A complete signed transfer costs about 146,000 gas with ECDSA and about 8.3 mill
 
 ![Gas to verify one signature, by scheme (log scale). Source: results/gas.json.](../results/fig_gas.png)
 
-**How to read this.** The cost is an artefact of verifying in contract code. The P-256 rows show the same effect for a classical scheme: a native precompile is about twenty times cheaper than contract code. Ethereum has proposals for ML-DSA and Falcon precompiles (EIP-8051, EIP-8052), and Stellar plans ML-DSA verification as a native host function (D10, D11). The same authors report an experimental optimised variant at about 1.2 million gas, which we did not measure. The result is therefore not "post-quantum is unaffordable". It is this: **on today's EVM, post-quantum agility depends on a protocol change that only the ledger's governance can make.** That brings the question back to the spine.
+**How to read this.** The cost is an artefact of verifying in contract code. The P-256 rows show the same effect for a classical scheme: a native precompile is about twenty times cheaper than contract code. Ethereum has proposals for ML-DSA and Falcon precompiles (EIP-8051, EIP-8052), and Stellar plans ML-DSA verification as a native host function (D10, D11). The same authors report an experimental optimised variant at about 1.2 million gas, which I did not measure. The result is therefore not "post-quantum is unaffordable". It is this: **on today's EVM, post-quantum agility depends on a protocol change that only the ledger's governance can make.** That brings the question back to the spine.
 
 # 6. Agility as governance: the reference system
 
@@ -170,18 +184,51 @@ On the Chapter 1 test, AI-assisted vulnerability discovery qualifies and the Oct
 
 # 9. The bridge from Chapter 1: an honest SAT experiment
 
-**What was done.** We wrote a plain Tseitin encoding of one SHA-256 compression call. Every gate becomes a few clauses, and additions become carry chains. We validated it against Python's `hashlib`, and we checked that the encoding is satisfiable with the true message and unsatisfiable with a one-bit change to the target. Three state-of-the-art solvers (Kissat 4.0.4, CaDiCaL 1.7.3, CryptoMiniSat 5.11.15) were run on three random instances per setting, with a 120-second limit on one 12-core machine. Every solution was checked by recomputing the hash (88 of 88 verified).
+**What was done.** I wrote a plain Tseitin encoding of one SHA-256 compression call, in which every gate becomes a few clauses and additions become carry chains (`sat/sha256_cnf.py`). I validated it against Python's `hashlib` at 64 rounds. I also checked that, for several round counts, the encoding is satisfiable with the true message and unsatisfiable with a one-bit change to the target. Three solvers (Kissat 4.0.4, CaDiCaL 1.7.3, CryptoMiniSat 5.11.15) were run on three random instances per setting, with a 120-second limit, on one 12-core machine. Every solution was checked by recomputing the hash (88 of 88 verified).
 
-![SAT solvers on reduced-round SHA-256. A: size of the encoded problem. B: time to find a preimage as rounds increase, all 512 message bits unknown. C: time at the full 64 rounds with only a few message bits unknown. x = not solved within 120 s. Source: results/sat_scaling.csv.](../results/fig_sat_scaling.png)
+**Exact definitions** (needed before comparing with any published result):
+
+| Item | Definition used here |
+|---|---|
+| Function | One SHA-256 *compression* call from the standard initial value. Not the full hash with length padding |
+| Feed-forward | Included: the output is the final state added to the initial value, as in the standard |
+| Padding | None. All 512 message bits are variables, except those deliberately given in sweep B |
+| Round counting | *r* rounds means the first *r* of the 64 compression rounds; the message schedule is computed only as far as round *r* needs |
+| Targets | The compression output of a 512-bit message drawn at random from a fixed seed per instance, so a preimage always exists |
+| Sweep A | *r* = 12, 13, …, all 512 message bits unknown; stopped when no solver solved any instance |
+| Sweep B | *r* = 64; *k* message bits at random positions unknown, the rest given; *k* = 4, 8, 12, …; a solver was dropped after solving nothing at a given *k* |
+
+![SAT solvers on SHA-256. A: size of the encoded problem. B: time to find a preimage as rounds increase, all 512 message bits unknown. C: time at the full 64 rounds with only a few message bits unknown. x = not solved within 120 s. Source: results/sat_scaling.csv.](../results/fig_sat_scaling.png)
 
 **Results** (C13, V):
 
-- *Free message, rounds increasing.* Up to 16 rounds every instance solves in under a tenth of a second. With fewer rounds than message words there are many preimages, so the problem is easy. At 17 rounds solving takes under a second. At 18 rounds Kissat solves 3 of 3, CaDiCaL 2 of 3 and CryptoMiniSat 1 of 3. At 19 rounds nothing is solved. The encoding grows from about 10,000 to 17,000 variables.
-- *Full 64 rounds, few unknown bits.* With 4, 8 or 12 unknown bits everything is solved, taking up to about 50 seconds at 12 bits. With 16 bits, one instance of nine is solved; with 20 bits, none. The encoding has about 72,000 variables and 319,000 clauses.
+- *Sweep A, rounds increasing, whole block free.* Up to 16 rounds every instance solves in under a tenth of a second. With 16 rounds or fewer every message word enters the computation directly, so a typical target has very many preimages. At 17 rounds solving takes under a second. At 18 rounds Kissat solves 3 of 3, CaDiCaL 2 of 3 and CryptoMiniSat 1 of 3. At 19 rounds nothing is solved. The encoding grows from about 10,000 to 17,000 variables.
+- *Sweep B, full 64 rounds, a few bits hidden.* With 4, 8 or 12 hidden bits everything is solved, in up to about 55 seconds at 12 bits. With 16 bits, one instance of nine is solved. With 20 bits only Kissat was still being run, and it solved none. The encoding has about 72,000 variables and 319,000 clauses.
 
-**Reading.** At full rounds the solvers were *slower* than simply trying every value of the unknown bits: 12 bits is 4,096 hash evaluations, a few milliseconds. On this encoding, generic SAT solving gives no advantage against full SHA-256. Also note the size of the encoding, 72,000 variables for one compression call. The claimed October bounds apply to formulas of this size, not to the 256 bits of output.
+**Comparison with published work.** The results are not on a common scale, and the table is there to stop them being read as one.
 
-**Scope.** This measures today's solvers on one unoptimised encoding. Specialised encodings in the literature do better at reduced rounds. The experiment says nothing about what a different algorithm could do. No line is fitted and no attack cost is extrapolated.
+| Work | What is attacked | Reach | Cost measure |
+|---|---|---|---|
+| This project, sweep A | Compression function, random-image targets, no padding | 18 of 64 rounds solved; none at 19 (120 s) | Solver wall-clock, one machine |
+| This project, sweep B | Full compression function, all but *k* bits given | *k* = 12 solved; *k* = 16 mostly not | Solver wall-clock |
+| Homsirikamol et al., 2012 (as cited by Zaikin) | SAT inversion of reduced SHA-256 | 16 rounds | Set-up not read (U) |
+| Zaikin, 2026 preprint (F6, V) | Compression function, no padding; headline target the constant all-ones output | 19 rounds, via a weakened intermediate instance and a probabilistic lift, after direct 19-round solving failed for 7 days on 192 cores | Solver wall-clock on a cluster |
+| Sasaki–Wang–Aoki, 2009 (F5) | Preimage, meet-in-the-middle | 41 steps | about 2^253.5 operations |
+| Guo–Matusiewicz, 2009; Guo–Ling–Rechberger–Wang, 2010 (F5, V) | Preimage | 42 steps | 2^251.7, improved to 2^248.4 |
+| Aoki et al., ASIACRYPT 2009 (F5, R) | Preimage | 43 steps | 2^254.9 |
+| Khovratovich–Rechberger–Savelieva, FSE 2012 (F4, V) | Preimage of the step-reduced *hash function* (pseudo-preimage of the compression function: 52 steps) | 45 steps | 2^255.5, memory 2^6 |
+| Guo–Li–Liu–Wang–Zhang, ePrint 2026/353 (F5a, R) | Claimed preimage | 46 and 47 steps | Not read |
+
+**Why my round counts must not be compared with the SAT literature** (`research/primary/sha256-literature.md`):
+
+1. *Targets.* My targets are images of random messages, so a preimage always exists, and at few rounds there are very many. Zaikin's headline targets are a fixed all-ones output, which a round-reduced function may hit rarely or not at all. My instances are therefore likely to be easier; this is my reading, not a measured comparison.
+2. *Weakened instances.* Zaikin's 19-round result comes from a weakened instance and a lucky lift, not from direct solving. My runs are direct solving of the plain *r*-round function.
+3. *Feed-forward and padding.* I keep feed-forward from the fixed standard IV and impose no padding. Zaikin's feed-forward handling was not stated in the text read. The cryptanalytic results above often first attack a free-IV pseudo-preimage, and the 45-step result must satisfy padding in the hash function.
+4. *Cost scales.* Meet-in-the-middle complexities count compression-function evaluations near 2^256. SAT results are solver times. The two share no scale.
+
+**Reading.** In sweep B, on the full function, the solvers were *slower* than trying every value of the hidden bits: 12 bits is 4,096 hash evaluations, a few milliseconds. On this encoding, generic SAT solving gives no advantage against full SHA-256. One compression call also becomes about 72,000 variables. The claimed October bounds apply to formulas of that size, not to the 256 bits of output, which is the lesson Chapter 1 drew for AES. The article uses only sweep B.
+
+**Scope.** This measures today's solvers on one plain encoding. It says nothing about what a different algorithm could do. No line is fitted and no attack cost is extrapolated.
 
 # 10. Quantum exposure and migration
 

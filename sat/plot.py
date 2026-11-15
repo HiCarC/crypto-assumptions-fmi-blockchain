@@ -77,3 +77,20 @@ axes[1].legend(frameon=False, fontsize=8, loc="lower right")
 fig.tight_layout()
 fig.savefig(os.path.join(RES, "fig_sat_article.png"), dpi=170)
 print("wrote", os.path.join(RES, "fig_sat_article.png"))
+
+# Article figure v2: full function only, single panel, no title (caption carries the message).
+fig, ax = plt.subplots(figsize=(6.4, 4.0))
+d = df[df.sweep == "B_unknown_bits"]
+for solver, g in d.groupby("solver"):
+    ok, to = g[g.status == "SAT"], g[g.status == "TIMEOUT"]
+    ax.scatter(ok.unknown_bits, ok.seconds, s=26, color=colors[solver], label=solver, alpha=0.85)
+    ax.scatter(to.unknown_bits, to.seconds, s=42, color=colors[solver], marker="x")
+ax.axhline(timeout, color="#bbb", lw=0.8, ls=":")
+ax.text(4, timeout * 1.12, f"{timeout:.0f}-second limit; x = not found", fontsize=8, color="#666")
+ax.set(yscale="log", xlabel="input bits hidden from the solver (the other 500+ given)", ylabel="seconds to find them (log scale)")
+ax.set_xticks([4, 8, 12, 16, 20])
+ax.spines[["top", "right"]].set_visible(False)
+ax.legend(frameon=False, fontsize=8, loc="lower right")
+fig.tight_layout()
+fig.savefig(os.path.join(RES, "fig_sat_full.png"), dpi=170)
+print("wrote", os.path.join(RES, "fig_sat_full.png"))

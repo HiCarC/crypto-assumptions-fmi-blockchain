@@ -2,14 +2,14 @@
 
 ## Headline options
 
-1. Would a Faster 3-SAT Algorithm Break the Blockchain? Layer by Layer, No — With One Twist
-2. From 3-SAT to the Ledger: Consensus, Signatures and Proofs Stand; Verification Shifts
-3. The October 3-SAT Results Meet Blockchain Finance: Sound Mathematics, a Dual-Use Twist
+1. Would a Faster 3-SAT Algorithm Break the Blockchain?
+2. From 3-SAT to the Ledger: Consensus, Signatures and Proofs Stand
+3. 3-SAT Meets the Ledger: Sound Mathematics, a Dual-Use Twist
 
 ## Subtitle options
 
-1. Chapter 1 promised to test consensus, signatures, zero-knowledge proofs and smart contracts against the October results. The mathematics holds; what changes is the remedy. Next: post-quantum migration of payment systems.
-2. I pointed today's best SAT solvers at the hash behind Bitcoin, then asked the same question of every layer of a ledger. Next chapter: post-quantum migration in payments.
+1. Layer by layer (consensus, signatures, zero-knowledge proofs, smart contracts), the October results leave the mathematics standing. The twist is in verification. Next: post-quantum migration of payment systems.
+2. I set today's best SAT solvers on the hash behind Bitcoin, then asked the same question of every layer of a ledger. Next chapter: post-quantum migration in payments.
 3. Why the AI-generated 3-SAT results leave blockchain cryptography standing, why contract-verification tools are the exception, and what authorities should ask. Next: post-quantum payments.
 
 ---
@@ -18,15 +18,15 @@
 
 ---
 
-I wanted to see what today's tools can do before asking what a better algorithm might do. So I pointed three of the best SAT solvers available, programs that search for values satisfying a set of logical constraints, at SHA-256, the hash function behind Bitcoin. I asked them to find inputs that produce a given output.
+I wanted to see what today's tools can do before asking what a better algorithm might do. So I took SHA-256, the hash function behind Bitcoin, and gave three of the best SAT solvers available, programs that search for values satisfying a set of logical constraints, almost all of an input. I hid only a dozen bits and asked them to recover those bits from the output.
 
-SHA-256 scrambles its input in 64 successive rounds. On versions cut down to 18 rounds, the solvers succeeded. At 19 rounds, none succeeded within two minutes.
+They took up to a minute. A plain search through all 4,096 possibilities finds them in milliseconds. With 16 bits hidden, they found one answer in nine attempts within two minutes.
 
-On the full function, I hid only a dozen bits of the input and gave the solvers the rest. They took up to a minute to find what a plain search through every possibility finds in milliseconds.
+Size is part of the story. Written as a SAT problem, one SHA-256 computation became about 72,000 variables, not 256. That is the lesson Chapter 1 drew for AES: what matters is the size of the encoded problem, not the size of the key.
 
-![Two scatter charts on a logarithmic time scale. Left: time for three SAT solvers to find an input for reduced versions of SHA-256 with the whole input unknown; under a tenth of a second up to 16 rounds, under one second at 17, between about 40 and 120 seconds or no answer at 18, and no answer at 19. Right: the full 64-round function with 4 to 20 input bits hidden; times rise from under a second at 4 bits to tens of seconds at 12 bits, one answer at 16 bits and none at 20.](../results/fig_sat_article.png)
+![Scatter chart on a logarithmic time scale. Time for three SAT solvers to recover hidden input bits of the full SHA-256 function when the rest of the input is given: under a second with 4 bits hidden, up to about 6 seconds with 8, between about 3 and 55 seconds with 12, one success and several failures at the 120-second limit with 16, and no success with 20.](../results/fig_sat_full.png)
 
-*Figure: Time for three current SAT solvers (Kissat, CaDiCaL, CryptoMiniSat) to find an input for SHA-256; three random instances per point, 120-second limit, x = no answer. Left: rounds increasing, whole input unknown. Right: full function, a few input bits hidden. One straightforward encoding of my own, on one machine. It describes today's tools, not future algorithms.*
+*Figure: Time for three current SAT solvers (Kissat, CaDiCaL, CryptoMiniSat) to recover hidden input bits of the full SHA-256 function, the rest of the input being given. Three random instances per point; 120-second limit; x = not found. At 16 bits, one answer in nine attempts; at 20 bits only one solver was tried. One encoding of my own, on one machine; it describes today's tools, not future algorithms.*
 
 ## The promise from Chapter 1
 
@@ -46,11 +46,11 @@ Consensus is how a ledger's participants agree on one history. Bitcoin uses proo
 
 Neither rests on the hardness the October results address. As I read the published analyses, a hash function's security is a judgement about the best known attacks on that specific function, and signatures rest on problems in elliptic-curve mathematics.
 
-My tests show where SAT methods stand against the hash. The best published attack on reduced SHA-256 that I could verify reaches 42 of its 64 steps, and still costs almost as much as trying every input.
-
-Size matters here too, as it did for AES in Chapter 1. Written as a SAT problem, a single full SHA-256 computation took about 72,000 variables in my encoding, not 256. Any speed-up applies to that larger number.
+My tests at the start of this piece show where generic SAT solving stands against the full hash. The best published attack on reduced SHA-256 that I could read in full, by Khovratovich, Rechberger and Savelieva, finds inputs for 45 of its 64 steps, and still costs almost as much as trying every input. A 2026 paper claims 47 steps; I could not read it.
 
 The residual is narrow. A practical method for finding hash inputs faster than plain search would matter for proof of work. Neither paper offers one.
+
+One family of proposals sits closer to the October results. Because the strong form of the hypothesis implies the ordinary one, refuting the ordinary form refutes both. Constructions whose security is proved from either, including some proposals for "useful" proof of work, lose their proofs. I found none in production use.
 
 ## Digital signatures
 
@@ -71,8 +71,6 @@ There is one genuine nuance. OpenAI's paper also gives a faster way to invert fu
 Generators of that local kind are one of the assumptions behind a 2020 research construction of program obfuscation, by Jain, Lin and Sahai. Whether the October result matters there depends on how much hardness the construction assumes, and I found no published analysis. I found none of these constructions in production use.
 
 The zero-knowledge failures that have actually occurred were implementation bugs: circuits that failed to constrain what they should, and flawed implementations of the step that turns an interactive proof into a single message.
-
-A related family is in a similar position. Because the strong form of the hypothesis implies the ordinary one, refuting the ordinary form refutes both. Constructions whose security is proved from either, including some proposals for "useful" proof of work, lose their proofs. I found none in production use.
 
 ## Smart-contract execution
 
@@ -128,8 +126,7 @@ Chapter 1 asked for the newly feasible attack before discussing a change in risk
 
 - OpenAI, *The Exponential Time Hypothesis is False*, preprint, 25 October 2026 (Appendix C on constant-locality maps): https://github.com/openai/math/tree/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026
 - Anthropic, *A 2^{o(n)} Time Algorithm for 3-SAT*, preprint, 27 October 2026: https://hexagonmath.org/2610.00577v1
-- J. Guo and K. Matusiewicz, *Preimages for Step-Reduced SHA-2*, IACR ePrint 2009/477: https://eprint.iacr.org/2009/477
-- O. Zaikin, *Preimage attacks on round-reduced MD5, SHA-1, and SHA-256 using parameterized SAT solver*, preprint, 2026: https://olegzaikin.github.io/publications/2026-z-constraints-preprint.pdf
+- D. Khovratovich, C. Rechberger, A. Savelieva, *Bicliques for Preimages: Attacks on Skein-512 and the SHA-2 Family*, FSE 2012 (IACR ePrint 2011/286): https://eprint.iacr.org/2011/286
 - O. Goldreich, *Candidate One-Way Functions Based on Expander Graphs*, ECCC TR00-090, 2000: https://eccc.weizmann.ac.il/report/2000/090/
 - A. Jain, H. Lin, A. Sahai, *Indistinguishability Obfuscation from Well-Founded Assumptions*, IACR ePrint 2020/1003: https://eprint.iacr.org/2020/1003
 - S. Chaliasos et al., *SoK: What Don't We Know? Understanding Security Vulnerabilities in SNARKs*, USENIX Security 2024: https://arxiv.org/abs/2402.15293

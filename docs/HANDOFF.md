@@ -160,3 +160,14 @@ The author replaced the article direction with `docs/rewrite-instruction.md`: Ch
 - Open issue for the author: SAT comparability with Zaikin (2026); see `LIMITATIONS.md` and `docs/author-brief.md` §4.1.
 - Possible follow-up if the author wants it: align the annex summary (§1) with the v2 framing. Its body already supports it.
 - STOP state: waiting for the author. Nothing is published; the repository is private.
+
+## Update: final fixes before publication (15 November 2026, later)
+
+The author's final-fix list was applied. STOP state: waiting for the author to decide on publication. Nothing is public.
+
+1. Hook: the 18-round claim is removed; the article opens with the full-function result and the 72,000-variable size point. New single-panel figure: `results/fig_sat_full.png`.
+2. Attack literature verified (`research/primary/sha256-literature.md`). The article now cites Khovratovich–Rechberger–Savelieva (45 steps, read in full) and the unread 2026 claim of 47. CLAIMS F4, F5, F5a, F6 and C13 are updated.
+3. The SETH and "useful" proof-of-work paragraph moved to the end of Consensus.
+4. Headlines are all under 70 characters; subtitle 1 carries "layer by layer".
+5. Annex: title, introduction and executive summary are now layer by layer; §3 is relabelled; §9 has the exact definitions and the comparison table. PDF rebuilt (21 pages).
+6. Article is 1,676 words; British spelling checked; the author brief's step audit and §4 are updated.
